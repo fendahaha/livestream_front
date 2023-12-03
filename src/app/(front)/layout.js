@@ -3,6 +3,7 @@ import Header from "@/component/common/Header";
 import Footer from "@/component/common/Footer";
 import './global.css';
 import styles from "./layout.module.css";
+import StyledComponentsRegistry from "@/lib/AntdRegistry";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -18,7 +19,9 @@ export default function RootLayout({children}) {
         <div className={styles.main}>
             <div className={styles.header}>
                 <div className={styles.header_content}>
-                    <Header/>
+                    <StyledComponentsRegistry>
+                        <Header/>
+                    </StyledComponentsRegistry>
                 </div>
             </div>
             <div className={styles.body}>

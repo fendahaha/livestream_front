@@ -1,12 +1,13 @@
 'use client'
-import {GithubFilled, InfoCircleFilled, QuestionCircleFilled,} from '@ant-design/icons';
+import {GithubFilled, InfoCircleFilled, LogoutOutlined, QuestionCircleFilled,} from '@ant-design/icons';
 import {PageContainer, ProCard, ProLayout} from '@ant-design/pro-components';
 import {useState} from 'react';
 import defaultProps from './_defaultProps';
+import {Dropdown} from "antd";
 
 export default function Admin() {
     // const [pathname, setPathname] = useState('/admin/list/sub-page/sub-sub-page1');
-    const [pathname, setPathname] = useState('/');
+    const [pathname, setPathname] = useState('/welcome');
     const [content, setContent] = useState("hello");
     const props = {
         pure: false,
@@ -37,6 +38,26 @@ export default function Admin() {
             src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
             title: '七妮妮',
             size: 'small',
+            render: (props, dom) => {
+                return (
+                    <Dropdown
+                        menu={{
+                            items: [
+                                {
+                                    key: 'logout',
+                                    icon: <LogoutOutlined/>,
+                                    label: '退出登录',
+                                    onClick: () => {
+                                        console.log(1);
+                                    }
+                                },
+                            ],
+                        }}
+                    >
+                        {dom}
+                    </Dropdown>
+                );
+            },
         },
         actionsRender: (props) => {
             if (props.isMobile) return [];

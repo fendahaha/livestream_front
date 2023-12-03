@@ -12,87 +12,29 @@ const defaultProps = {
         routes: [
             {
                 path: '/welcome',
-                name: '欢迎',
+                name: 'welcome',
                 icon: <SmileFilled/>,
-                component: './Welcome',
+                component: dynamic(() => import('@/app/(backend)/component/Welcome'), {ssr: false}),
             },
             {
-                path: '/user',
+                path: '/admin/user',
                 name: 'user',
                 icon: <SmileFilled/>,
                 component: dynamic(() => import('@/app/(backend)/component/User'), {ssr: false}),
+                routes:[
+                    {
+                        path: 'edit',
+                        name: 'edit',
+                        icon: <SmileFilled/>,
+                        component: dynamic(() => import('@/app/(backend)/component/UserEdit'), {ssr: false}),
+                    }
+                ]
             },
             {
-                path: '/admin',
-                name: '管理页',
-                icon: <CrownFilled/>,
-                access: 'canAdmin',
-                component: './Admin',
-                routes: [
-                    {
-                        path: '/admin/sub-page1',
-                        name: '一级页面',
-                        icon: 'https://gw.alipayobjects.com/zos/antfincdn/upvrAjAPQX/Logo_Tech%252520UI.svg',
-                        component: './Welcome',
-                    },
-                    {
-                        path: '/admin/sub-page2',
-                        name: '二级页面',
-                        icon: <CrownFilled/>,
-                        component: './Welcome',
-                    },
-                    {
-                        path: '/admin/sub-page3',
-                        name: '三级页面',
-                        icon: <CrownFilled/>,
-                        component: './Welcome',
-                    },
-                ],
-            },
-            {
-                name: '列表页',
-                icon: <TabletFilled/>,
-                path: '/list',
-                component: './ListTableList',
-                routes: [
-                    {
-                        path: '/list/sub-page',
-                        name: '列表页面',
-                        icon: <CrownFilled/>,
-                        routes: [
-                            {
-                                path: 'sub-sub-page1',
-                                name: '一一级列表页面',
-                                icon: <CrownFilled/>,
-                                component: './Welcome',
-                            },
-                            {
-                                path: 'sub-sub-page2',
-                                name: '一二级列表页面',
-                                icon: <CrownFilled/>,
-                                component: './Welcome',
-                            },
-                            {
-                                path: 'sub-sub-page3',
-                                name: '一三级列表页面',
-                                icon: <CrownFilled/>,
-                                component: './Welcome',
-                            },
-                        ],
-                    },
-                    {
-                        path: '/list/sub-page2',
-                        name: '二级列表页面',
-                        icon: <CrownFilled/>,
-                        component: './Welcome',
-                    },
-                    {
-                        path: '/list/sub-page3',
-                        name: '三级列表页面',
-                        icon: <CrownFilled/>,
-                        component: './Welcome',
-                    },
-                ],
+                path: '/admin/files',
+                name: 'files',
+                icon: <SmileFilled/>,
+                component: dynamic(() => import('@/app/(backend)/component/files'), {ssr: false}),
             },
             {
                 path: 'https://ant.design',

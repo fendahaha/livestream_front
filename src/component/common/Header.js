@@ -2,6 +2,7 @@
 import styles from "./Header.module.css";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import Search from "antd/es/input/Search";
 
 const test_data = [
     {'href': '/', 'name': 'home'},
@@ -34,10 +35,20 @@ export default function Header({navs = test_data}) {
                         </ul>
                     </div>
                     <div className={styles.right}>
-                        <label className={styles.search}>
-                            <input type={'text'} name={'search'} id={"search"}/>
-                            <span className={styles.button}>search</span>
-                        </label>
+                        {/*<label className={styles.search}>*/}
+                        {/*    <input type={'text'} name={'search'} id={"search"}/>*/}
+                        {/*    <span className={styles.button}>search</span>*/}
+                        {/*</label>*/}
+                        <Search
+                            placeholder="input search text"
+                            allowClear
+                            onSearch={(d)=>{
+                                console.log(d);
+                            }}
+                            style={{
+                                width: 230,
+                            }}
+                        />
                     </div>
                 </div>
             </div>
