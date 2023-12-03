@@ -15,14 +15,18 @@ export default function RootLayout({children}) {
     return (
         <html lang="en">
         <body className={inter.className}>
-        <div>
-            <Header></Header>
-            <div className={styles.main}>
-                <div className={styles.content}>
+        <div className={styles.main}>
+            <div className={styles.header}>
+                <div className={styles.header_content}>
+                    <Header/>
+                </div>
+            </div>
+            <div className={styles.body}>
+                <div className={styles.body_content}>
                     {children}
                 </div>
             </div>
-            <Footer></Footer>
+            <Footer/>
         </div>
         </body>
         </html>

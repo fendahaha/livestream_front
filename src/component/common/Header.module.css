@@ -1,11 +1,14 @@
 
 .header {
-    width: 100%;
-    display: block;
-    background-color: #fafafa;
+    min-width: 1240px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header > div {
+    flex: 0 0 auto;
     width: 1240px;
     margin: 0 auto;
 }

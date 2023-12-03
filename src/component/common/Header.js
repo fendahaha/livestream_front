@@ -4,10 +4,10 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 
 const test_data = [
-    {'href': '/', 'name': 'index'},
+    {'href': '/', 'name': 'home'},
     {'href': '/event', 'name': 'event'},
     {'href': '/tv', 'name': 'tv'},
-    {'href': '/ad', 'name': 'adakjj'},
+    {'href': '/follow', 'name': 'follow'},
     {'href': '/adasd', 'name': 'asdasda'},
 ];
 
