@@ -19,10 +19,10 @@ const test_data = [
     {'id': 71, 'bg': '/event/bg_basketball.jpg', 'icon': '/event/icon_basketball.svg'},
 ];
 
-export default function Index({list = test_data}) {
+export default function IndexPage() {
     return (
         <div className={styles.event_list}>
-            {list.map(e => {
+            {test_data.map(e => {
                 return (
                     <div className={styles.event} key={e.id}>
                         <a href={''} className={styles.event_link}>

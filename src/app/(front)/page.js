@@ -1,7 +1,7 @@
-import Slider from "@/app/component/Slider";
+import Slider from "@/app/(front)/component/Slider";
 import styles from "./page.module.css";
-import ZhuboStreamList from "@/app/component/ZhuboStreamList";
-import ZhuboRankList from "@/app/component/ZhuboRankList";
+import ZhuboStreamList from "@/app/(front)/component/ZhuboStreamList";
+import ZhuboRankList from "@/app/(front)/component/ZhuboRankList";
 
 const test_data = ['/nav/nav1.jpg', '/nav/nav2.jpg', '/nav/nav3.jpg'];
 export default function Home() {
