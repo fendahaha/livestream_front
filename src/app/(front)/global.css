@@ -22,6 +22,10 @@ ul {
     list-style: none;
 }
 
+input {
+    outline: none;
+}
+
 [bd1] {
     border: 1px solid red;
 }

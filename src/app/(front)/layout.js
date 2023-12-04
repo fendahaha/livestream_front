@@ -1,6 +1,5 @@
 import {Inter} from 'next/font/google'
 import Header from "@/component/common/Header";
-import Footer from "@/component/common/Footer";
 import './global.css';
 import styles from "./layout.module.css";
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
@@ -13,23 +12,19 @@ export const metadata = {
 }
 
 export default function RootLayout({children}) {
-    // let s = usePathname();
     return (
         <html lang="en">
         <body className={inter.className}>
-        <div className={styles.main}>
-            <StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+            <div className={styles.main}>
                 <div className={styles.header}>
-                    <div className={styles.header_content}>
-                        <Header/>
-                    </div>
+                    <Header/>
                 </div>
                 <div className={styles.body}>
                     {children}
                 </div>
-                <Footer/>
-            </StyledComponentsRegistry>
-        </div>
+            </div>
+        </StyledComponentsRegistry>
         </body>
         </html>
     )
