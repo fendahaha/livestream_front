@@ -1,3 +1,4 @@
+'use client'
 import {useState} from "react";
 
 export default function Component() {
@@ -7,7 +8,8 @@ export default function Component() {
             user{n}
             <button onClick={() => {
                 setN(n + 1);
-            }}>click</button>
+            }}>click
+            </button>
         </div>
     );
 }

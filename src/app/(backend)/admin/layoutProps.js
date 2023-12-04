@@ -1,40 +1,30 @@
-import {
-    ChromeFilled,
-    CrownFilled,
-    SmileFilled,
-    TabletFilled,
-} from '@ant-design/icons';
-import dynamic from "next/dynamic";
+import {ChromeFilled, SmileFilled,} from '@ant-design/icons';
 
 const defaultProps = {
     route: {
-        path: '/',
+        path: '/admin',
         routes: [
             {
-                path: '/welcome',
-                name: 'welcome',
+                path: '/admin',
+                name: 'admin',
                 icon: <SmileFilled/>,
-                component: dynamic(() => import('@/app/(backend)/component/Welcome'), {ssr: false}),
             },
             {
                 path: '/admin/user',
                 name: 'user',
                 icon: <SmileFilled/>,
-                component: dynamic(() => import('@/app/(backend)/component/User'), {ssr: false}),
-                routes:[
+                routes: [
                     {
                         path: 'edit',
                         name: 'edit',
                         icon: <SmileFilled/>,
-                        component: dynamic(() => import('@/app/(backend)/component/UserEdit'), {ssr: false}),
+                    },
+                    {
+                        path: 'list',
+                        name: 'list',
+                        icon: <SmileFilled/>,
                     }
                 ]
-            },
-            {
-                path: '/admin/files',
-                name: 'files',
-                icon: <SmileFilled/>,
-                component: dynamic(() => import('@/app/(backend)/component/files'), {ssr: false}),
             },
             {
                 path: 'https://ant.design',
