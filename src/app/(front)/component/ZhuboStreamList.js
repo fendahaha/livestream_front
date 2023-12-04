@@ -1,4 +1,5 @@
 import styles from "./ZhuboStreamList.module.css";
+import Link from "next/link";
 
 const test_data = [
     {'country': '/country/tw.svg', 'img': '/zb/zb1.png', 'name': 'as', 'is_online': true},
@@ -35,9 +36,9 @@ export default function ZhuboStreamList({list = test_data}) {
                         </div>
                     </div>
                     {e.is_online ?
-                        <a className={styles.live_link} href={""}>
+                        <Link className={styles.live_link} href={"/room"}>
                             <div className={styles.live_link_button}>go to live</div>
-                        </a>
+                        </Link>
                         :
                         <div className={styles.offline_cover}></div>
                     }

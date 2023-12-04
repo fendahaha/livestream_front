@@ -1,4 +1,5 @@
 import styles from "./page.module.css";
+import {FixWidthDiv} from "@/component/common/WidthDiv";
 
 const test_data = [
     {'id': 1, 'bg': '/event/bg_basketball.jpg', 'icon': '/event/icon_basketball.svg'},
@@ -21,53 +22,55 @@ const test_data = [
 
 export default function IndexPage() {
     return (
-        <div className={styles.event_list}>
-            {test_data.map(e => {
-                return (
-                    <div className={styles.event} key={e.id}>
-                        <a href={''} className={styles.event_link}>
-                            <div className={styles.room}>
-                                <img src={e.bg} alt={""} className={styles.room_background}/>
-                                <div className={styles.room_info}>
-                                    <div className={styles.room_info_title}>
-                                        <img src={e.icon} alt={""}/>
-                                        <span>asdkas djabd</span>
-                                    </div>
-                                    <div className={styles.room_info_online_user}>
-                                        <img src={'/event/icon_people.svg'} alt={''}/>
-                                        <span>23K</span>
+        <FixWidthDiv>
+            <div className={styles.event_list}>
+                {test_data.map(e => {
+                    return (
+                        <div className={styles.event} key={e.id}>
+                            <a href={''} className={styles.event_link}>
+                                <div className={styles.room}>
+                                    <img src={e.bg} alt={""} className={styles.room_background}/>
+                                    <div className={styles.room_info}>
+                                        <div className={styles.room_info_title}>
+                                            <img src={e.icon} alt={""}/>
+                                            <span>asdkas djabd</span>
+                                        </div>
+                                        <div className={styles.room_info_online_user}>
+                                            <img src={'/event/icon_people.svg'} alt={''}/>
+                                            <span>23K</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={styles.teams}>
-                                <div className={styles.team}>Lazio</div>
-                                <div className={styles.team}>Cagliari</div>
-                            </div>
-                        </a>
-                    </div>
-                )
-            })}
-            {/*<div className={styles.event}>*/}
-            {/*    <a href={''} className={styles.event_link}>*/}
-            {/*        <div className={styles.room}>*/}
-            {/*            <img src={"/event/bg_basketball.jpg"} alt={""} className={styles.room_background}/>*/}
-            {/*            <div className={styles.room_info}>*/}
-            {/*                <div className={styles.room_info_title}>*/}
-            {/*                    <img src={"/event/icon_basketball.svg"} alt={""}/>*/}
-            {/*                    <span>asdkas djabd</span>*/}
-            {/*                </div>*/}
-            {/*                <div className={styles.room_info_online_user}>*/}
-            {/*                    <img src={'/event/icon_people.svg'} alt={''}/>*/}
-            {/*                    <span>23K</span>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={styles.teams}>*/}
-            {/*            <div className={styles.team}>Lazio</div>*/}
-            {/*            <div className={styles.team}>Cagliari</div>*/}
-            {/*        </div>*/}
-            {/*    </a>*/}
-            {/*</div>*/}
-        </div>
+                                <div className={styles.teams}>
+                                    <div className={styles.team}>Lazio</div>
+                                    <div className={styles.team}>Cagliari</div>
+                                </div>
+                            </a>
+                        </div>
+                    )
+                })}
+                {/*<div className={styles.event}>*/}
+                {/*    <a href={''} className={styles.event_link}>*/}
+                {/*        <div className={styles.room}>*/}
+                {/*            <img src={"/event/bg_basketball.jpg"} alt={""} className={styles.room_background}/>*/}
+                {/*            <div className={styles.room_info}>*/}
+                {/*                <div className={styles.room_info_title}>*/}
+                {/*                    <img src={"/event/icon_basketball.svg"} alt={""}/>*/}
+                {/*                    <span>asdkas djabd</span>*/}
+                {/*                </div>*/}
+                {/*                <div className={styles.room_info_online_user}>*/}
+                {/*                    <img src={'/event/icon_people.svg'} alt={''}/>*/}
+                {/*                    <span>23K</span>*/}
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className={styles.teams}>*/}
+                {/*            <div className={styles.team}>Lazio</div>*/}
+                {/*            <div className={styles.team}>Cagliari</div>*/}
+                {/*        </div>*/}
+                {/*    </a>*/}
+                {/*</div>*/}
+            </div>
+        </FixWidthDiv>
     )
 }

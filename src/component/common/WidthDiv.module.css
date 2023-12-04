@@ -1,0 +1,8 @@
+.fix_width_div {
+    width: 1240px;
+    margin: 0 auto;
+}
+
+.full_width_div {
+    width: 100%;
+}

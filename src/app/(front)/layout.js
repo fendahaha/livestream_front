@@ -13,6 +13,7 @@ export const metadata = {
 }
 
 export default function RootLayout({children}) {
+    // let s = usePathname();
     return (
         <html lang="en">
         <body className={inter.className}>
@@ -24,9 +25,7 @@ export default function RootLayout({children}) {
                     </div>
                 </div>
                 <div className={styles.body}>
-                    <div className={styles.body_content}>
-                        {children}
-                    </div>
+                    {children}
                 </div>
                 <Footer/>
             </StyledComponentsRegistry>

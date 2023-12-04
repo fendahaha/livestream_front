@@ -1,0 +1,13 @@
+.layout1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    min-height:100px;
+}
+
+.layout1_left {
+    border: 1px solid blue;
+}
+
+.layout1_right {
+    border: 1px solid black;
+}
