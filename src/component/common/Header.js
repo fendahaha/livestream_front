@@ -3,6 +3,8 @@ import styles from "./Header.module.css";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import Search from "antd/es/input/Search";
+import {Avatar, Tooltip} from "antd";
+import {UserOutlined} from "@ant-design/icons";
 
 const test_data = [
     {'href': '/', 'name': 'home'},
@@ -42,13 +44,19 @@ export default function Header({navs = test_data}) {
                         <Search
                             placeholder="input search text"
                             allowClear
-                            onSearch={(d)=>{
+                            onSearch={(d) => {
                                 console.log(d);
                             }}
                             style={{
-                                width: 230,
+                                width: 200
                             }}
                         />
+                        <Tooltip placement="right" title={"请登录"} arrow={true}>
+                            <Link href={'/login'}>
+                                <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
+                            </Link>
+                        </Tooltip>
+
                     </div>
                 </div>
             </div>

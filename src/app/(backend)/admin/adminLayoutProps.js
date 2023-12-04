@@ -10,6 +10,11 @@ const defaultProps = {
                 icon: <SmileFilled/>,
             },
             {
+                path: '/admin/test',
+                name: 'test',
+                icon: <SmileFilled/>,
+            },
+            {
                 path: '/admin/user',
                 name: 'user',
                 icon: <SmileFilled/>,

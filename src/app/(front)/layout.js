@@ -17,19 +17,19 @@ export default function RootLayout({children}) {
         <html lang="en">
         <body className={inter.className}>
         <div className={styles.main}>
-            <div className={styles.header}>
-                <div className={styles.header_content}>
-                    <StyledComponentsRegistry>
+            <StyledComponentsRegistry>
+                <div className={styles.header}>
+                    <div className={styles.header_content}>
                         <Header/>
-                    </StyledComponentsRegistry>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.body}>
-                <div className={styles.body_content}>
-                    {children}
+                <div className={styles.body}>
+                    <div className={styles.body_content}>
+                        {children}
+                    </div>
                 </div>
-            </div>
-            <Footer/>
+                <Footer/>
+            </StyledComponentsRegistry>
         </div>
         </body>
         </html>
