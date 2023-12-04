@@ -1,5 +1,6 @@
 'use client'
 import {useEffect, useRef} from "react";
+import Script from "next/script";
 import flv from "flv.js";
 
 export default function FlvContainer({url}) {
@@ -23,8 +24,8 @@ export default function FlvContainer({url}) {
 
     }, [url]);
     return (
-        <div>
-            <video ref={videoRef} controls style={{width: '800px'}} muted autoPlay/>
+        <div style={{'width':'100%','height':'100%','border':'1px solid red'}}>
+            <video ref={videoRef} controls style={{width: '100%','height':'100%'}} muted autoPlay/>
         </div>
     )
 }

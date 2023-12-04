@@ -28,109 +28,43 @@
 
 
 /*--------------------*/
-.chat {
+.layout3 {
     height: 100%;
     display: grid;
     grid-template-rows: calc(100% - 70px) 70px;
 }
 
-.chat_msgs {
+.layout3_top {
     overflow: auto;
     min-height: 0;
+    height: 100%;
     background-color: #F5F5F5;
     padding: 5px 0;
 }
 
-.chat_send {
+.layout3_bottom {
     min-height: 0;
-    background-color: #FAFAFA;
-}
-
-/*----------------*/
-.chat_send_button {
-    width: 100%;
     height: 100%;
+    background-color: #FAFAFA;
     display: flex;
     align-items: center;
 }
 
-.chat_send_button > * {
-    flex: 0 0 auto;
-}
-
-.chat_send_button > input {
-    display: inline-block;
-    width: calc(100% - 50px);
-    height: 40px;
-    background-color: #777777;
-    border: 0;
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 25px;
-    color: white;
-    margin-right: 10px;
-}
-
-.chat_send_button > .icon {
-    display: inline-block;
-    font-size: 30px;
-    cursor: pointer;
-}
 
 /*-----------------*/
-.chat_msg {
-    font-size: 15px;
-    line-height: 25px;
-    padding: 5px 0;
-}
-
-.chat_msg_userlever {
-    width: 25px;
-    height: 25px;
-    font-size: 18px;
-    line-height: 18px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    margin: 0 5px;
-    background-color: #836634;
-}
-
-.chat_msg_username {
-    color: #836634;
-}
-
-.chat_msg_time {
-    font-size: 12px;
-    color: #ccc;
-    margin: 0 3px;
-}
-
-.chat_msg_dot {
-    margin: 0 5px;
-}
-
-.chat_msg_msg {
-    color: black;
-    word-break: break-all;
-}
-
-/*-----------------*/
-.live_container {
+.layout2 {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-rows: 56px 1fr minmax(120px, 150px);
 }
 
-.live_container > * {
+.layout2 > * {
     min-height: 0;
     min-width: 0;
 }
 
-.zhubo_info {
+.layout2_top {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -142,11 +76,11 @@
     font-weight: bold;
 }
 
-.video_container {
+.layout2_middle {
     background: radial-gradient(at 50% 100%, #755757 0%, #4A4544 50%, #1E2225 100%);;
 }
 
-.stream_list {
+.layout2_bottom {
     /*border: 2px solid blue;*/
     background-color: #F5F5F5;
 }

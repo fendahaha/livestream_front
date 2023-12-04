@@ -1,17 +1,7 @@
 import styles from './page.module.css';
-import {SendOutlined} from "@ant-design/icons";
-
-const ChatMsg = ({data}) => {
-    return (
-        <div className={styles.chat_msg}>
-            <span className={styles.chat_msg_userlever}>V1</span>
-            <span className={styles.chat_msg_username}>米大可夫君</span>
-            <span className={styles.chat_msg_time}>14:57</span>
-            <span className={styles.chat_msg_dot}>:</span>
-            <span className={styles.chat_msg_msg}> 非法正義 </span>
-        </div>
-    )
-}
+import FlvContainer from "@/component/player/flv_container";
+import ChatSendButton from "@/component/chat/ChatSendButton";
+import ChatMsgs from "@/component/chat/ChatMsgs";
 
 
 export default function Component() {
@@ -19,39 +9,23 @@ export default function Component() {
         <div className={styles.container}>
             <div className={styles.layout1}>
                 <div className={styles.layout1_left}>
-                    <div className={styles.live_container}>
-                        <div className={styles.zhubo_info}>
+                    <div className={styles.layout2}>
+                        <div className={styles.layout2_top}>
                             <span className={styles.zhubo_info_title}> 可可愛愛沒有腦袋</span>
                         </div>
-                        <div className={styles.video_container}></div>
-                        <div className={styles.stream_list}></div>
+                        <div className={styles.layout2_middle}>
+                            {/*<FlvContainer url={'http://localhost:8080/live/livestream.flv'}/>*/}
+                        </div>
+                        <div className={styles.layout2_bottom}></div>
                     </div>
                 </div>
                 <div className={styles.layout1_right}>
-                    <div className={styles.chat}>
-                        <div className={styles.chat_msgs}>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
-                            <ChatMsg/>
+                    <div className={styles.layout3}>
+                        <div className={styles.layout3_top}>
+                            <ChatMsgs/>
                         </div>
-                        <div className={styles.chat_send}>
-                            <div className={styles.chat_send_button}>
-                                <input type={'text'} name={'send'}/>
-                                <div className={styles.icon}>
-                                    <SendOutlined/>
-                                </div>
-                            </div>
+                        <div className={styles.layout3_bottom}>
+                            <ChatSendButton/>
                         </div>
                     </div>
                 </div>

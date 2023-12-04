@@ -1,0 +1,38 @@
+.chat_msg {
+    font-size: 15px;
+    line-height: 25px;
+    padding: 5px 0;
+}
+
+.chat_msg_userlever {
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    line-height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 5px;
+    background-color: #836634;
+}
+
+.chat_msg_username {
+    color: #836634;
+}
+
+.chat_msg_time {
+    font-size: 12px;
+    color: #ccc;
+    margin: 0 3px;
+}
+
+.chat_msg_dot {
+    margin: 0 5px;
+}
+
+.chat_msg_msg {
+    color: black;
+    word-break: break-all;
+}
