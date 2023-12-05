@@ -1,7 +1,7 @@
 'use client'
 import {Client} from '@stomp/stompjs';
-import {useCallback, useEffect, useMemo, useReducer, useRef, useState} from "react";
-import {Button, Input, Space} from "antd";
+import {useEffect, useReducer, useRef} from "react";
+import {Button, Space} from "antd";
 
 const destination = '/topic/a';
 const msg = 'hello';
@@ -17,7 +17,8 @@ export default function Stomp() {
     const clientRef = useRef(null);
     const onSend = () => {
         if (clientRef.current && clientRef.current.connected) {
-            clientRef.current.publish({destination: destination, body: msg, headers: {priority: '9'}});
+            let headers = { priority: '9'}
+            clientRef.current.publish({destination: destination, body: msg, headers: headers});
         }
     };
     const onActivete = () => {
@@ -57,7 +58,7 @@ export default function Stomp() {
                 connectHeaders: {
                     login: 'user',
                     passcode: 'password',
-                    username: 'fenda1',
+                    username: 'fenda13',
                 },
                 debug: function (str) {
                     console.log("debug:", str);
