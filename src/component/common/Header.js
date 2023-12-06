@@ -3,8 +3,10 @@ import styles from "./Header.module.css";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import Search from "antd/es/input/Search";
-import {Avatar, Tooltip} from "antd";
+import {Avatar, Modal, Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
+import {useState} from "react";
+import Login from "@/app/login/Login";
 
 const test_data = [
     {'href': '/', 'name': 'home'},
@@ -15,6 +17,7 @@ const test_data = [
 ];
 
 export default function Header({navs = test_data}) {
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
     const pathname = usePathname();
     return (
         <div className={styles.header}>
@@ -51,12 +54,26 @@ export default function Header({navs = test_data}) {
                                 width: 200
                             }}
                         />
-                        <Tooltip placement="right" title={"请登录"} arrow={true}>
-                            <Link href={'/login'}>
+                        <Tooltip placement="right" title={""} arrow={true}>
+                            {/*<Link href={'/login'}>*/}
+                            {/*    <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>*/}
+                            {/*</Link>*/}
+                            <div onClick={() => setLoginModalOpen(true)}>
                                 <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
-                            </Link>
+                            </div>
+                            <Modal
+                                title=""
+                                centered
+                                width={800}
+                                open={loginModalOpen}
+                                destroyOnClose={true}
+                                footer={null}
+                                onOk={() => setLoginModalOpen(false)}
+                                onCancel={() => setLoginModalOpen(false)}
+                            >
+                                <Login/>
+                            </Modal>
                         </Tooltip>
-
                     </div>
                 </div>
             </div>
