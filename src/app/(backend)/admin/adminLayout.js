@@ -1,7 +1,7 @@
 'use client'
 import {usePathname} from "next/navigation";
 import defaultProps from "@/app/(backend)/admin/adminLayoutProps";
-import {Dropdown} from "antd";
+import {App, Dropdown} from "antd";
 import {GithubFilled, InfoCircleFilled, LogoutOutlined, QuestionCircleFilled} from "@ant-design/icons";
 import {PageContainer, ProCard, ProLayout} from "@ant-design/pro-components";
 import Link from "next/link";
@@ -53,13 +53,15 @@ export default function AdminLayout({children}) {
     };
     return (
         <div id="test-pro-layout" style={{height: '100vh'}}>
-            <ProLayout {...props}>
-                <PageContainer>
-                    <ProCard>
-                        {children}
-                    </ProCard>
-                </PageContainer>
-            </ProLayout>
+            <App>
+                <ProLayout {...props}>
+                    <PageContainer>
+                        <ProCard>
+                            {children}
+                        </ProCard>
+                    </PageContainer>
+                </ProLayout>
+            </App>
         </div>
     );
 }

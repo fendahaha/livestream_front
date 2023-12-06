@@ -15,8 +15,9 @@ import {
     ProFormText,
     setAlpha,
 } from '@ant-design/pro-components';
-import {Space, Tabs, message, theme} from 'antd';
+import {Space, Tabs, message, theme, App} from 'antd';
 import {useState} from 'react';
+import {backendFetch} from "@/util/requestUtil";
 
 export default function Login() {
     const {token} = theme.useToken();
@@ -150,7 +151,14 @@ export default function Login() {
     };
 
     const finish = (data) => {
-        console.log(data);
+        backendFetch.postJson("/user/login", {userName: data.username, userPassword: data.password})
+            .then(d => {
+                if (d && d.data === 'success') {
+                    window.location = '/admin';
+                } else {
+                    message.error("用户名或密码错误")
+                }
+            })
     };
 
     return (

@@ -10,9 +10,21 @@ const defaultProps = {
                 icon: <SmileFilled/>,
             },
             {
-                path: '/admin/test',
-                name: 'test',
+                path: '/admin/media',
+                name: 'media',
                 icon: <SmileFilled/>,
+                routes: [
+                    {
+                        path: 'list',
+                        name: 'list',
+                        icon: <SmileFilled/>,
+                    },
+                    {
+                        path: 'upload',
+                        name: 'upload',
+                        icon: <SmileFilled/>,
+                    },
+                ]
             },
             {
                 path: '/admin/user',
