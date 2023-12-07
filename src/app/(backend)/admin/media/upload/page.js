@@ -1,7 +1,7 @@
 'use client'
 import {InboxOutlined} from '@ant-design/icons';
 import {App, message, Upload} from 'antd';
-import {backendFetch} from "@/util/requestUtil";
+import {clientBackendFetch} from "@/util/requestUtil";
 
 const {Dragger} = Upload;
 
@@ -35,7 +35,7 @@ export default function Component() {
             if (res.code === 200) {
                 let fileUniqueName = res?.data[fileName]?.fileUniqueName;
                 if (fileUniqueName) {
-                    backendFetch.postJson("/file/deleteByUniqueNames", {fileUniqueNames: [fileUniqueName]})
+                    clientBackendFetch.postJson("/file/deleteByUniqueNames", {fileUniqueNames: [fileUniqueName]})
                         .then(r => {
                             message.success(`${fileName} file delete successfully.`);
                         })

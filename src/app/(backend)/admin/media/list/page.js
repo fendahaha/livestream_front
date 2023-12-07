@@ -1,7 +1,7 @@
 'use client'
 import React, {useCallback, useEffect, useState} from 'react';
 import {App, List, Pagination, Space} from 'antd';
-import {backendFetch, imagePrefix} from "@/util/requestUtil";
+import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 import {DeleteOutlined} from "@ant-design/icons";
 
 
@@ -30,7 +30,7 @@ const MyImage = ({data, delAction}) => {
                 color: 'red',
             }}
                  onClick={() => {
-                     backendFetch.postJson("/file/deleteByUniqueNames", {fileUniqueNames: [data.fileUniqueName]})
+                     clientBackendFetch.postJson("/file/deleteByUniqueNames", {fileUniqueNames: [data.fileUniqueName]})
                          .then(r => {
                              message.success(`${data.fileOriginalName} file delete successfully.`);
                              delAction(true);
@@ -63,7 +63,7 @@ export default function Component() {
     }, [delStatus]);
     useEffect(() => {
         setLoading(true);
-        backendFetch.getJson('/file/list', {pageNum: pageParams.current, pageSize: pageParams.pageSize})
+        clientBackendFetch.getJson('/file/list', {pageNum: pageParams.current, pageSize: pageParams.pageSize})
             .then(r => {
                 let total = r.data.total;
                 let images = r.data.list;
@@ -84,7 +84,7 @@ export default function Component() {
                 pageSizeOptions={[10, 20, 50, 100]}
                 onChange={(page, pageSize) => {
                     setLoading(true);
-                    backendFetch.getJson('/file/list', {pageNum: page, pageSize: pageSize}).then(r => {
+                    clientBackendFetch.getJson('/file/list', {pageNum: page, pageSize: pageSize}).then(r => {
                         let total = r.data.total;
                         let images = r.data.list;
                         setPageParams({...pageParams, current: page, pageSize: pageSize, total: total});

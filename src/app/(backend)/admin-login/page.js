@@ -17,7 +17,7 @@ import {
 } from '@ant-design/pro-components';
 import {Space, Tabs, message, theme, App} from 'antd';
 import {useState} from 'react';
-import {backendFetch} from "@/util/requestUtil";
+import {clientBackendFetch} from "@/util/requestUtil";
 
 export default function Login() {
     const {token} = theme.useToken();
@@ -151,7 +151,7 @@ export default function Login() {
     };
 
     const finish = (data) => {
-        backendFetch.postJson("/user/login", {userName: data.username, userPassword: data.password})
+        clientBackendFetch.postJson("/user/login", {userName: data.username, userPassword: data.password})
             .then(d => {
                 if (d && d.data === 'success') {
                     window.location = '/admin';

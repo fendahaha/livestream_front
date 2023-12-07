@@ -1,8 +1,9 @@
-function post(url, data) {
+function post(url, data, headers = {}) {
     return fetch(url, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
+            ...headers
         },
         redirect: "follow",
         credentials: 'include',
@@ -11,7 +12,7 @@ function post(url, data) {
     })
 }
 
-function get(url, data) {
+function get(url, data, headers = {}) {
     const queryString = new URLSearchParams(data).toString();
     const urlWithParams = data !== null ? `${url}?${queryString}` : url;
     return fetch(urlWithParams, {
@@ -19,19 +20,22 @@ function get(url, data) {
         redirect: "follow",
         credentials: 'include',
         mode: "cors",
+        headers: {
+            ...headers
+        },
     })
 }
 
-function postJson(url, data) {
-    return post(url, data).then(res => {
+function postJson(url, data, headers = {}) {
+    return post(url, data, headers).then(res => {
         if (res.status === 200) {
             return res.json()
         }
     })
 }
 
-function getJson(url, data) {
-    return get(url, data).then(res => {
+function getJson(url, data, headers = {}) {
+    return get(url, data, headers).then(res => {
         if (res.status === 200) {
             return res.json()
         }
@@ -40,20 +44,28 @@ function getJson(url, data) {
 
 export const RequestUtil = {get, post, postJson, getJson}
 
-export const backendFetch = {
+export const clientBackendFetch = {
     prefix: '/backend',
-    get(url, data) {
-        return get(this.prefix + url, data)
+    get(url, data, headers = {}) {
+        return get(this.prefix + url, data, headers)
     },
-    post(url, data) {
-        return post(this.prefix + url, data)
+    post(url, data, headers = {}) {
+        return post(this.prefix + url, data, headers)
     },
-    postJson(url, data) {
-        return postJson(this.prefix + url, data)
+    postJson(url, data, headers = {}) {
+        return postJson(this.prefix + url, data, headers)
     },
-    getJson(url, data) {
-        return getJson(this.prefix + url, data)
+    getJson(url, data, headers = {}) {
+        return getJson(this.prefix + url, data, headers)
     }
+}
+export const nodeBackendFetch = {
+    get(url, data, headers = {}) {
+        return get(backendUrlBase + url, data, headers)
+    },
+    post(url, data, headers = {}) {
+        return post(backendUrlBase + url, data, headers)
+    },
 }
 export const imagePrefix = "http://localhost:8090/resource";
 export const backendUrlBase = `http://localhost:8090`;

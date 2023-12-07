@@ -1,12 +1,13 @@
 'use client'
 import styles from "./Header.module.css";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import Search from "antd/es/input/Search";
-import {Avatar, Modal, Tooltip} from "antd";
+import {Avatar, Button, Dropdown, message, Modal, Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {useState} from "react";
-import Login from "@/app/login/Login";
+import Login from "@/component/common/Login";
+import {clientBackendFetch} from "@/util/requestUtil";
 
 const test_data = [
     {'href': '/', 'name': 'home'},
@@ -16,9 +17,11 @@ const test_data = [
     {'href': '/adasd', 'name': 'asdasda'},
 ];
 
-export default function Header({navs = test_data}) {
+export default function Header({user, navs = test_data}) {
+    const [messageApi] = message.useMessage();
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const pathname = usePathname();
+    let appRouterInstance = useRouter();
     return (
         <div className={styles.header}>
             <div>
@@ -40,40 +43,62 @@ export default function Header({navs = test_data}) {
                         </ul>
                     </div>
                     <div className={styles.right}>
-                        {/*<label className={styles.search}>*/}
-                        {/*    <input type={'text'} name={'search'} id={"search"}/>*/}
-                        {/*    <span className={styles.button}>search</span>*/}
-                        {/*</label>*/}
                         <Search
                             placeholder="input search text"
                             allowClear
-                            onSearch={(d) => {
-                                console.log(d);
-                            }}
-                            style={{
-                                width: 200
-                            }}
+                            onSearch={(d) => console.log(d)}
+                            style={{width: 200}}
                         />
-                        <Tooltip placement="right" title={""} arrow={true}>
-                            {/*<Link href={'/login'}>*/}
-                            {/*    <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>*/}
-                            {/*</Link>*/}
+                        {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>
                             <div onClick={() => setLoginModalOpen(true)}>
                                 <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
                             </div>
                             <Modal
                                 title=""
                                 centered
-                                width={800}
                                 open={loginModalOpen}
                                 destroyOnClose={true}
                                 footer={null}
                                 onOk={() => setLoginModalOpen(false)}
                                 onCancel={() => setLoginModalOpen(false)}
                             >
-                                <Login/>
+                                <Login onSuccess={() => setLoginModalOpen(false)}/>
                             </Modal>
-                        </Tooltip>
+                        </Tooltip>}
+                        {user &&
+                            <Dropdown
+                                placement="bottomLeft"
+                                arrow
+                                menu={{
+                                    items: [
+                                        {
+                                            key: '1',
+                                            label: (
+                                                <Link href={'/user'}>
+                                                    <Button>修改资料</Button>
+                                                </Link>
+                                            )
+                                        },
+                                        {
+                                            key: '2',
+                                            label: (
+                                                <Button danger onClick={() => {
+                                                    clientBackendFetch.post('/user/logout', null)
+                                                        .then(res => {
+                                                            if (res.status === 200) {
+                                                                messageApi.success("已退出登录")
+                                                                appRouterInstance.refresh()
+                                                            }
+                                                        })
+                                                }}>退出登录</Button>
+                                            )
+                                        }
+                                    ]
+                                }}
+                            >
+                                <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
+                            </Dropdown>
+                        }
                     </div>
                 </div>
             </div>
