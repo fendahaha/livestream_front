@@ -53,7 +53,24 @@ export async function middleware(request) {
         } catch (e) {
             return NextResponse.redirect("http://localhost:3000/admin-login")
         }
+    }
 
+    if (pathname.startsWith("/user")) {
+        try {
+            const JSESSIONID = request.cookies.get('JSESSIONID');
+            const response = await fetch(`${backendUrlBase}/user/is_login`, {
+                method: 'POST',
+                headers: {
+                    cookie: `${JSESSIONID.name}=${JSESSIONID.value}`
+                },
+            });
+            let result = await response.json()
+            if (!result.data) {
+                return NextResponse.redirect("http://localhost:3000/")
+            }
+        } catch (e) {
+            return NextResponse.redirect("http://localhost:3000/")
+        }
     }
 
     return NextResponse.next()
