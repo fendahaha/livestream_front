@@ -54,7 +54,12 @@ export const FendaDanmu = forwardRef(function FendaDanmu(props, ref) {
         };
     }, []);
     return (
-        <div style={{width: '100%', height: '100%', border: '2px solid yellow'}}>
+        <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden'
+        }}>
             {msg.map(e => {
                 return <FendaDanmuMessage key={e} msg={e}/>
             })}

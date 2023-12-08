@@ -7,10 +7,7 @@ import {useCallback, useEffect, useReducer, useRef} from "react";
 import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/tabs";
-
-function messagesReducer(state, action) {
-    return [...state, action]
-}
+import {OnlineUsers} from "@/app/(front)/room/onlineUser";
 
 const room_id = 'room_463111343';
 const user_id = 'user_877629347';
@@ -19,7 +16,8 @@ const streamId = '';
 
 const test_data = ['hello', 'hi', '你好', 'adasd', 'dadad', 'efdads', 'rfda', 'tfdad', 'gfdad', '3eda', 'rfda', '3feda', 'gfd', '6yt5grfed', 'tgr', 'i8juyhtg', 'gfd', 'ygf', 'mnhgf', '23efgb', '6tf']
 const test_data2 = ['hello', 'hi', '你好'];
-export default function Component() {
+
+const useStomp = (destinationTopic) => {
     const [messages, dispatchMessages] = useReducer(
         (state, action) => {
             let _new = [action, ...state];
@@ -33,7 +31,7 @@ export default function Component() {
     );
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
-    const handleSend = useCallback((msg) => {
+    const sendMsg = useCallback((msg) => {
         if (stompClientRef.current && stompClientRef.current.connected) {
             let headers = {priority: '9'}
             stompClientRef.current.publish({destination: destination, body: msg, headers: headers});
@@ -70,8 +68,14 @@ export default function Component() {
             });
             stompClientRef.current.onConnect = function (frame) {
                 // console.log(JSON.stringify(frame));
-                stompClientRef.current.subscribe(destination, (message) => {
-                    danmuRef.current.addMessage(message.body)
+                stompClientRef.current.subscribe(destinationTopic, (message) => {
+                    if (danmuRef.current?.addMessage) {
+                        try {
+                            danmuRef.current.addMessage(message.body)
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    }
                     dispatchMessages(new Date().getTime() + ": " + message.body)
                 });
             }
@@ -86,6 +90,11 @@ export default function Component() {
             }
         }
     }, []);
+    return [messages, sendMsg, danmuRef]
+}
+
+export default function Component() {
+    const [messages, sendMsg, danmuRef] = useStomp(destination);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
@@ -97,16 +106,8 @@ export default function Component() {
                         <div className={styles.layout2_middle}>
                             {/*<FlvContainer url={'http://localhost:8080/live/livestream.flv'}*/}
                             {/*              style={{'width': '100%', 'height': '100%', 'border': '1px solid red'}}/>*/}
-                            <div
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    // border: '5px solid blue',
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                }}>
-                                <FendaDanmu messages={messages} ref={danmuRef}/>
+                            <div className={styles.danmu_container}>
+                                <FendaDanmu ref={danmuRef}/>
                             </div>
                         </div>
                         <div className={styles.layout2_bottom}></div>
@@ -126,14 +127,15 @@ export default function Component() {
                                         {
                                             key: '2',
                                             label: 'Tab 2',
-                                            children: 'Content of Tab Pane 2',
+                                            children: <OnlineUsers/>,
                                         },
                                     ]
-                                }></MyTabs>
+                                }>
+                                </MyTabs>
                             </div>
                         </div>
                         <div className={styles.layout3_bottom}>
-                            <ChatSendButton handSend={handleSend}/>
+                            <ChatSendButton handSend={sendMsg}/>
                         </div>
                     </div>
                 </div>
