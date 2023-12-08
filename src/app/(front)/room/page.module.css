@@ -77,7 +77,8 @@
 }
 
 .layout2_middle {
-    background: radial-gradient(at 50% 100%, #755757 0%, #4A4544 50%, #1E2225 100%);;
+    background: radial-gradient(at 50% 100%, #755757 0%, #4A4544 50%, #1E2225 100%);
+    position: relative;
 }
 
 .layout2_bottom {

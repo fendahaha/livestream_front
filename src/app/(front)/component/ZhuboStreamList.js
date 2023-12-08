@@ -54,7 +54,7 @@ export default function ZhuboStreamList({list = test_data}) {
             {/*        <img src={"/zb/zb1.png"} alt={""} className={styles.item_img}/>*/}
             {/*        <div className={styles.item_info}>*/}
             {/*            <div className={styles.status}></div>*/}
-            {/*            <div className={styles.zhubo}>*/}
+            {/*            <div className={styles.anchor}>*/}
             {/*                <img src={"/country/tw.svg"} alt={""} className={styles.zhubo_icon}/>*/}
             {/*                <span className={styles.zhubo_name}>adsadsad</span>*/}
             {/*            </div>*/}
@@ -68,7 +68,7 @@ export default function ZhuboStreamList({list = test_data}) {
             {/*        <img src={"/zb/zb1.png"} alt={""} className={styles.item_img}/>*/}
             {/*        <div className={styles.item_info}>*/}
             {/*            <div className={styles.status}></div>*/}
-            {/*            <div className={styles.zhubo}>*/}
+            {/*            <div className={styles.anchor}>*/}
             {/*                <img src={"/country/tw.svg"} alt={""} className={styles.zhubo_icon}/>*/}
             {/*                <span className={styles.zhubo_name}>adsadsad</span>*/}
             {/*            </div>*/}

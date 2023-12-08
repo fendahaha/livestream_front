@@ -53,7 +53,7 @@ export default function ZhuboRankList() {
         <div className={styles.list}>
             <div className={styles.d1}>
                 {/*<a href={''}>*/}
-                {/*    <div className={`${styles.zhubo} ${styles.rank2}`}>*/}
+                {/*    <div className={`${styles.anchor} ${styles.rank2}`}>*/}
                 {/*        <div className={styles.s1}>*/}
                 {/*            <img src={'/zb/zb1.png'} alt={''} className={styles.avatar}/>*/}
                 {/*        </div>*/}
@@ -66,7 +66,7 @@ export default function ZhuboRankList() {
                 {/*</a>*/}
 
                 {/*<a href={''}>*/}
-                {/*    <div className={`${styles.zhubo} ${styles.rank1}`}>*/}
+                {/*    <div className={`${styles.anchor} ${styles.rank1}`}>*/}
                 {/*        <div className={styles.s1}>*/}
                 {/*            <img src={'/zb/zb1.png'} alt={''} className={styles.avatar}/>*/}
                 {/*        </div>*/}
@@ -79,7 +79,7 @@ export default function ZhuboRankList() {
                 {/*</a>*/}
 
                 {/*<a href={''}>*/}
-                {/*    <div className={`${styles.zhubo} ${styles.rank3}`}>*/}
+                {/*    <div className={`${styles.anchor} ${styles.rank3}`}>*/}
                 {/*        <div className={styles.s1}>*/}
                 {/*            <img src={'/zb/zb1.png'} alt={''} className={styles.avatar}/>*/}
                 {/*        </div>*/}

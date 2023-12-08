@@ -1,11 +1,11 @@
 'use client'
 import styles from './page.module.css';
-import FlvContainer from "@/component/player/flv_container";
+// import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import ChatMsgs from "@/component/chat/ChatMsgs";
-import {useEffect, useReducer, useRef, useState} from "react";
+import {useEffect, useReducer, useRef} from "react";
 import {Client} from "@stomp/stompjs";
-
+import {FendaDanmu} from "@/app/(front)/room/BarrageMessages";
 
 function messagesReducer(state, action) {
     return [...state, action]
@@ -15,10 +15,10 @@ const room_id = 'room_463111343';
 const user_id = 'user_877629347';
 const destination = `/topic/${room_id}`;
 const streamId = '';
-const subscribed = {status: false};
 export default function Component() {
     const [messages, dispatchMessages] = useReducer(messagesReducer, ['adads', 'adadssa', 'sadas'], r => r);
     const stompClientRef = useRef(null);
+    const danmuRef = useRef(null);
     const handleSend = (msg) => {
         if (stompClientRef.current && stompClientRef.current.connected) {
             let headers = {priority: '9'}
@@ -57,6 +57,7 @@ export default function Component() {
             stompClientRef.current.onConnect = function (frame) {
                 // console.log(JSON.stringify(frame));
                 stompClientRef.current.subscribe(destination, (message) => {
+                    danmuRef.current.addMessage(message.body)
                     dispatchMessages(new Date().getTime() + ": " + message.body)
                 });
             }
@@ -80,7 +81,19 @@ export default function Component() {
                             <span className={styles.zhubo_info_title}> 可可愛愛沒有腦袋</span>
                         </div>
                         <div className={styles.layout2_middle}>
-                            {/*<FlvContainer url={'http://localhost:8080/live/livestream.flv'}/>*/}
+                            {/*<FlvContainer url={'http://localhost:8080/live/livestream.flv'}*/}
+                            {/*              style={{'width': '100%', 'height': '100%', 'border': '1px solid red'}}/>*/}
+                            <div
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    // border: '5px solid blue',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                }}>
+                                <FendaDanmu messages={messages} ref={danmuRef}/>
+                            </div>
                         </div>
                         <div className={styles.layout2_bottom}></div>
                     </div>

@@ -1,7 +1,7 @@
 'use client'
 import {FixWidthDiv} from "@/component/common/WidthDiv";
 import {Tabs} from "antd";
-import Tab1 from "@/app/(front)/user/tab1";
+import Tab1 from "@/app/(front)/user/client/tab1";
 
 export default function Component() {
     const items = [
@@ -11,7 +11,7 @@ export default function Component() {
             children: <Tab1/>,
         },
         {
-            label: '基本信息2',
+            label: '充值',
             key: 2,
             children: '2',
         }

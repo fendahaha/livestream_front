@@ -2,11 +2,16 @@ import {NextResponse} from 'next/server'
 import {backendUrlBase, RequestUtil} from "@/util/requestUtil";
 
 
-async function is_login() {
-    return await RequestUtil.postJson(backendUrlBase + "/user/is_login", null).then(d => {
-        return d.data
-        // return true
+async function is_login(request) {
+    const JSESSIONID = request.cookies.get('JSESSIONID');
+    const response = await fetch(`${backendUrlBase}/user/is_login`, {
+        method: 'POST',
+        headers: {
+            cookie: `${JSESSIONID.name}=${JSESSIONID.value}`
+        },
     });
+    const result = await response.json();
+    return result.data
 }
 
 export async function middleware(request) {
@@ -39,37 +44,22 @@ export async function middleware(request) {
 
     if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
         try {
-            const JSESSIONID = request.cookies.get('JSESSIONID');
-            const response = await fetch(`${backendUrlBase}/user/is_login`, {
-                method: 'POST',
-                headers: {
-                    cookie: `${JSESSIONID.name}=${JSESSIONID.value}`
-                },
-            });
-            let result = await response.json()
-            if (!result.data) {
-                return NextResponse.redirect("http://localhost:3000/admin-login")
+            const login_status = await is_login(request);
+            if (!login_status) {
+                return NextResponse.redirect(`${origin}/admin-login`)
             }
         } catch (e) {
-            return NextResponse.redirect("http://localhost:3000/admin-login")
+            return NextResponse.redirect(`${origin}/admin-login`)
         }
     }
-
     if (pathname.startsWith("/user")) {
         try {
-            const JSESSIONID = request.cookies.get('JSESSIONID');
-            const response = await fetch(`${backendUrlBase}/user/is_login`, {
-                method: 'POST',
-                headers: {
-                    cookie: `${JSESSIONID.name}=${JSESSIONID.value}`
-                },
-            });
-            let result = await response.json()
-            if (!result.data) {
-                return NextResponse.redirect("http://localhost:3000/")
+            const login_status = await is_login(request);
+            if (!login_status) {
+                return NextResponse.redirect(`${origin}/login`)
             }
         } catch (e) {
-            return NextResponse.redirect("http://localhost:3000/")
+            return NextResponse.redirect(`${origin}/login`)
         }
     }
 

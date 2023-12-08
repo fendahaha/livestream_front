@@ -8,7 +8,6 @@ import {useCallback, useState} from "react";
 
 export default function Login({onSuccess}) {
     const {token} = theme.useToken();
-    const router = useRouter();
     const [activeTab, setActiveTab] = useState("1");
     const items = [
         {
@@ -174,9 +173,11 @@ export default function Login({onSuccess}) {
         if (activeTab === '1') {
             clientBackendFetch.postJson("/user/login", data)
                 .then(d => {
-                    if (d && d.data === 'success') {
-                        router.refresh()
-                        onSuccess();
+                    if (d && d.data) {
+                        if (onSuccess) {
+                            message.success("登录成功");
+                            onSuccess(d.data);
+                        }
                     } else {
                         message.error("用户名或密码错误")
                     }
@@ -195,7 +196,7 @@ export default function Login({onSuccess}) {
                 message.error("未知错误")
             })
         }
-    }, [activeTab, onSuccess, router])
+    }, [activeTab, onSuccess])
 
     return (
         <ProConfigProvider hashed={false}>

@@ -18,7 +18,6 @@ const test_data = [
 ];
 
 export default function Header({user, navs = test_data}) {
-    const [messageApi] = message.useMessage();
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const pathname = usePathname();
     let appRouterInstance = useRouter();
@@ -62,7 +61,10 @@ export default function Header({user, navs = test_data}) {
                                 onOk={() => setLoginModalOpen(false)}
                                 onCancel={() => setLoginModalOpen(false)}
                             >
-                                <Login onSuccess={() => setLoginModalOpen(false)}/>
+                                <Login onSuccess={(user) => {
+                                    setLoginModalOpen(false);
+                                    appRouterInstance.refresh();
+                                }}/>
                             </Modal>
                         </Tooltip>}
                         {user &&
@@ -74,7 +76,7 @@ export default function Header({user, navs = test_data}) {
                                         {
                                             key: '1',
                                             label: (
-                                                <Link href={'/user'}>
+                                                <Link href={user.userType === 3 ? '/user/client' : '/user/anchor'}>
                                                     <Button>修改资料</Button>
                                                 </Link>
                                             )
@@ -86,7 +88,7 @@ export default function Header({user, navs = test_data}) {
                                                     clientBackendFetch.post('/user/logout', null)
                                                         .then(res => {
                                                             if (res.status === 200) {
-                                                                messageApi.success("已退出登录")
+                                                                message.success("已退出登录")
                                                                 appRouterInstance.refresh()
                                                             }
                                                         })

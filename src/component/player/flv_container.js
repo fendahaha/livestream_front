@@ -3,7 +3,7 @@ import {useEffect, useRef} from "react";
 import Script from "next/script";
 import flv from "flv.js";
 
-export default function FlvContainer({url}) {
+export default function FlvContainer({url, style}) {
     const videoRef = useRef(null);
     useEffect(() => {
         if (flv.isSupported()) {
@@ -24,8 +24,8 @@ export default function FlvContainer({url}) {
 
     }, [url]);
     return (
-        <div style={{'width':'100%','height':'100%','border':'1px solid red'}}>
-            <video ref={videoRef} controls style={{width: '100%','height':'100%'}} muted autoPlay/>
+        <div style={style}>
+            <video ref={videoRef} controls style={{width: '100%', 'height': '100%'}} muted autoPlay/>
         </div>
     )
 }
