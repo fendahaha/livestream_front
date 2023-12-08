@@ -1,11 +1,12 @@
 'use client'
 import styles from './page.module.css';
-// import FlvContainer from "@/component/player/flv_container";
+// import FlvContainer from "@/component/pl ayer/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
-import ChatMsgs from "@/component/chat/ChatMsgs";
-import {useEffect, useReducer, useRef} from "react";
+import {ChatMsgs} from "@/component/chat/ChatMsgs";
+import {useCallback, useEffect, useReducer, useRef} from "react";
 import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/BarrageMessages";
+import {MyTabs} from "@/app/(front)/room/tabs";
 
 function messagesReducer(state, action) {
     return [...state, action]
@@ -15,17 +16,30 @@ const room_id = 'room_463111343';
 const user_id = 'user_877629347';
 const destination = `/topic/${room_id}`;
 const streamId = '';
+
+const test_data = ['hello', 'hi', '你好', 'adasd', 'dadad', 'efdads', 'rfda', 'tfdad', 'gfdad', '3eda', 'rfda', '3feda', 'gfd', '6yt5grfed', 'tgr', 'i8juyhtg', 'gfd', 'ygf', 'mnhgf', '23efgb', '6tf']
+const test_data2 = ['hello', 'hi', '你好'];
 export default function Component() {
-    const [messages, dispatchMessages] = useReducer(messagesReducer, ['adads', 'adadssa', 'sadas'], r => r);
+    const [messages, dispatchMessages] = useReducer(
+        (state, action) => {
+            let _new = [action, ...state];
+            if (_new.length >= 200) {
+                _new = _new.slice(0, 200)
+            }
+            return _new
+        },
+        [...test_data2],
+        r => r
+    );
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
-    const handleSend = (msg) => {
+    const handleSend = useCallback((msg) => {
         if (stompClientRef.current && stompClientRef.current.connected) {
             let headers = {priority: '9'}
             stompClientRef.current.publish({destination: destination, body: msg, headers: headers});
             return true
         }
-    }
+    });
     useEffect(() => {
         if (!stompClientRef.current) {
             stompClientRef.current = new Client({
@@ -101,7 +115,22 @@ export default function Component() {
                 <div className={styles.layout1_right}>
                     <div className={styles.layout3}>
                         <div className={styles.layout3_top}>
-                            <ChatMsgs msgs={messages}/>
+                            <div style={{height: '100%', overflow: 'auto',}}>
+                                <MyTabs items={
+                                    [
+                                        {
+                                            key: '1',
+                                            label: 'Tab 1',
+                                            children: <ChatMsgs msgs={messages}/>,
+                                        },
+                                        {
+                                            key: '2',
+                                            label: 'Tab 2',
+                                            children: 'Content of Tab Pane 2',
+                                        },
+                                    ]
+                                }></MyTabs>
+                            </div>
                         </div>
                         <div className={styles.layout3_bottom}>
                             <ChatSendButton handSend={handleSend}/>

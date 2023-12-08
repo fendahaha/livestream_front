@@ -1,6 +1,6 @@
 import styles from "./ChatMsg.module.css";
 
-export default function ChatMsg({data = ''}) {
+export function ChatMsg({data = ''}) {
     return (
         <div className={styles.chat_msg}>
             <span className={styles.chat_msg_userlever}>V1</span>
@@ -10,4 +10,20 @@ export default function ChatMsg({data = ''}) {
             <span className={styles.chat_msg_msg}> {data} </span>
         </div>
     )
+}
+
+export function ChatMsgs({msgs}) {
+    return (
+        <div style={{
+            height: '100%',
+            overflow: "auto",
+            display: 'flex',
+            flexDirection: 'column-reverse',
+            padding: '10px 0',
+        }}>
+            {msgs.map(m => {
+                return <ChatMsg key={Math.random() + m} data={m}/>
+            })}
+        </div>
+    );
 }
