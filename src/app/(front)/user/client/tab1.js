@@ -1,8 +1,9 @@
 import {ProDescriptions} from '@ant-design/pro-components';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {message, Upload} from "antd";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
+import {GlobalContext} from "@/app/(front)/component/globalContext";
 
 async function getLoginUser() {
     return await clientBackendFetch.post('/user/getLoginUser', null)
@@ -18,7 +19,7 @@ async function getLoginUser() {
         })
 }
 
-async function editUser(data) {
+async function editUser(data, onSuccess) {
     clientBackendFetch.post('/user/update', data)
         .then(res => {
             if (res.status === 200) {
@@ -27,6 +28,9 @@ async function editUser(data) {
         })
         .then(r => {
             if (r && r.data) {
+                if (onSuccess) {
+                    onSuccess()
+                }
                 message.success("修改成功")
             } else {
                 message.error("修改失败")
@@ -98,8 +102,8 @@ const AvatarUpload = ({onSuccess, filePath}) => {
 }
 
 export default function Tab1() {
-    const [user, setUser] = useState(null);
     const actionRef = useRef();
+    const {user, updateUser} = useContext(GlobalContext);
     const columns = [
         {
             title: '用户名',
@@ -124,28 +128,24 @@ export default function Tab1() {
             ellipsis: true,
         },
     ];
-    const handleAvatarUpload = (fileObject) => {
-        clientBackendFetch.postJson('/user/update', {userUuid: user.userUuid, userAvatar: fileObject.filePath})
+    const handleAvatarUpload = useCallback((fileObject) => {
+        const data = {userUuid: user.userUuid, userAvatar: fileObject.filePath};
+        clientBackendFetch.postJson('/user/update', data)
             .then(r => {
                 if (r) {
-                    setUser({...user, userAvatar: fileObject.filePath});
+                    updateUser({action: 'update', data: data});
                     message.success("success");
                 }
             })
-    }
+    }, [updateUser, user.userUuid])
     const handleSave = useCallback((key, row) => {
         const data = {'userUuid': user.userUuid};
         data[key] = row[key];
-        editUser(data);
-    }, [user])
+        editUser(data, () => updateUser({action: 'update', data: data}));
+    }, [updateUser, user?.userUuid])
     const handleRequest = useCallback(() => {
-        return getLoginUser().then(u => {
-            if (u) {
-                setUser(u);
-                return {success: true, data: u}
-            }
-        })
-    })
+        return {success: true, data: user ? user : {}}
+    }, [user])
     return (
         <>
             <ProDescriptions

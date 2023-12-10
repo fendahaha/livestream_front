@@ -4,6 +4,7 @@ import './global.css';
 import styles from "./layout.module.css";
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
 import {getLoginUser} from "@/app/_func/common";
+import {GlobalContextManager} from "@/app/(front)/component/globalContext";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -18,14 +19,16 @@ export default async function RootLayout({children}) {
         <html lang="en">
         <body className={inter.className}>
         <StyledComponentsRegistry>
-            <div className={styles.main}>
-                <div className={styles.header}>
-                    <Header user={user}/>
+            <GlobalContextManager user={user}>
+                <div className={styles.main}>
+                    <div className={styles.header}>
+                        <Header/>
+                    </div>
+                    <div className={styles.body}>
+                        {children}
+                    </div>
                 </div>
-                <div className={styles.body}>
-                    {children}
-                </div>
-            </div>
+            </GlobalContextManager>
         </StyledComponentsRegistry>
         </body>
         </html>
