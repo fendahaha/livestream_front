@@ -22,7 +22,7 @@ export function ChatMsgs({msgs}) {
             padding: '10px 0',
         }}>
             {msgs.map(m => {
-                return <ChatMsg key={Math.random() + m} data={m}/>
+                return <ChatMsg key={m.id} data={m.data}/>
             })}
         </div>
     );

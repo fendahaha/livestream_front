@@ -7,9 +7,12 @@ export default function ChatSendButton({handSend}) {
     const msgInputRef = useRef(null);
     const send = () => {
         if (msgInputRef.current) {
-            let success = handSend(msgInputRef.current.value);
-            if (success) {
-                msgInputRef.current.value = '';
+            const text = msgInputRef.current.value.trim();
+            if (text) {
+                let success = handSend(text);
+                if (success) {
+                    msgInputRef.current.value = '';
+                }
             }
         }
     }

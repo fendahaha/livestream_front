@@ -1,6 +1,5 @@
 'use client'
 import {useContext, useMemo, useState} from "react";
-import {useRouter} from "next/navigation";
 import {Avatar, Button, Dropdown, message, Modal, Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import Login from "@/component/common/Login";
@@ -10,12 +9,10 @@ import {GlobalContext} from "@/app/(front)/component/globalContext";
 
 export default function User() {
     const [loginModalOpen, setLoginModalOpen] = useState(false);
-    const appRouterInstance = useRouter();
-    const globalContext = useContext(GlobalContext);
+    const {user, updateUser} = useContext(GlobalContext);
     const userAvatar = useMemo(() => {
         return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
     }, []);
-    const user = globalContext.user;
     return (
         <>
             {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>
@@ -33,7 +30,7 @@ export default function User() {
                 >
                     <Login onSuccess={(user) => {
                         setLoginModalOpen(false);
-                        globalContext.updateUser({action: 'replace', data: user});
+                        updateUser({action: 'replace', data: user});
                     }}/>
                 </Modal>
             </Tooltip>}
@@ -58,8 +55,8 @@ export default function User() {
                                         clientBackendFetch.post('/user/logout', null)
                                             .then(res => {
                                                 if (res.status === 200) {
+                                                    updateUser({action: 'replace', data: null});
                                                     message.success("已退出登录")
-                                                    appRouterInstance.refresh()
                                                 }
                                             })
                                     }}>退出登录</Button>

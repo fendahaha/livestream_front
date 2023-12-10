@@ -1,6 +1,6 @@
 'use client'
 import styles from './page.module.css';
-// import FlvContainer from "@/component/pl ayer/flv_container";
+import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/ChatMsgs";
 import {useCallback, useEffect, useReducer, useRef} from "react";
@@ -8,6 +8,7 @@ import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/tabs";
 import {OnlineUsers} from "@/app/(front)/room/onlineUser";
+import {v4} from "uuid";
 
 const room_id = 'room_463111343';
 const user_id = 'user_877629347';
@@ -17,8 +18,41 @@ const streamId = '';
 const test_data = ['hello', 'hi', '你好', 'adasd', 'dadad', 'efdads', 'rfda', 'tfdad', 'gfdad', '3eda', 'rfda', '3feda', 'gfd', '6yt5grfed', 'tgr', 'i8juyhtg', 'gfd', 'ygf', 'mnhgf', '23efgb', '6tf']
 const test_data2 = ['hello', 'hi', '你好'];
 
+const MessageUtil = {
+    chatMessage: 3,
+    giftMessage: 2,
+    systemMessage: 1,
+    currDate() {
+        return new Date().getTime()
+    },
+    createChatMessage(data) {
+        return {
+            id: v4(),
+            type: this.chatMessage,
+            data: data,
+            time: this.currDate()
+        }
+    },
+    createGiftMessage(data) {
+        return {
+            id: v4(),
+            type: this.giftMessage,
+            data: data,
+            time: this.currDate()
+        }
+    },
+    createSystemMessage(data) {
+        return {
+            id: v4(),
+            type: this.systemMessage,
+            data: data,
+            time: this.currDate()
+        }
+    }
+}
+
 const useStomp = (destinationTopic) => {
-    const [messages, dispatchMessages] = useReducer(
+    const [chatMessages, dispatchChatMessages] = useReducer(
         (state, action) => {
             let _new = [action, ...state];
             if (_new.length >= 200) {
@@ -26,18 +60,48 @@ const useStomp = (destinationTopic) => {
             }
             return _new
         },
-        [...test_data2],
+        [],
+        r => r
+    );
+    const [giftMessages, dispatchGiftMessages] = useReducer(
+        (state, action) => {
+            let _new = [action, ...state];
+            if (_new.length >= 200) {
+                _new = _new.slice(0, 200)
+            }
+            return _new
+        },
+        [],
+        r => r
+    );
+    const [systemMessages, dispatchSystemMessages] = useReducer(
+        (state, action) => {
+            let _new = [action, ...state];
+            if (_new.length >= 200) {
+                _new = _new.slice(0, 200)
+            }
+            return _new
+        },
+        [],
         r => r
     );
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
-    const sendMsg = useCallback((msg) => {
+    const sendMessage = useCallback((msg) => {
         if (stompClientRef.current && stompClientRef.current.connected) {
             let headers = {priority: '9'}
-            stompClientRef.current.publish({destination: destination, body: msg, headers: headers});
+            stompClientRef.current.publish({
+                destination: destinationTopic,
+                body: JSON.stringify(msg),
+                headers: headers
+            });
             return true
         }
-    });
+    }, [destinationTopic]);
+    const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg)), [sendMessage]);
+    const sendGiftMessage = useCallback((msg) => sendMessage(MessageUtil.createGiftMessage(msg)), [sendMessage]);
+    const sendSystemMessage = useCallback((msg) => sendMessage(MessageUtil.createSystemMessage(msg)), [sendMessage]);
+
     useEffect(() => {
         if (!stompClientRef.current) {
             stompClientRef.current = new Client({
@@ -69,14 +133,23 @@ const useStomp = (destinationTopic) => {
             stompClientRef.current.onConnect = function (frame) {
                 // console.log(JSON.stringify(frame));
                 stompClientRef.current.subscribe(destinationTopic, (message) => {
-                    if (danmuRef.current?.addMessage) {
-                        try {
-                            danmuRef.current.addMessage(message.body)
-                        } catch (e) {
-                            console.log(e);
+                    const messageObj = JSON.parse(message.body);
+                    if (messageObj.type === MessageUtil.chatMessage) {
+                        if (danmuRef.current?.addMessage) {
+                            try {
+                                danmuRef.current.addMessage(messageObj)
+                            } catch (e) {
+                                console.log(e);
+                            }
                         }
+                        dispatchChatMessages(messageObj)
                     }
-                    dispatchMessages(new Date().getTime() + ": " + message.body)
+                    if (messageObj.type === MessageUtil.giftMessage) {
+                        dispatchGiftMessages(messageObj)
+                    }
+                    if (messageObj.type === MessageUtil.systemMessage) {
+                        dispatchSystemMessages(messageObj)
+                    }
                 });
             }
         }
@@ -89,12 +162,12 @@ const useStomp = (destinationTopic) => {
                 stompClientRef.current = null;
             }
         }
-    }, []);
-    return [messages, sendMsg, danmuRef]
+    }, [destinationTopic]);
+    return [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage]
 }
 
 export default function Component() {
-    const [messages, sendMsg, danmuRef] = useStomp(destination);
+    const [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(destination);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
@@ -104,8 +177,7 @@ export default function Component() {
                             <span className={styles.zhubo_info_title}> 可可愛愛沒有腦袋</span>
                         </div>
                         <div className={styles.layout2_middle}>
-                            {/*<FlvContainer url={'http://localhost:8080/live/livestream.flv'}*/}
-                            {/*              style={{'width': '100%', 'height': '100%', 'border': '1px solid red'}}/>*/}
+                            <FlvContainer url={'http://localhost:8080/live/livestream.flv'}/>
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
                             </div>
@@ -122,7 +194,7 @@ export default function Component() {
                                         {
                                             key: '1',
                                             label: 'Tab 1',
-                                            children: <ChatMsgs msgs={messages}/>,
+                                            children: <ChatMsgs msgs={chatMessages}/>,
                                         },
                                         {
                                             key: '2',
@@ -135,7 +207,7 @@ export default function Component() {
                             </div>
                         </div>
                         <div className={styles.layout3_bottom}>
-                            <ChatSendButton handSend={sendMsg}/>
+                            <ChatSendButton handSend={sendChatMessage}/>
                         </div>
                     </div>
                 </div>

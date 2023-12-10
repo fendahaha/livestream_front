@@ -19,7 +19,7 @@ const FendaDanmuMessage = ({msg}, ref) => {
     _style['top'] = msg.top;
     return (
         <div style={{..._style}}>
-            {msg.text}
+            {msg.messageObj.data}
             <style jsx>{`
               @keyframes fenda-danmu-move {
                 from {
@@ -49,7 +49,7 @@ export const FendaDanmu = forwardRef(function FendaDanmu(props, ref) {
     useImperativeHandle(ref, () => {
         return {
             addMessage(m) {
-                dispatchMsg({text: m, top: getTop()})
+                dispatchMsg({messageObj: m, top: getTop()})
             }
         };
     }, []);
@@ -61,7 +61,7 @@ export const FendaDanmu = forwardRef(function FendaDanmu(props, ref) {
             overflow: 'hidden'
         }}>
             {msg.map(e => {
-                return <FendaDanmuMessage key={e} msg={e}/>
+                return <FendaDanmuMessage key={e.messageObj.id} msg={e}/>
             })}
         </div>
     )

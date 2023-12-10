@@ -14,7 +14,10 @@ export function GlobalContextManager({children, user}) {
             return {...prevState}
         }
         if (_action === 'replace') {
-            return {..._data}
+            if (_data) {
+                return {..._data}
+            }
+            return null
         }
     }, user, r => r);
     const contextValue = useMemo(() => {

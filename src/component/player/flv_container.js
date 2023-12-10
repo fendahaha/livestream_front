@@ -1,9 +1,9 @@
 'use client'
 import {useEffect, useRef} from "react";
-import Script from "next/script";
 import flv from "flv.js";
+import {message} from "antd";
 
-export default function FlvContainer({url, style}) {
+export default function FlvContainer({children, url}) {
     const videoRef = useRef(null);
     useEffect(() => {
         if (flv.isSupported()) {
@@ -11,9 +11,16 @@ export default function FlvContainer({url, style}) {
                 type: 'flv',
                 url: url,
                 isLive: true,
-                enableStashBuffer: false
+                enableStashBuffer: false,
+                // withCredentials: true,
+                cors: true,
             });
             flvPlayer.attachMediaElement(videoRef.current);
+            flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo) => {
+                console.log(errorType, errorInfo);
+                // alert("主播貌似下播了")
+                message.warning("主播貌似下播了", 20)
+            });
             flvPlayer.load();
             flvPlayer.play();
 
@@ -24,8 +31,12 @@ export default function FlvContainer({url, style}) {
 
     }, [url]);
     return (
-        <div style={style}>
-            <video ref={videoRef} controls style={{width: '100%', 'height': '100%'}} muted autoPlay/>
+        <div style={{
+            width: '100%', height: '100%', border: '1px solid red', position: 'relative',
+        }}>
+            <video ref={videoRef} controls muted autoPlay style={{
+                width: '100%', height: '100%',
+            }}/>
         </div>
     )
 }
