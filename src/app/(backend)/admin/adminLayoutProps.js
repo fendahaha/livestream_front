@@ -27,6 +27,16 @@ const defaultProps = {
                 ]
             },
             {
+                path: '/admin/gift',
+                name: 'gift',
+                icon: <SmileFilled/>,
+            },
+            {
+                path: '/admin/anchor',
+                name: 'anchor',
+                icon: <SmileFilled/>,
+            },
+            {
                 path: '/admin/user',
                 name: 'user',
                 icon: <SmileFilled/>,
