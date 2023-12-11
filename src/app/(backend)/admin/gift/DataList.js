@@ -68,34 +68,29 @@ const EditableCell = ({editing, dataIndex, title, inputType, record, index, chil
         </td>
     );
 };
-const DataList = ({searchData}) => {
+const DataList = ({searchData, pagination, setPagination}) => {
     const [tableLoading, setTableLoading] = useState(true);
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-    const [tableParams, setTableParams] = useState({
-        pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 0,
-        },
-    });
+    alert(1)
     useEffect(() => {
         const params = {
-            pageNum: tableParams.pagination.current,
-            pageSize: tableParams.pagination.pageSize,
+            pageNum: pagination.current,
+            pageSize: pagination.pageSize,
             ...searchData,
         };
 
         get_data(params).then(r => {
             if (r) {
+                alert(2)
                 const {list, total} = r;
                 setData(list);
-                setTableParams({pagination: {...tableParams.pagination, total}});
+                setPagination({...pagination, total});
                 setTableLoading(false);
             }
         })
-    }, [searchData, JSON.stringify(tableParams.pagination)]);
+    }, [searchData, JSON.stringify(pagination)]);
     const isEditing = (record) => record.id === editingKey;
     const edit = (record) => {
         form.setFieldsValue({...record});
@@ -229,18 +224,12 @@ const DataList = ({searchData}) => {
                     showSizeChanger: true,
                     pageSizeOptions: [10, 20, 50, 100],
                     showTotal: (total, range) => `Total ${total} items`,
-                    ...tableParams.pagination,
+                    ...pagination,
                 }}
-                onChange={(pagination, filters, sorter) => {
-                    if (pagination?.current) {
-                        const {current, pageSize, total} = pagination;
-                        // setTableLoading(true);
-                        // get_data({pageNum: current, pageSize}).then(r => {
-                        //     const {list, pagination} = r;
-                        //     setData(list);
-                        //     setTableParams({pagination});
-                        // }).finally(() => setTableLoading(false))
-                        setTableParams({pagination: {...tableParams.pagination, current, pageSize, total}});
+                onChange={(_pagination, filters, sorter) => {
+                    if (_pagination?.current) {
+                        const {current, pageSize, total} = _pagination;
+                        setPagination({..._pagination})
                     }
                 }}
             />

@@ -4,76 +4,28 @@ import {Button, Drawer, Form, Input, InputNumber} from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
 import Create from "@/app/(backend)/admin/gift/create";
 import DataList from "@/app/(backend)/admin/gift/DataList";
+import SearchForm from "@/app/(backend)/admin/gift/SearchForm";
 
-
-export function CreateButton({buttonText, children}) {
-    const [drawerOpen, setDrawerOpen] = useState(false)
-    return (
-        <>
-            <Button type="primary" key="button" icon={<PlusOutlined/>}
-                    onClick={() => setDrawerOpen(true)}>{buttonText}</Button>
-            <Drawer title="Basic Drawer" placement="right" destroyOnClose={true} size={'large'}
-                    onClose={() => setDrawerOpen(false)} open={drawerOpen}>
-                {children}
-            </Drawer>
-        </>
-    );
-}
-
-export const SearchForm = ({setSearchData}) => {
-    const [form] = Form.useForm();
-    const onFinish = (values) => {
-        setSearchData(values)
-        console.log('Finish:', values);
-    };
-    return (
-        <Form form={form} name="horizontal" layout="inline" onFinish={onFinish}>
-            <Form.Item name="giftName">
-                <Input placeholder="giftName"/>
-            </Form.Item>
-            <Form.Item
-                name="giftValue"
-                rules={[
-                    {
-                        type: 'number',
-                        message: 'must be number!',
-                    },
-                ]}
-            >
-                <InputNumber placeholder='giftValue'/>
-            </Form.Item>
-            <Form.Item shouldUpdate>
-                {() => (
-                    <Button type="primary" htmlType="submit"
-                            disabled={!!form.getFieldsError().filter(({errors}) => errors.length).length}
-                    >
-                        Search
-                    </Button>
-                )}
-            </Form.Item>
-            <Form.Item>
-                <Button onClick={() => form.resetFields()}>Reset</Button>
-            </Form.Item>
-        </Form>
-    )
-}
-
-const App = () => {
+export default function Page() {
     const [searchData, setSearchData] = useState({});
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
         total: 0,
     });
+    const [drawerOpen, setDrawerOpen] = useState(false);
     return (
         <>
             <div style={{padding: '0 10px', marginBottom: 20}}>
-                <SearchForm setSearchData={setSearchData}/>
+                <SearchForm setSearchData={setSearchData} setPagination={setPagination}/>
             </div>
             <div style={{padding: '0 10px', marginBottom: 10}}>
-                <CreateButton buttonText={'新建'}>
-                    <Create></Create>
-                </CreateButton>
+                <Button type="primary" key="button" icon={<PlusOutlined/>}
+                        onClick={() => setDrawerOpen(true)}>新建</Button>
+                <Drawer title="Basic Drawer" placement="right" destroyOnClose={true} size={'large'}
+                        onClose={() => setDrawerOpen(false)} open={drawerOpen}>
+                    <Create/>
+                </Drawer>
             </div>
             <div style={{padding: '0 10px', marginBottom: 10}}>
                 <DataList searchData={searchData} pagination={pagination} setPagination={setPagination}/>
@@ -81,4 +33,3 @@ const App = () => {
         </>
     );
 };
-export default App;
