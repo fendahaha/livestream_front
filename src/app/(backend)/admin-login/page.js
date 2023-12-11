@@ -29,7 +29,7 @@ export default function Login() {
             'label': 'account',
             'children': <>
                 <ProFormText
-                    name="username"
+                    name="userName"
                     fieldProps={{
                         size: 'large',
                         prefix: <UserOutlined className={'prefixIcon'}/>,
@@ -43,7 +43,7 @@ export default function Login() {
                     ]}
                 />
                 <ProFormText.Password
-                    name="password"
+                    name="userPassword"
                     fieldProps={{
                         size: 'large',
                         prefix: <LockOutlined className={'prefixIcon'}/>,
@@ -142,18 +142,10 @@ export default function Login() {
         },
     ];
 
-    const iconStyles = {
-        marginInlineStart: '16px',
-        color: setAlpha(token.colorTextBase, 0.2),
-        fontSize: '24px',
-        verticalAlign: 'middle',
-        cursor: 'pointer',
-    };
-
     const finish = (data) => {
-        clientBackendFetch.postJson("/user/login", {userName: data.username, userPassword: data.password})
+        clientBackendFetch.postJson("/user/login", data)
             .then(d => {
-                if (d && d.data === 'success') {
+                if (d) {
                     window.location = '/admin';
                 } else {
                     message.error("用户名或密码错误")
