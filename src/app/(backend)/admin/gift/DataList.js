@@ -2,23 +2,17 @@ import {clientBackendFetch} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {DatePicker, Form, Input, InputNumber, message, Popconfirm, Table, Typography} from "antd";
-import React, {useContext, useEffect, useState} from "react";
-import {SearchFormContext} from "@/app/(backend)/admin/gift/page";
+import React, {useEffect, useState} from "react";
 
 const get_data = (params) => {
     return clientBackendFetch.postJson('/gift/list', params).then(r => {
         if (r?.data) {
-            const {list, pageNum, pageSize, total} = r.data;
-            const pagination = {
-                current: pageNum,
-                pageSize: pageSize,
-                total: total,
-            }
+            dayjs.extend(customParseFormat);
+            const {list, total} = r.data;
             let d = list.map(r => {
-                dayjs.extend(customParseFormat)
                 return {...r, giftCreateAt: dayjs(r['giftCreateAt'], "YYYY-MM-DD HH:mm:ss")}
             })
-            return {list: d, pagination}
+            return {list: d, total}
         }
     })
 }
@@ -74,8 +68,7 @@ const EditableCell = ({editing, dataIndex, title, inputType, record, index, chil
         </td>
     );
 };
-const DataList = () => {
-    const {searchData, setSearchData} = useContext(SearchFormContext);
+const DataList = ({searchData}) => {
     const [tableLoading, setTableLoading] = useState(true);
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
@@ -93,14 +86,16 @@ const DataList = () => {
             pageSize: tableParams.pagination.pageSize,
             ...searchData,
         };
+
         get_data(params).then(r => {
-            console.log(1);
-            const {list, pagination} = r;
-            setData(list);
-            setTableParams({pagination});
-            setTableLoading(false);
+            if (r) {
+                const {list, total} = r;
+                setData(list);
+                setTableParams({pagination: {...tableParams.pagination, total}});
+                setTableLoading(false);
+            }
         })
-    }, [searchData]);
+    }, [searchData, JSON.stringify(tableParams.pagination)]);
     const isEditing = (record) => record.id === editingKey;
     const edit = (record) => {
         form.setFieldsValue({...record});
@@ -239,13 +234,13 @@ const DataList = () => {
                 onChange={(pagination, filters, sorter) => {
                     if (pagination?.current) {
                         const {current, pageSize, total} = pagination;
-                        setTableLoading(true);
-                        get_data({pageNum: current, pageSize}).then(r => {
-                            const {list, pagination} = r;
-                            setData(list);
-                            setTableParams({pagination});
-                        }).finally(() => setTableLoading(false))
-                        // setTableParams({pagination: {...tableParams.pagination, current, pageSize, total}})
+                        // setTableLoading(true);
+                        // get_data({pageNum: current, pageSize}).then(r => {
+                        //     const {list, pagination} = r;
+                        //     setData(list);
+                        //     setTableParams({pagination});
+                        // }).finally(() => setTableLoading(false))
+                        setTableParams({pagination: {...tableParams.pagination, current, pageSize, total}});
                     }
                 }}
             />

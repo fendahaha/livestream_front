@@ -16,19 +16,18 @@ import {
     setAlpha,
 } from '@ant-design/pro-components';
 import {Space, Tabs, message, theme, App} from 'antd';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {clientBackendFetch} from "@/util/requestUtil";
 
 export default function Login() {
     const {token} = theme.useToken();
-    const [loginType, setLoginType] = useState('phone');
-
     const items = [
         {
             'key': '1',
             'label': 'account',
             'children': <>
                 <ProFormText
+                    autoFocus
                     name="userName"
                     fieldProps={{
                         size: 'large',

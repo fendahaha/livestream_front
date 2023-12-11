@@ -1,6 +1,6 @@
 'use client'
-import React, {createContext, useContext, useEffect, useMemo, useState} from 'react';
-import {Button, Drawer, Form, Input} from 'antd';
+import React, {useState} from 'react';
+import {Button, Drawer, Form, Input, InputNumber} from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
 import Create from "@/app/(backend)/admin/gift/create";
 import DataList from "@/app/(backend)/admin/gift/DataList";
@@ -20,65 +20,39 @@ export function CreateButton({buttonText, children}) {
     );
 }
 
-export const SearchFormContext = createContext({
-    searchData: {}, setSearchData: (r) => {
-    }
-});
-export const SearchForm = () => {
-    const {searchData, setSearchData} = useContext(SearchFormContext);
-    const [form1] = Form.useForm();
-    const [clientReady, setClientReady] = useState(false);
-    // To disable submit button at the beginning.
-    useEffect(() => {
-        setClientReady(true);
-    }, []);
+export const SearchForm = ({setSearchData}) => {
+    const [form] = Form.useForm();
     const onFinish = (values) => {
         setSearchData(values)
         console.log('Finish:', values);
     };
     return (
-        <Form form={form1} name="horizontal" layout="inline" onFinish={onFinish}>
-            <Form.Item
-                name="username"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your username!',
-                    },
-                ]}
-            >
-                <Input placeholder="Username"/>
+        <Form form={form} name="horizontal" layout="inline" onFinish={onFinish}>
+            <Form.Item name="giftName">
+                <Input placeholder="giftName"/>
             </Form.Item>
             <Form.Item
-                name="password"
+                name="giftValue"
                 rules={[
                     {
-                        required: true,
-                        message: 'Please input your password!',
+                        type: 'number',
+                        message: 'must be number!',
                     },
                 ]}
             >
-                <Input type="password" placeholder="Password"/>
+                <InputNumber placeholder='giftValue'/>
             </Form.Item>
             <Form.Item shouldUpdate>
                 {() => (
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        disabled={
-                            !clientReady ||
-                            !form1.isFieldsTouched(true) ||
-                            !!form1.getFieldsError().filter(({errors}) => errors.length).length
-                        }
+                    <Button type="primary" htmlType="submit"
+                            disabled={!!form.getFieldsError().filter(({errors}) => errors.length).length}
                     >
                         Search
                     </Button>
                 )}
             </Form.Item>
             <Form.Item>
-                <Button onClick={() => {
-                    form1.resetFields()
-                }}>Reset</Button>
+                <Button onClick={() => form.resetFields()}>Reset</Button>
             </Form.Item>
         </Form>
     )
@@ -86,24 +60,24 @@ export const SearchForm = () => {
 
 const App = () => {
     const [searchData, setSearchData] = useState({});
-    const contextValue = useMemo(()=>{
-        return {searchData, setSearchData}
-    },[searchData]);
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+    });
     return (
         <>
-            <SearchFormContext.Provider value={contextValue}>
-                <div style={{padding: '0 10px', marginBottom: 20}}>
-                    <SearchForm/>
-                </div>
-                <div style={{padding: '0 10px', marginBottom: 10}}>
-                    <CreateButton buttonText={'新建'}>
-                        <Create></Create>
-                    </CreateButton>
-                </div>
-                <div style={{padding: '0 10px', marginBottom: 10}}>
-                    <DataList/>
-                </div>
-            </SearchFormContext.Provider>
+            <div style={{padding: '0 10px', marginBottom: 20}}>
+                <SearchForm setSearchData={setSearchData}/>
+            </div>
+            <div style={{padding: '0 10px', marginBottom: 10}}>
+                <CreateButton buttonText={'新建'}>
+                    <Create></Create>
+                </CreateButton>
+            </div>
+            <div style={{padding: '0 10px', marginBottom: 10}}>
+                <DataList searchData={searchData} pagination={pagination} setPagination={setPagination}/>
+            </div>
         </>
     );
 };
