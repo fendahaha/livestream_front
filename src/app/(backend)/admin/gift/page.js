@@ -28,7 +28,6 @@ export default function Page() {
                 <CreateButton/>
                 <span style={{
                     paddingRight: '10px',
-                    border: '1px solid red',
                     fontSize: '22px',
                     lineHeight: '22px',
                 }}>

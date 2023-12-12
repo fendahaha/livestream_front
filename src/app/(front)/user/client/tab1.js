@@ -129,7 +129,7 @@ export default function Tab1() {
         },
     ];
     const handleAvatarUpload = useCallback((fileObject) => {
-        const data = {userUuid: user.userUuid, userAvatar: fileObject.filePath};
+        const data = {userUuid: user?.userUuid, userAvatar: fileObject.filePath};
         clientBackendFetch.postJson('/user/update', data)
             .then(r => {
                 if (r) {
@@ -137,7 +137,7 @@ export default function Tab1() {
                     message.success("success");
                 }
             })
-    }, [updateUser, user.userUuid])
+    }, [updateUser, user?.userUuid])
     const handleSave = useCallback((key, row) => {
         const data = {'userUuid': user.userUuid};
         data[key] = row[key];
