@@ -37,6 +37,11 @@ const defaultProps = {
                 icon: <SmileFilled/>,
             },
             {
+                path: '/admin/gift_send_record',
+                name: 'giftSendRecord',
+                icon: <SmileFilled/>,
+            },
+            {
                 path: '/admin/user',
                 name: 'user',
                 icon: <SmileFilled/>,

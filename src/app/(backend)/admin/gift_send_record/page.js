@@ -1,10 +1,10 @@
 'use client'
 import React, {useState} from 'react';
-import DataList from "@/app/(backend)/admin/anchor/DataList";
-import SearchForm from "@/app/(backend)/admin/anchor/SearchForm";
+import {CreateButton} from "@/app/(backend)/admin/gift_send_record/create";
+import DataList from "@/app/(backend)/admin/gift_send_record/DataList";
+import SearchForm from "@/app/(backend)/admin/gift_send_record/SearchForm";
 import {ReloadOutlined} from "@ant-design/icons";
 import {Tooltip} from "antd";
-import {CreateButton} from "@/app/(backend)/admin/anchor/create";
 
 export default function Page() {
     const [searchData, setSearchData] = useState({});
