@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Form, Input, InputNumber, message, Space, Tag} from 'antd';
+import {Button, Drawer, Form, Input, InputNumber, message, Space, Tag} from 'antd';
 import {clientBackendFetch} from "@/util/requestUtil";
+import {PlusOutlined} from "@ant-design/icons";
 
 
 const SubmitButton = ({form, loading}) => {
@@ -121,4 +122,19 @@ const Create = () => {
         </Form>
     );
 };
+
+export function CreateButton() {
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    return (
+        <span>
+            <Button type="primary" key="button" icon={<PlusOutlined/>}
+                    onClick={() => setDrawerOpen(true)}>New</Button>
+            <Drawer title="Basic Drawer" placement="right" destroyOnClose={true} size={'large'}
+                    onClose={() => setDrawerOpen(false)} open={drawerOpen}>
+                <Create/>
+            </Drawer>
+        </span>
+    );
+}
+
 export default Create;

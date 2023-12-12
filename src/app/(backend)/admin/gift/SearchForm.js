@@ -10,7 +10,6 @@ export default function SearchForm({setSearchData, setPagination}) {
             pageSize: 10,
             total: 0,
         });
-        console.log('Finish:', values);
     };
     return (
         <Form form={form} name="horizontal" layout="inline" onFinish={onFinish}>

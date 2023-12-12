@@ -4,6 +4,42 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {DatePicker, Form, Input, InputNumber, message, Popconfirm, Table, Typography} from "antd";
 import React, {useEffect, useState} from "react";
 
+
+const initialColumns = [
+    {
+        title: 'giftName',
+        dataIndex: 'giftName',
+        ellipsis: true,
+        editable: true,
+        editRules: [{type: 'string', min: 1, message: '最少1个字符'}],
+        editInputType: 'text',
+    },
+    {
+        title: 'giftValue',
+        dataIndex: 'giftValue',
+        editable: true,
+        editInputType: 'number',
+    },
+    {
+        title: 'giftImage',
+        dataIndex: 'giftImage',
+        editable: true,
+        editInputType: 'text',
+    },
+    {
+        title: 'giftOrder',
+        dataIndex: 'giftOrder',
+        editable: true,
+        editInputType: 'number',
+    },
+    {
+        title: 'giftCreateAt',
+        dataIndex: 'giftCreateAt',
+        editable: false,
+        editInputType: 'date',
+        render: (_, record) => _.format('YYYY-MM-DD HH:mm:ss')
+    },
+];
 const get_data = (params) => {
     return clientBackendFetch.postJson('/gift/list', params).then(r => {
         if (r?.data) {
@@ -38,33 +74,22 @@ const delete_data = (record, successCallback) => {
         }
     })
 }
-const EditableCell = ({editing, dataIndex, title, inputType, record, index, children, ...restProps}) => {
+const EditableCell = ({editRules, editing, dataIndex, title, editInputType, record, index, children, ...restProps}) => {
+    let initialRules = [{required: true, message: `Please Input ${title}!`},];
+    let rules = editRules ? editRules : initialRules;
     let inputNode = <Input/>;
-    if (inputType === 'number') {
-        inputNode = <InputNumber/>
+    if (editInputType === 'number') {
+        inputNode = <InputNumber style={{width: '100%'}}/>
     }
-    if (inputType === 'date') {
+    if (editInputType === 'date') {
         inputNode = <DatePicker format={'YYYY-MM-DD HH:mm:ss'}/>
     }
-    let inputItem = <Form.Item
-        name={dataIndex}
-        style={{margin: 0,}}
-        rules={[
-            {
-                required: true,
-                message: `Please Input ${title}!`,
-            },
-        ]}
-    >
+    let inputItem = <Form.Item name={dataIndex} style={{margin: 0,}} rules={rules}>
         {inputNode}
     </Form.Item>
     return (
         <td {...restProps}>
-            {editing ? (
-                inputItem
-            ) : (
-                children
-            )}
+            {editing ? (inputItem) : (children)}
         </td>
     );
 };
@@ -73,7 +98,6 @@ const DataList = ({searchData, pagination, setPagination}) => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-    alert(1)
     useEffect(() => {
         const params = {
             pageNum: pagination.current,
@@ -83,7 +107,6 @@ const DataList = ({searchData, pagination, setPagination}) => {
 
         get_data(params).then(r => {
             if (r) {
-                alert(2)
                 const {list, total} = r;
                 setData(list);
                 setPagination({...pagination, total});
@@ -129,38 +152,7 @@ const DataList = ({searchData, pagination, setPagination}) => {
         }
     };
     const columns = [
-        {
-            title: 'giftName',
-            dataIndex: 'giftName',
-            editable: true,
-            inputType: 'text',
-            ellipsis: true,
-        },
-        {
-            title: 'giftValue',
-            dataIndex: 'giftValue',
-            editable: true,
-            inputType: 'number',
-        },
-        {
-            title: 'giftImage',
-            dataIndex: 'giftImage',
-            editable: true,
-            inputType: 'text',
-        },
-        {
-            title: 'giftOrder',
-            dataIndex: 'giftOrder',
-            editable: true,
-            inputType: 'number',
-        },
-        {
-            title: 'giftCreateAt',
-            dataIndex: 'giftCreateAt',
-            editable: false,
-            inputType: 'date',
-            render: (_, record) => _.format('YYYY-MM-DD HH:mm:ss')
-        },
+        ...initialColumns,
         {
             title: 'operation',
             dataIndex: 'operation',
@@ -197,10 +189,11 @@ const DataList = ({searchData, pagination, setPagination}) => {
             ...col,
             onCell: (record) => ({
                 record,
-                inputType: col.inputType,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
+                editInputType: col.editInputType,
+                editRules: col.editRules,
             }),
         };
     });
