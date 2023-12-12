@@ -48,7 +48,7 @@ const Create = () => {
             if (r) {
                 message.success("success");
             } else {
-                message.success("fail");
+                message.error("fail");
             }
         }).finally(() => {
             setLoading(false);
