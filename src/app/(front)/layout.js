@@ -3,8 +3,8 @@ import Header from "@/component/common/Header";
 import './global.css';
 import styles from "./layout.module.css";
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
-import {getLoginUser} from "@/app/_func/common";
 import {GlobalContextManager} from "@/app/(front)/component/globalContext";
+import {getLoginUser} from "@/app/_func/server";
 
 const inter = Inter({subsets: ['latin']})
 

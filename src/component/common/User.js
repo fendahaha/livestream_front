@@ -4,8 +4,9 @@ import {Avatar, Button, Dropdown, message, Modal, Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import Login from "@/component/common/Login";
 import Link from "next/link";
-import {clientBackendFetch} from "@/util/requestUtil";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {useRouter} from "next/navigation";
+import {logout} from "@/app/_func/client";
 
 export default function User() {
     const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -13,6 +14,7 @@ export default function User() {
     const userAvatar = useMemo(() => {
         return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
     }, []);
+    let router = useRouter();
     return (
         <>
             {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>
@@ -52,13 +54,11 @@ export default function User() {
                                 key: '2',
                                 label: (
                                     <Button danger onClick={() => {
-                                        clientBackendFetch.post('/user/logout', null)
-                                            .then(res => {
-                                                if (res.status === 200) {
-                                                    updateUser({action: 'replace', data: null});
-                                                    message.success("已退出登录")
-                                                }
-                                            })
+                                        logout(() => {
+                                            updateUser({action: 'replace', data: null});
+                                            message.success("已退出登录")
+                                            router.refresh();
+                                        });
                                     }}>退出登录</Button>
                                 )
                             }

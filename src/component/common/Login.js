@@ -174,8 +174,8 @@ export default function Login({onSuccess}) {
             clientBackendFetch.postJson("/user/login", data)
                 .then(d => {
                     if (d && d.data) {
+                        message.success("登录成功");
                         if (onSuccess) {
-                            message.success("登录成功");
                             onSuccess(d.data);
                         }
                     } else {
@@ -183,7 +183,7 @@ export default function Login({onSuccess}) {
                     }
                 })
         } else if (activeTab === '2') {
-            clientBackendFetch.post("/user/register", data).then(res => {
+            clientBackendFetch.post("/user/registClient", data).then(res => {
                 if (res.status === 200) {
                     message.success("注册成功");
                 } else {

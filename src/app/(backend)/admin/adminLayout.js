@@ -1,13 +1,15 @@
 'use client'
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import defaultProps from "@/app/(backend)/admin/adminLayoutProps";
-import {App, Dropdown} from "antd";
+import {App, Dropdown, message} from "antd";
 import {GithubFilled, InfoCircleFilled, LogoutOutlined, QuestionCircleFilled} from "@ant-design/icons";
 import {PageContainer, ProCard, ProLayout} from "@ant-design/pro-components";
 import Link from "next/link";
+import {logout} from "@/app/_func/client";
 
 export default function AdminLayout({children}) {
-    let s = usePathname();
+    const s = usePathname();
+    const router = useRouter();
     const props = {
         siderWidth: 216,
         avatarProps: {
@@ -18,16 +20,15 @@ export default function AdminLayout({children}) {
                 return (
                     <Dropdown
                         menu={{
-                            items: [
-                                {
-                                    key: 'logout',
-                                    icon: <LogoutOutlined/>,
-                                    label: '退出登录',
-                                    onClick: () => {
-                                        console.log(1);
-                                    }
+                            items: [{
+                                key: 'logout', icon: <LogoutOutlined/>, label: '退出登录',
+                                onClick: () => {
+                                    logout(() => {
+                                        message.success("已退出登录");
+                                        router.refresh();
+                                    });
                                 },
-                            ],
+                            }]
                         }}
                     >
                         {dom}

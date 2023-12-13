@@ -63,12 +63,12 @@ const update_data = async (item) => {
     })
 }
 const delete_data = (record, successCallback) => {
-    clientBackendFetch.postJson('/anchor/delete', {id: record.id}).then(r => {
+    clientBackendFetch.formPostJson('/anchor/delete', {id: record.id}).then(r => {
         if (r?.data) {
+            message.success("success")
             if (successCallback) {
                 successCallback(record)
             }
-            message.success("success")
         } else {
             message.error("fail")
         }

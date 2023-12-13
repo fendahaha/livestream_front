@@ -1,17 +1,26 @@
 import {NextResponse} from 'next/server'
-import {backendUrlBase, RequestUtil} from "@/util/requestUtil";
+import {backendUrlBase} from "@/util/requestUtil";
 
 
-async function is_login(request) {
+async function get_login_user(request) {
     const JSESSIONID = request.cookies.get('JSESSIONID');
-    const response = await fetch(`${backendUrlBase}/user/is_login`, {
+    const response = await fetch(`${backendUrlBase}/user/getLoginUser`, {
         method: 'POST',
         headers: {
             cookie: `${JSESSIONID.name}=${JSESSIONID.value}`
         },
     });
-    const result = await response.json();
-    return result.data
+    if (response.status === 200) {
+        const user = (await response.json()).data;
+        return user
+    }
+    return null
+}
+
+const userType = {
+    'admin': 1,
+    'anchor': 2,
+    'client': 3,
 }
 
 export async function middleware(request) {
@@ -44,8 +53,8 @@ export async function middleware(request) {
 
     if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
         try {
-            const login_status = await is_login(request);
-            if (!login_status) {
+            const user = await get_login_user(request);
+            if (!user || user['userType'] !== userType.admin) {
                 return NextResponse.redirect(`${origin}/admin-login`)
             }
         } catch (e) {
@@ -54,8 +63,8 @@ export async function middleware(request) {
     }
     if (pathname.startsWith("/user")) {
         try {
-            const login_status = await is_login(request);
-            if (!login_status) {
+            const user = await get_login_user(request);
+            if (!user || user['userType'] === userType.admin) {
                 return NextResponse.redirect(`${origin}/login`)
             }
         } catch (e) {

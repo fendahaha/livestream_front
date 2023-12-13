@@ -15,6 +15,7 @@
     "@emotion/css": "^11.11.2",
     "@stomp/stompjs": "^7.0.0",
     "antd": "^5.11.5",
+    "client-only": "^0.0.1",
     "dayjs": "^1.11.10",
     "flv.js": "^1.6.2",
     "hls.js": "^1.4.12",

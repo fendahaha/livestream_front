@@ -1,4 +1,8 @@
-function post(url, data, headers = {}) {
+function post(url, data = null, headers = {}) {
+    let _data = null;
+    if (data) {
+        _data = JSON.stringify(data);
+    }
     return fetch(url, {
         method: 'POST',
         headers: {
@@ -8,7 +12,28 @@ function post(url, data, headers = {}) {
         redirect: "follow",
         credentials: 'include',
         mode: "cors",
-        body: data !== null ? JSON.stringify(data) : null,
+        body: _data,
+    })
+}
+
+function formPost(url, data = null, headers = {}) {
+    let formData = null;
+    if (data) {
+        formData = new FormData();
+        for (let key in data) {
+            formData.append(key, data[key])
+        }
+    }
+
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            ...headers
+        },
+        redirect: "follow",
+        credentials: 'include',
+        mode: "cors",
+        body: formData,
     })
 }
 
@@ -29,6 +54,14 @@ function get(url, data, headers = {}) {
 function postJson(url, data, headers = {}) {
     return post(url, data, headers).then(res => {
         if (res.status === 200) {
+            return res.json()
+        }
+    })
+}
+
+function formPostJson(url, data, headers = {}) {
+    return formPost(url, data, headers).then(res => {
+        if (res.ok) {
             return res.json()
         }
     })
@@ -57,6 +90,9 @@ export const clientBackendFetch = {
     },
     getJson(url, data, headers = {}) {
         return getJson(this.prefix + url, data, headers)
+    },
+    formPostJson(url, data, headers = {}){
+        return formPostJson(this.prefix + url, data, headers)
     }
 }
 export const nodeBackendFetch = {

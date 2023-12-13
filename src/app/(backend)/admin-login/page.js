@@ -142,9 +142,9 @@ export default function Login() {
     ];
 
     const finish = (data) => {
-        clientBackendFetch.postJson("/user/login", data)
+        clientBackendFetch.postJson("/user/adminLogin", data)
             .then(d => {
-                if (d) {
+                if (d && d.data) {
                     window.location = '/admin';
                 } else {
                     message.error("用户名或密码错误")
