@@ -103,5 +103,5 @@ export const nodeBackendFetch = {
         return post(backendUrlBase + url, data, headers)
     },
 }
-export const imagePrefix = "http://localhost:8090/resource";
-export const backendUrlBase = `http://localhost:8090`;
+export const imagePrefix = "http://10.120.11.15:8090/resource";
+export const backendUrlBase = `http://10.120.11.15:8090`;

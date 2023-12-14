@@ -167,8 +167,8 @@ const useStomp = (destinationTopic) => {
 }
 
 export default function Component() {
-    let url="http://localhost:8080/live/livestream.flv";
-    // let url = "http://localhost:8080/live/377b6dda-a426-4d28-9226-a1e400ff4d48.flv?time=1702536956788&token=OvcV7VO0n62175dzTNoyvnm6Kq%2F6yltKo8fduT1LA06m%2BrwF9QgkP4D9tzpdP2zAn%2F0pvRbsG58q5%2BwxczA16ZxJD2la0m2%2Ba7UIyZ6B9NcpJeE1zXzUmA300qesHuxe";
+    // let url="http://localhost:8080/live/livestream.flv";
+    let url = "http://localhost:8080/live/8653937c5b654597b8a19c13ce0b7352.flv";
     const [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(destination);
     return (
         <div className={styles.container}>
