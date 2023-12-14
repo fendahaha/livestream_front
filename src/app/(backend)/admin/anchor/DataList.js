@@ -3,9 +3,35 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {DatePicker, Form, Input, InputNumber, message, Popconfirm, Table, Typography} from "antd";
 import React, {useEffect, useState} from "react";
-
+import {MyCopyableToolTip} from "@/component/global/common";
 
 const initialColumns = [
+    {
+        title: 'user.userName',
+        dataIndex: 'user.userName',
+        render: (_, record) => record?.user?.userName,
+    },
+    {
+        title: 'user.userDisplayName',
+        dataIndex: 'user.userDisplayName',
+        render: (_, record) => record?.user?.userDisplayName,
+    },
+    {
+        title: 'room.streamType',
+        dataIndex: 'room.streamType',
+        render: (_, record) => record?.room?.streamType,
+    },
+    {
+        title: 'room.streamAddress',
+        dataIndex: 'room.streamAddress',
+        ellipsis: true,
+        render: (_, record) => {
+            let s = `rtmp://localhost${record?.room?.streamAddress}?${record?.room?.streamParam}`;
+            return <MyCopyableToolTip text={s}>
+                <div>{s}</div>
+            </MyCopyableToolTip>
+        },
+    },
     {
         title: 'anchorSanwei',
         dataIndex: 'anchorSanwei',
