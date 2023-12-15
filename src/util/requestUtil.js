@@ -115,7 +115,9 @@ export const nodeBackendFetch = {
         return formPostJson(backendUrlBase + url, data, headers)
     }
 }
-export const imagePrefix = "http://10.120.11.15:8090/resource";
-export const backendUrlBase = `http://10.120.11.15:8090`;
-export const wsPrefix = "ws://10.120.11.15:8090/chat";
+const backendIp = "192.168.1.99";
+const backendPort = "8090";
+export const imagePrefix = `http://${backendIp}:${backendPort}/resource`;
+export const backendUrlBase = `http://${backendIp}:${backendPort}`;
+export const wsPrefix = `ws://${backendIp}:${backendPort}/chat`;
 export const streamPrefix = "http://localhost:8080";
