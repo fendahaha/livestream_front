@@ -13,6 +13,7 @@ function post(url, data = null, headers = {}) {
         credentials: 'include',
         mode: "cors",
         body: _data,
+        cache: 'no-store',
     })
 }
 
@@ -34,6 +35,7 @@ function formPost(url, data = null, headers = {}) {
         credentials: 'include',
         mode: "cors",
         body: formData,
+        cache: 'no-store',
     })
 }
 
@@ -48,6 +50,7 @@ function get(url, data, headers = {}) {
         headers: {
             ...headers
         },
+        cache: 'no-store',
     })
 }
 
@@ -79,29 +82,40 @@ export const RequestUtil = {get, post, postJson, getJson}
 
 export const clientBackendFetch = {
     prefix: '/backend',
-    get(url, data, headers = {}) {
+    get(url, data = null, headers = {}) {
         return get(this.prefix + url, data, headers)
     },
-    post(url, data, headers = {}) {
+    post(url, data = null, headers = {}) {
         return post(this.prefix + url, data, headers)
     },
-    postJson(url, data, headers = {}) {
+    postJson(url, data = null, headers = {}) {
         return postJson(this.prefix + url, data, headers)
     },
-    getJson(url, data, headers = {}) {
+    getJson(url, data = null, headers = {}) {
         return getJson(this.prefix + url, data, headers)
     },
-    formPostJson(url, data, headers = {}){
+    formPostJson(url, data = null, headers = {}) {
         return formPostJson(this.prefix + url, data, headers)
     }
 }
 export const nodeBackendFetch = {
-    get(url, data, headers = {}) {
+    get(url, data = null, headers = {}) {
         return get(backendUrlBase + url, data, headers)
     },
-    post(url, data, headers = {}) {
+    post(url, data = null, headers = {}) {
         return post(backendUrlBase + url, data, headers)
     },
+    postJson(url, data = null, headers = {}) {
+        return postJson(backendUrlBase + url, data, headers)
+    },
+    getJson(url, data = null, headers = {}) {
+        return getJson(backendUrlBase + url, data, headers)
+    },
+    formPostJson(url, data = null, headers = {}) {
+        return formPostJson(backendUrlBase + url, data, headers)
+    }
 }
 export const imagePrefix = "http://10.120.11.15:8090/resource";
 export const backendUrlBase = `http://10.120.11.15:8090`;
+export const wsPrefix = "ws://10.120.11.15:8090/chat";
+export const streamPrefix = "http://localhost:8080";

@@ -1,22 +1,16 @@
 'use client'
-import styles from './page.module.css';
+import styles from './room.module.css';
 import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
-import {ChatMsgs} from "@/component/chat/ChatMsgs";
-import {useCallback, useEffect, useReducer, useRef} from "react";
+import {ChatMsgs} from "@/component/chat/chatMsgs";
+import {useCallback, useEffect, useReducer, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
-import {FendaDanmu} from "@/app/(front)/room/BarrageMessages";
-import {MyTabs} from "@/app/(front)/room/tabs";
-import {OnlineUsers} from "@/app/(front)/room/onlineUser";
+import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
+import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
+import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
 import {v4} from "uuid";
+import {clientBackendFetch, streamPrefix, wsPrefix} from "@/util/requestUtil";
 
-const room_id = 'room_463111343';
-const user_id = 'user_877629347';
-const destination = `/topic/${room_id}`;
-const streamId = '';
-
-const test_data = ['hello', 'hi', '你好', 'adasd', 'dadad', 'efdads', 'rfda', 'tfdad', 'gfdad', '3eda', 'rfda', '3feda', 'gfd', '6yt5grfed', 'tgr', 'i8juyhtg', 'gfd', 'ygf', 'mnhgf', '23efgb', '6tf']
-const test_data2 = ['hello', 'hi', '你好'];
 
 const MessageUtil = {
     chatMessage: 3,
@@ -105,7 +99,7 @@ const useStomp = (destinationTopic) => {
     useEffect(() => {
         if (!stompClientRef.current) {
             stompClientRef.current = new Client({
-                brokerURL: 'ws://localhost:8090/chat?token=df12sda&username=fenda1',
+                brokerURL: `${wsPrefix}?token=df12sda&username=fenda1`,
                 connectHeaders: {
                     login: 'user',
                     passcode: 'password',
@@ -166,10 +160,28 @@ const useStomp = (destinationTopic) => {
     return [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage]
 }
 
-export default function Component() {
-    // let url="http://localhost:8080/live/livestream.flv";
-    let url = "http://localhost:8080/live/8653937c5b654597b8a19c13ce0b7352.flv";
-    const [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(destination);
+const query = (room_uuid) => {
+    return clientBackendFetch.formPostJson("/anchor/query", {room_uuid}).then(r => {
+        if (r && r.data) {
+            return r.data
+        }
+    })
+}
+
+export default function Room({uuid}) {
+    const [anchor, setAnchor] = useState(null);
+    const [streamUrl, setStreamUrl] = useState(null);
+    useEffect(() => {
+        query(uuid).then(anchor => {
+            console.log(anchor);
+            if (anchor?.room?.streamAddress) {
+                let s = `${streamPrefix}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`;
+                console.log(s);
+                setStreamUrl(`${streamPrefix}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`);
+            }
+        })
+    }, [uuid]);
+    const [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(`/topic/${uuid}`);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
@@ -179,7 +191,7 @@ export default function Component() {
                             <span className={styles.zhubo_info_title}> 可可愛愛沒有腦袋</span>
                         </div>
                         <div className={styles.layout2_middle}>
-                            <FlvContainer url={url}/>
+                            {streamUrl ? <FlvContainer url={streamUrl}/> : ''}
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
                             </div>

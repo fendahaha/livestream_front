@@ -71,6 +71,17 @@ export async function middleware(request) {
             return NextResponse.redirect(`${origin}/login`)
         }
     }
+    if (pathname.startsWith("/room")) {
+        const room_uuid = pathname.replace("/room/", "");
+        const requestHeaders = new Headers(headers);
+        requestHeaders.set('room_uuid', room_uuid);
+        const response = NextResponse.next({
+            request: {
+                headers: requestHeaders,
+            },
+        })
+        return response
+    }
 
     return NextResponse.next()
 }
