@@ -99,19 +99,25 @@ export const clientBackendFetch = {
     }
 }
 export const nodeBackendFetch = {
+    token: 'EB4QHUgFuiU5huMyAWjQVQ',
     get(url, data = null, headers = {}) {
+        headers = {...headers, 'Authorization': 'Bearer ' + this.token};
         return get(backendUrlBase + url, data, headers)
     },
     post(url, data = null, headers = {}) {
+        headers = {...headers, 'Authorization': 'Bearer ' + this.token};
         return post(backendUrlBase + url, data, headers)
     },
     postJson(url, data = null, headers = {}) {
+        headers = {...headers, 'Authorization': 'Bearer ' + this.token};
         return postJson(backendUrlBase + url, data, headers)
     },
     getJson(url, data = null, headers = {}) {
+        headers = {...headers, 'Authorization': 'Bearer ' + this.token};
         return getJson(backendUrlBase + url, data, headers)
     },
     formPostJson(url, data = null, headers = {}) {
+        headers = {...headers, 'Authorization': 'Bearer ' + this.token};
         return formPostJson(backendUrlBase + url, data, headers)
     }
 }

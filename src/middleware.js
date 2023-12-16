@@ -29,7 +29,7 @@ export async function middleware(request) {
 
     if (pathname.startsWith("/backend")) {
         const backendUrl = url.replace(/^https?:\/\/\S+(:\d+)?\/backend/ig, backendUrlBase);
-        console.log('access', backendUrl);
+        // console.log('access', backendUrl);
         try {
             // 使用fetch API转发请求
             const response = await fetch(backendUrl, {
@@ -43,7 +43,7 @@ export async function middleware(request) {
                 headers: response.headers,
             });
         } catch (error) {
-            console.error('access', backendUrl, error);
+            // console.error('access', backendUrl, error);
             return NextResponse.json({error: 'Error forwarding request'}, {
                 status: 500,
                 statusText: 'server error'
