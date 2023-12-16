@@ -9,7 +9,7 @@ import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
 import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
 import {v4} from "uuid";
-import {clientBackendFetch, streamPrefix, wsPrefix} from "@/util/requestUtil";
+import {clientBackendFetch, streamServer, wsPrefix} from "@/util/requestUtil";
 
 
 const MessageUtil = {
@@ -175,9 +175,9 @@ export default function Room({uuid}) {
         query(uuid).then(anchor => {
             console.log(anchor);
             if (anchor?.room?.streamAddress) {
-                let s = `${streamPrefix}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`;
+                let s = `${streamServer}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`;
                 console.log(s);
-                setStreamUrl(`${streamPrefix}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`);
+                setStreamUrl(`${streamServer}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`);
             }
         })
     }, [uuid]);

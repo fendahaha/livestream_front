@@ -7,7 +7,10 @@ import {DeleteOutlined} from "@ant-design/icons";
 
 const MyImage = ({data, delAction}) => {
     const {message} = App.useApp();
-    let s = `${imagePrefix}/${data.fileUniqueName}`;
+    let image_url = `${imagePrefix}/${data.fileUniqueName}`;
+    if (data.fileCategory) {
+        image_url = `${imagePrefix}/${data.fileCategory}/${data.fileUniqueName}`;
+    }
     return (
         <div style={{
             width: '120px',
@@ -15,7 +18,7 @@ const MyImage = ({data, delAction}) => {
             cursor: 'pointer',
             position: 'relative'
         }}>
-            <img src={s} alt={'img'} style={{
+            <img src={image_url} alt={'img'} style={{
                 display: 'block',
                 width: '100%',
                 height: '100%',
@@ -41,16 +44,6 @@ const MyImage = ({data, delAction}) => {
             </div>
         </div>
     )
-}
-
-function getData() {
-    const data = [];
-    for (let i = 0; i < 20; i++) {
-        data.push({
-            title: `Title ${i + 1}`,
-        })
-    }
-    return data
 }
 
 export default function Component() {

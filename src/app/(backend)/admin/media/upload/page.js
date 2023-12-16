@@ -9,12 +9,14 @@ const {Dragger} = Upload;
 export default function Component() {
     const {message} = App.useApp();
     const props = {
-        accept: 'audio/*,video/*,image/*',
-        name: 'file',
-        multiple: true,
         action: '/backend/file/upload',
-        listType: 'picture-card',
+        name: 'file',
+        data:{category: 'media\\image'},
         withCredentials: true,
+        // accept: 'audio/*,video/*,image/*',
+        accept: 'image/*',
+        multiple: true,
+        listType: 'picture-card',
         onChange(info) {
             const {status} = info.file;
             if (status !== 'uploading') {

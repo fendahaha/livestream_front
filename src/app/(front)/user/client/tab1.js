@@ -60,10 +60,10 @@ const AvatarUpload = ({onSuccess, filePath}) => {
     return (<>
         <Upload
             accept={'image/*'}
-            action="/backend/file/uploadAvatar"
-            withCredentials={true}
+            action="/backend/file/upload"
             name="file"
-            // data={{category: 'avatar'}}
+            data={{category: 'avatar'}}
+            withCredentials={true}
             listType="picture-circle"
             className="avatar-uploader"
             showUploadList={false}

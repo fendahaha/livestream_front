@@ -1,4 +1,4 @@
-import {clientBackendFetch} from "@/util/requestUtil";
+import {clientBackendFetch, rtmpServer} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {DatePicker, Form, Input, InputNumber, message, Popconfirm, Table, Typography} from "antd";
@@ -26,7 +26,7 @@ const initialColumns = [
         dataIndex: 'room.streamAddress',
         ellipsis: true,
         render: (_, record) => {
-            let s = `rtmp://localhost${record?.room?.streamAddress}?${record?.room?.streamParam}`;
+            let s = `${rtmpServer}${record?.room?.streamAddress}?${record?.room?.streamParam}`;
             return <MyCopyableToolTip text={s}>
                 <div>{s}</div>
             </MyCopyableToolTip>

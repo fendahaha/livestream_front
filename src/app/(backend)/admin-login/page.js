@@ -27,6 +27,7 @@ export default function Login() {
             'label': 'account',
             'children': <>
                 <ProFormText
+                    initialValue={'admin'}
                     autoFocus
                     name="userName"
                     fieldProps={{
@@ -42,6 +43,7 @@ export default function Login() {
                     ]}
                 />
                 <ProFormText.Password
+                    initialValue={'123456'}
                     name="userPassword"
                     fieldProps={{
                         size: 'large',
