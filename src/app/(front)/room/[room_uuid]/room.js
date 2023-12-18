@@ -10,6 +10,7 @@ import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
 import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
 import {v4} from "uuid";
 import {clientBackendFetch, streamServer, wsPrefix} from "@/util/requestUtil";
+import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 
 
 const MessageUtil = {
@@ -139,6 +140,13 @@ const useStomp = (destinationTopic) => {
                         dispatchChatMessages(messageObj)
                     }
                     if (messageObj.type === MessageUtil.giftMessage) {
+                        if (danmuRef.current?.addMessage) {
+                            try {
+                                danmuRef.current.addMessage(messageObj)
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        }
                         dispatchGiftMessages(messageObj)
                     }
                     if (messageObj.type === MessageUtil.systemMessage) {
@@ -196,7 +204,9 @@ export default function Room({uuid}) {
                                 <FendaDanmu ref={danmuRef}/>
                             </div>
                         </div>
-                        <div className={styles.layout2_bottom}></div>
+                        <div className={styles.layout2_bottom}>
+                            <Gifts send={sendGiftMessage}/>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.layout1_right}>

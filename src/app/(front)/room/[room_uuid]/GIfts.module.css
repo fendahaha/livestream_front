@@ -1,0 +1,30 @@
+.gifts {
+    /*border: 1px solid blue;*/
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: white;
+}
+
+.gift {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 10px 5px;
+}
+
+.gift > .background {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s linear;
+}
+
+.gift > .background:hover {
+    transform: scale(1.1);
+}

@@ -32,7 +32,7 @@ export default function FlvContainer({children, url}) {
     }, [url]);
     return (
         <div style={{
-            width: '100%', height: '100%', border: '1px solid red', position: 'relative',
+            width: '100%', height: '100%', position: 'relative',
         }}>
             <video ref={videoRef} controls muted autoPlay style={{
                 width: '100%', height: '100%',
