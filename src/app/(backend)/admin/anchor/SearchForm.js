@@ -1,4 +1,4 @@
-import {Button, Form, Input, InputNumber} from "antd";
+import {Button, Form, Input, InputNumber, Select} from "antd";
 import React from "react";
 
 export default function SearchForm({setSearchData, setPagination}) {
@@ -13,8 +13,24 @@ export default function SearchForm({setSearchData, setPagination}) {
     };
     return (
         <Form form={form} name="horizontal" layout="inline" onFinish={onFinish}>
-            <Form.Item name="userDisplayName">
-                <Input placeholder="userDisplayName"/>
+            <Form.Item name="userName" rules={[{type: 'string', min: '1', whitespace: true}]}>
+                <Input placeholder="userName"/>
+            </Form.Item>
+            <Form.Item name="roomEnable">
+                <Select placeholder="roomEnable"
+                        options={[
+                            {value: 1, label: 'enable'},
+                            {value: 0, label: 'disable'},
+                        ]}
+                />
+            </Form.Item>
+            <Form.Item name="streamType">
+                <Select placeholder="streamType"
+                        options={[
+                            {value: 'live', label: 'live'},
+                            {value: 'static', label: 'static'},
+                        ]}
+                />
             </Form.Item>
             <Form.Item shouldUpdate>
                 {() => (
