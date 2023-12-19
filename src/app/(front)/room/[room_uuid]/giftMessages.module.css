@@ -1,0 +1,54 @@
+.gift {
+    /*border: 1px solid red;*/
+    white-space: nowrap;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    animation-name: fenda-danmu-move;
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 18px;
+    height: 35px;
+}
+
+.icon {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.user {
+    width: 100px;
+    padding: 0 5px;
+}
+
+.gift_image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+@keyframes fenda-danmu-move {
+    0% {
+        left: 100%;
+    }
+
+    10% {
+        left: calc(100% - 300px);
+    }
+    70% {
+        left: calc(100% - 300px);
+    }
+    100% {
+        left: -200px;
+    }
+}

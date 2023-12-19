@@ -1,8 +1,8 @@
-import {forwardRef, useCallback, useEffect, useId, useImperativeHandle, useReducer, useRef, useState} from "react";
+import {forwardRef, useImperativeHandle, useReducer} from "react";
 
 const FendaDanmuMessage = ({msg}, ref) => {
     const _style = {
-        border: '1px solid red',
+        // border: '1px solid red',
         display: 'inline-block',
         whiteSpace: 'nowrap',
         position: 'absolute',
@@ -27,7 +27,7 @@ const FendaDanmuMessage = ({msg}, ref) => {
                 }
 
                 to {
-                  left: -200px;
+                  left: -500px;
                 }
               }
             `}</style>
@@ -36,13 +36,13 @@ const FendaDanmuMessage = ({msg}, ref) => {
 }
 
 function getTop() {
-    return Math.ceil(Math.random() * 10) * 16 + 'px'
+    return Math.ceil(Math.random() * 10) * 18 + 'px'
 }
 
 export const FendaDanmu = forwardRef(function FendaDanmu(props, ref) {
     const [msg, dispatchMsg] = useReducer((state, action) => {
         if (state.length >= 200) {
-            return [...state.slice(-500), action]
+            return [...state.slice(-200), action]
         }
         return [...state, action]
     }, [], r => r);

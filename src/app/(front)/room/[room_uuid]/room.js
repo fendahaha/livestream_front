@@ -11,6 +11,7 @@ import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
 import {v4} from "uuid";
 import {clientBackendFetch, streamServer, wsPrefix} from "@/util/requestUtil";
 import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
+import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 
 
 const MessageUtil = {
@@ -82,6 +83,7 @@ const useStomp = (destinationTopic) => {
     );
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
+    const giftRef = useRef(null);
     const sendMessage = useCallback((msg) => {
         if (stompClientRef.current && stompClientRef.current.connected) {
             let headers = {priority: '9'}
@@ -108,7 +110,7 @@ const useStomp = (destinationTopic) => {
                 },
                 connectionTimeout: 10 * 1000,
                 debug: function (str) {
-                    console.log("debug:", str);
+                    // console.log("debug:", str);
                 },
                 onStompError: function (frame) {
                     // Will be invoked in case of error encountered at Broker
@@ -140,9 +142,9 @@ const useStomp = (destinationTopic) => {
                         dispatchChatMessages(messageObj)
                     }
                     if (messageObj.type === MessageUtil.giftMessage) {
-                        if (danmuRef.current?.addMessage) {
+                        if (giftRef.current?.addMessage) {
                             try {
-                                danmuRef.current.addMessage(messageObj)
+                                giftRef.current.addMessage(messageObj)
                             } catch (e) {
                                 console.log(e);
                             }
@@ -165,7 +167,7 @@ const useStomp = (destinationTopic) => {
             }
         }
     }, [destinationTopic]);
-    return [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage]
+    return [danmuRef, giftRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage]
 }
 
 const query = (room_uuid) => {
@@ -180,28 +182,32 @@ export default function Room({uuid}) {
     const [anchor, setAnchor] = useState(null);
     const [streamUrl, setStreamUrl] = useState(null);
     useEffect(() => {
-        query(uuid).then(anchor => {
-            console.log(anchor);
-            if (anchor?.room?.streamAddress) {
-                let s = `${streamServer}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`;
-                console.log(s);
-                setStreamUrl(`${streamServer}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`);
-            }
-        })
-    }, [uuid]);
-    const [danmuRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(`/topic/${uuid}`);
+        if (!anchor) {
+            query(uuid).then(anchor => {
+                setAnchor(anchor);
+                if (anchor?.room?.streamAddress) {
+                    let s = `${streamServer}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`;
+                    setStreamUrl(s);
+                }
+            })
+        }
+    }, [anchor, uuid]);
+    const [danmuRef, giftRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(`/topic/${uuid}`);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
                 <div className={styles.layout1_left}>
                     <div className={styles.layout2}>
                         <div className={styles.layout2_top}>
-                            <span className={styles.zhubo_info_title}> 可可愛愛沒有腦袋</span>
+                            <span className={styles.zhubo_info_title}>{anchor?.anchorRemark}</span>
                         </div>
                         <div className={styles.layout2_middle}>
                             {streamUrl ? <FlvContainer url={streamUrl}/> : ''}
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
+                            </div>
+                            <div className={styles.gifts_container}>
+                                <FendaGifts ref={giftRef}/>
                             </div>
                         </div>
                         <div className={styles.layout2_bottom}>

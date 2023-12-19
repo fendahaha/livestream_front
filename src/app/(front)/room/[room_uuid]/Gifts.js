@@ -11,7 +11,7 @@ const Gift = ({data, send}) => {
         <div>{data.giftName}</div>
     </>;
     const handleClick = (e) => {
-        send(`${data.giftName}-${data.giftValue}`);
+        send(JSON.stringify(data));
     }
     return (
         <div className={styles.gift} onClick={handleClick}>
@@ -35,7 +35,6 @@ export default function Gifts({send}) {
     }, []);
     return (
         <div className={styles.gifts}>
-            {/*<Gift/>*/}
             {data.map(r => {
                 return <Gift key={r.id} data={r} send={send}/>
             })}
