@@ -86,24 +86,28 @@ const useStomp = (destinationTopic, user, anchor) => {
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
     const giftRef = useRef(null);
-    const sendMessage = useCallback((msg) => {
+    const sendMessage = useCallback((msg, destination, headers = {}) => {
         if (user) {
             if (stompClientRef.current && stompClientRef.current.connected) {
-                let headers = {anchorUuid: anchor.anchorUuid, anchorName: anchor.user.userName}
+                let _headers = {
+                    anchorUuid: anchor.anchorUuid,
+                    anchorName: anchor.user.userName,
+                    room_topic: destinationTopic,
+                }
                 stompClientRef.current.publish({
-                    destination: destinationTopic,
+                    destination: destination,
                     body: JSON.stringify(msg),
-                    headers: headers
+                    headers: {..._headers, ...headers}
                 });
                 return true
             }
         } else {
             message.info("please log in");
         }
-    }, [destinationTopic, user, anchor]);
-    const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg)), [sendMessage]);
-    const sendGiftMessage = useCallback((msg) => sendMessage(MessageUtil.createGiftMessage(msg)), [sendMessage]);
-    const sendSystemMessage = useCallback((msg) => sendMessage(MessageUtil.createSystemMessage(msg)), [sendMessage]);
+    }, [user, anchor, destinationTopic]);
+    const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
+    const sendGiftMessage = useCallback((msg) => sendMessage(MessageUtil.createGiftMessage(msg), "/app/gift"), [sendMessage]);
+    const sendSystemMessage = useCallback((msg) => sendMessage(MessageUtil.createSystemMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
 
     useEffect(() => {
         if (!stompClientRef.current) {
@@ -157,9 +161,11 @@ const useStomp = (destinationTopic, user, anchor) => {
                         dispatchSystemMessages(messageObj)
                     }
                 });
-                stompClientRef.current.subscribe("/user/queue/person", (message) => {
-                    console.log(message.body);
-                    message.info(message.body);
+                stompClientRef.current.subscribe("/user/queue/person", (m) => {
+                    const m1 = JSON.parse(m.body);
+                    if (m1.type === 'money_not_enough') {
+                        message.info("money not enough");
+                    }
                 });
             }
             stompClientRef.current.onWebSocketClose = function (evt) {
