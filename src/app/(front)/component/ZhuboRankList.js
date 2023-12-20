@@ -1,8 +1,9 @@
 import styles from "./ZhuboRankList.module.css";
+import {imagePrefix} from "@/util/requestUtil";
 
 const list1 = [
-    {'avatar': '/zb/zb2.png', 'name': '江酱', 'rank': styles.rank2},
-    {'avatar': '/zb/zb1.png', 'name': '球球', 'rank': styles.rank1},
+    {'avatar': '/zb/zb2.png', 'name': '江酱', 'rank': styles.rank1},
+    {'avatar': '/zb/zb1.png', 'name': '球球', 'rank': styles.rank2},
     {'avatar': '/zb/zb3.png', 'name': '杨晴', 'rank': styles.rank3},
 ];
 const list2 = [
@@ -12,32 +13,45 @@ const list2 = [
     {'avatar': '/zb/zb7.png', 'name': '澄澄', 'rank': '/rank/rank7.svg'},
     {'avatar': '/zb/zb8.png', 'name': '艾米丽', 'rank': '/rank/rank8.svg'},
 ];
-export default function ZhuboRankList() {
-    const s1 = list1.map(e => {
+export default function ZhuboRankList({list}) {
+    const top = list.slice(0, 3);
+    const others = list.slice(3, 8);
+    for (let i = 0; i < top.length; i++) {
+        let rankClassName = styles.rank1;
+        if (i === 1) {
+            rankClassName = styles.rank2;
+        }
+        if (i === 2) {
+            rankClassName = styles.rank3;
+        }
+        top[i]['rank'] = rankClassName;
+    }
+    for (let i = 0; i < others.length; i++) {
+        others[i]['rank'] = `/rank/rank${i + 4}.svg`;
+    }
+    const s1 = top.map(e => {
         return (
-            <a href={''} key={e.name}>
-                <div className={`${styles.zhubo} ${e.rank}`}>
-                    <div className={styles.s1}>
-                        <img src={e.avatar} alt={''} className={styles.avatar}/>
-                    </div>
-                    <div className={styles.s2}>
-                        <img src={'/country/tw.svg'} alt={''} className={styles.country}/>
-                        <span className={styles.name}>{e.name}</span>
-                    </div>
-                    <div className={styles.s3}>32C/23/33</div>
+            <a className={`${styles.zhubo} ${e.rank}`} href={''} key={e.name}>
+                <div className={styles.s1}>
+                    <img src={`${imagePrefix}/${e.avatar}`} alt={''} className={styles.avatar}/>
                 </div>
+                <div className={styles.s2}>
+                    <img src={'/country/tw.svg'} alt={''} className={styles.country}/>
+                    <span className={styles.name}>{e.name}</span>
+                </div>
+                <div className={styles.s3}>32C/23/33</div>
             </a>
         )
     });
 
-    const s2 = list2.map(e => {
+    const s2 = others.map(e => {
         return (
             <div className={styles.zb} key={e.name}>
                 <a href={''} className={styles.zb_link}>
                     <div className={styles.t1}>
                         <img src={e.rank} alt={''} className={styles.zb_i1}/>
                         <div className={styles.zb_i2}>
-                            <img src={e.avatar} alt={''}/>
+                            <img src={`${imagePrefix}/${e.avatar}`} alt={''}/>
                         </div>
                         <div className={styles.zb_i3}>
                             <img src={'/country/tw.svg'} alt={''}/>

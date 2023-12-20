@@ -1,7 +1,7 @@
 .list {
     cursor: pointer;
     background-color: #FAFAFA;
-    font-size:16px;
+    font-size: 16px;
 }
 
 .d1 {
@@ -25,10 +25,22 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    left:0;
-    top:0;
+    left: 0;
+    top: 0;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, .3);
+}
+
+.rank1 {
+    order: 1;
+}
+
+.rank2 {
+    order: 0;
+}
+
+.rank3 {
+    order: 2;
 }
 
 .rank1 .s1 {
@@ -119,12 +131,14 @@
 
 .name {
     margin-left: 5px;
+    font-size:14px;
 }
 
 
 .s3 {
     text-align: center;
     color: #f66;
+    font-size:14px;
 }
 
 /*----------*/
@@ -166,7 +180,7 @@
 }
 
 .zb_i2 {
-    margin: 0 20px;
+    margin: 0 10px;
     width: 60px;
     height: 60px;
     border-radius: 50%;

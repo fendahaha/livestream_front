@@ -19,8 +19,17 @@ const get_anchors = async () => {
     })
     return list ? list : []
 }
+const get_rank_anchors = async () => {
+    const list = await nodeBackendFetch.postJson("/anchor/rank").then(r => {
+        if (r && r.data) {
+            return r.data
+        }
+    })
+    return list ? list : []
+}
 export default async function Home() {
     const anchors = await get_anchors();
+    const rank_anchors = await get_rank_anchors();
     return (
         <div>
             <FixWidthDiv>
@@ -32,7 +41,7 @@ export default async function Home() {
                         <ZhuboStreamList list={anchors}/>
                     </div>
                     <div className={styles.right}>
-                        <ZhuboRankList/>
+                        <ZhuboRankList list={rank_anchors}/>
                     </div>
                 </div>
             </FixWidthDiv>
