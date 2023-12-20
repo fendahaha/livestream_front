@@ -13,31 +13,31 @@ const initialColumns = [
     {
         title: 'user.avatar',
         dataIndex: 'userAvatar',
-        editable: false,
+        editable: true,
         editInputType: 'image',
+        editConfig: {imageCategory: 'avatar'},
         render: (_, record) => {
-            let avatar = record?.user?.userAvatar;
-            return avatar ? <Image width={50} src={`${imagePrefix}/${avatar}`}/> : ''
+            return _ ? <Image width={50} src={`${imagePrefix}/${_}`}/> : ''
         }
     },
     {
         title: 'user.userName',
-        dataIndex: 'user.userName',
+        dataIndex: 'userName',
         render: (_, record) => record?.user?.userName,
     },
     {
         title: 'user.userDisplayName',
-        dataIndex: 'user.userDisplayName',
+        dataIndex: 'userDisplayName',
         render: (_, record) => record?.user?.userDisplayName,
     },
     {
         title: 'room.streamType',
-        dataIndex: 'room.streamType',
+        dataIndex: 'streamType',
         render: (_, record) => record?.room?.streamType,
     },
     {
         title: 'room.streamAddress',
-        dataIndex: 'room.streamAddress',
+        dataIndex: 'streamAddress',
         ellipsis: true,
         render: (_, record) => {
             let s = `${rtmpServer}${record?.room?.streamAddress}?${record?.room?.streamParam}`;
@@ -69,7 +69,7 @@ const initialColumns = [
         dataIndex: 'anchorRemark',
         ellipsis: true,
         editable: true,
-        // editRules: [],
+        editRules: [],
         editInputType: 'text',
     },
     {
@@ -86,14 +86,31 @@ const get_data = (params) => {
             dayjs.extend(customParseFormat);
             const {list, total} = r.data;
             let d = list.map(r => {
-                return {...r, anchorCreateAt: dayjs(r['anchorCreateAt'], "YYYY-MM-DD HH:mm:ss")}
+                let anchorConfig = JSON.parse(r.anchorConfig);
+                return {
+                    ...r,
+                    anchorCreateAt: dayjs(r['anchorCreateAt'], "YYYY-MM-DD HH:mm:ss"),
+                    userAvatar: r.user.userAvatar,
+                    anchorSanwei: anchorConfig?.anchorSanwei,
+                    anchorHeight: anchorConfig?.anchorHeight,
+                    anchorWieght: anchorConfig?.anchorWieght,
+                }
             })
             return {list: d, total}
         }
     })
 }
 const update_data = async (item) => {
-    item['anchorCreateAt'] = item['anchorCreateAt'].format("YYYY-MM-DD HH:mm:ss");
+    let anchorConfig = JSON.stringify({
+        anchorSanwei: item.anchorSanwei,
+        anchorHeight: item.anchorHeight,
+        anchorWieght: item.anchorWieght,
+    });
+    item = {
+        ...item,
+        anchorCreateAt: item['anchorCreateAt'].format("YYYY-MM-DD HH:mm:ss"),
+        anchorConfig,
+    }
     await clientBackendFetch.postJson('/anchor/update', item).then(r => {
         if (r?.data) {
             message.success("success")
@@ -172,6 +189,12 @@ const initialFormItems = [
     },
 ]
 const onCreateFinish = (values) => {
+    values['anchorConfig'] = {
+        anchorSanwei: values.anchorSanwei,
+        anchorHeight: values.anchorHeight,
+        anchorWieght: values.anchorWieght
+    };
+    values['anchorConfig'] = JSON.stringify(values['anchorConfig']);
     return clientBackendFetch.postJson('/anchor/create', values).then(r => {
         if (r && r.data) {
             message.success("success");

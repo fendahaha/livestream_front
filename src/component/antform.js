@@ -115,6 +115,7 @@ export const EditableCell = ({
                                  dataIndex,
                                  title,
                                  editInputType,
+                                 editConfig,
                                  record,
                                  index,
                                  children,
@@ -130,7 +131,8 @@ export const EditableCell = ({
         inputNode = <DatePicker format={'YYYY-MM-DD HH:mm:ss'}/>
     }
     if (editInputType === 'image') {
-        inputNode = <ImageUploadFormItem category={'gift'}/>
+        let c = editConfig?.imageCategory;
+        inputNode = <ImageUploadFormItem category={c ? c : 'image'}/>
     }
     let inputItem = <Form.Item name={dataIndex} style={{margin: 0,}} rules={rules}>
         {inputNode}
@@ -251,6 +253,7 @@ export const DataList = ({
                 editing: isEditing(record),
                 editInputType: col.editInputType,
                 editRules: col.editRules,
+                editConfig: col.editConfig,
             }),
         };
     });
