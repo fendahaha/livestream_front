@@ -157,6 +157,10 @@ const useStomp = (destinationTopic, user, anchor) => {
                         dispatchSystemMessages(messageObj)
                     }
                 });
+                stompClientRef.current.subscribe("/user/queue/person", (message) => {
+                    console.log(message.body);
+                    message.info(message.body);
+                });
             }
             stompClientRef.current.onWebSocketClose = function (evt) {
                 console.log("onWebSocketClose: 远程主机连接断开");

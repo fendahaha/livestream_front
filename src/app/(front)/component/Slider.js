@@ -1,6 +1,21 @@
 'use client'
 import styles from "./slider.module.css";
 import {useEffect, useState} from "react";
+import {Carousel} from "antd";
+
+export function MyCarousel({data}) {
+    return (
+        <Carousel autoplay>
+            {data.map(e => {
+                return <div key={e.img}>
+                    <a href={e.link} className={styles.carouselItem}>
+                        <img src={e.img} alt={''}/>
+                    </a>
+                </div>
+            })}
+        </Carousel>
+    );
+}
 
 const transition_style = "margin-left 0.3s linear";
 export default function Slider({items}) {

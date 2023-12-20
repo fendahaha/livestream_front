@@ -1,11 +1,15 @@
-import Slider from "@/app/(front)/component/Slider";
+import {MyCarousel} from "@/app/(front)/component/Slider";
 import styles from "./page.module.css";
 import ZhuboStreamList from "@/app/(front)/component/ZhuboStreamList";
 import ZhuboRankList from "@/app/(front)/component/ZhuboRankList";
 import {FixWidthDiv} from "@/component/common/WidthDiv";
 import {nodeBackendFetch} from "@/util/requestUtil";
 
-const test_data = ['/nav/nav1.jpg', '/nav/nav2.jpg', '/nav/nav3.jpg'];
+const test_data = [
+    {img: '/nav/nav1.jpg', link: ''},
+    {img: '/nav/nav2.jpg', link: ''},
+    {img: '/nav/nav3.jpg', link: ''},
+];
 
 const get_anchors = async () => {
     const list = await nodeBackendFetch.postJson("/anchor/allAnchors").then(r => {
@@ -21,7 +25,7 @@ export default async function Home() {
         <div>
             <FixWidthDiv>
                 <div>
-                    <Slider items={test_data}/>
+                    <MyCarousel data={test_data}/>
                 </div>
                 <div className={styles.layout}>
                     <div className={styles.left}>
