@@ -49,7 +49,7 @@ export default function ZhuboStreamList({list}) {
         )
     })
     return (
-        <div className={styles.list}>
+        <>
             {items}
             {/*<div className={styles.item}>*/}
             {/*    <div className={styles.offline}>*/}
@@ -80,7 +80,6 @@ export default function ZhuboStreamList({list}) {
             {/*        </a>*/}
             {/*    </div>*/}
             {/*</div>*/}
-
-        </div>
+        </>
     );
 }

@@ -23,7 +23,8 @@ export default async function Home() {
                 </div>
                 <div className={styles.layout}>
                     <div className={styles.left}>
-                        {anchors.length ? <ZhuboStreamList list={anchors}/> : <MyEmpty/>}
+                        {anchors.length ? <div className={styles.anchor_list}><ZhuboStreamList list={anchors}/></div> :
+                            <MyEmpty/>}
                     </div>
                     <div className={styles.right}>
                         {rank_anchors.length ? <ZhuboRankList list={rank_anchors}/> : <MyEmpty/>}
