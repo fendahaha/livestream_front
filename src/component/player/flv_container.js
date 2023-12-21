@@ -44,7 +44,7 @@ export default function FlvContainer({url}) {
         <div style={{
             width: '100%', height: '100%', position: 'relative',
         }}>
-            <video ref={videoRef} controls autoPlay style={{width: '100%', height: '100%',}}/>
+            <video ref={videoRef} controls autoPlay muted style={{width: '100%', height: '100%',}}/>
         </div>
     )
 }
