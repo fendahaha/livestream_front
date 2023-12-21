@@ -1,5 +1,7 @@
 import {NextResponse} from 'next/server'
 import {backendUrlBase} from "@/util/requestUtil";
+import {setHeaderParam} from "@/app/_func/server";
+import {headers} from "next/headers";
 
 
 async function get_login_user(request) {
@@ -72,15 +74,12 @@ export async function middleware(request) {
         }
     }
     if (pathname.startsWith("/room")) {
-        const room_uuid = pathname.replace("/room/", "");
-        const requestHeaders = new Headers(headers);
-        requestHeaders.set('room_uuid', room_uuid);
-        const response = NextResponse.next({
+        let params = {'room_uuid': pathname.replace("/room/", "")};
+        return NextResponse.next({
             request: {
-                headers: requestHeaders,
+                headers: setHeaderParam(headers, params),
             },
         })
-        return response
     }
 
     return NextResponse.next()

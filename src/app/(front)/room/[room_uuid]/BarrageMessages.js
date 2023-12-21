@@ -40,12 +40,8 @@ function getTop() {
 }
 
 export const FendaDanmu = forwardRef(function FendaDanmu(props, ref) {
-    const [msg, dispatchMsg] = useReducer((state, action) => {
-        if (state.length >= 200) {
-            return [...state.slice(-200), action]
-        }
-        return [...state, action]
-    }, [], r => r);
+    const [msg, dispatchMsg] = useReducer((state, action) => [...state, action].slice(-200),
+        [], r => r);
     useImperativeHandle(ref, () => {
         return {
             addMessage(m) {

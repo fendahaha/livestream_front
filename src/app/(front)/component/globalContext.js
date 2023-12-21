@@ -19,7 +19,9 @@ export function GlobalContextManager({children, user}) {
             }
             return null
         }
-    }, user, r => r);
+    }, user, r => {
+        return r
+    });
     const contextValue = useMemo(() => {
         return {user: u, updateUser: dispatchU}
     }, [u]);

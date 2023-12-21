@@ -3,18 +3,17 @@ import styles from './room.module.css';
 import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/chatMsgs";
-import {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useReducer, useRef} from "react";
 import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
 import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
 import {v4} from "uuid";
-import {clientBackendFetch, streamServer, wsPrefix} from "@/util/requestUtil";
+import {wsPrefix} from "@/util/requestUtil";
 import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {message} from "antd";
-
 
 const MessageUtil = {
     chatMessage: 3,
@@ -23,91 +22,57 @@ const MessageUtil = {
     currDate() {
         return new Date().getTime()
     },
-    createChatMessage(data) {
+    createMessage(type, data) {
         return {
             id: v4(),
-            type: this.chatMessage,
+            type: type,
             data: data,
             time: this.currDate()
         }
+    },
+    createChatMessage(data) {
+        return this.createMessage(this.chatMessage, data);
     },
     createGiftMessage(data) {
-        return {
-            id: v4(),
-            type: this.giftMessage,
-            data: data,
-            time: this.currDate()
-        }
+        return this.createMessage(this.giftMessage, data);
     },
     createSystemMessage(data) {
-        return {
-            id: v4(),
-            type: this.systemMessage,
-            data: data,
-            time: this.currDate()
-        }
+        return this.createMessage(this.systemMessage, data);
     }
 }
-
-const useStomp = (destinationTopic, user, anchor) => {
-    const [chatMessages, dispatchChatMessages] = useReducer(
-        (state, action) => {
-            let _new = [action, ...state];
-            if (_new.length >= 200) {
-                _new = _new.slice(0, 200)
-            }
-            return _new
-        },
-        [],
-        r => r
-    );
-    const [giftMessages, dispatchGiftMessages] = useReducer(
-        (state, action) => {
-            let _new = [action, ...state];
-            if (_new.length >= 200) {
-                _new = _new.slice(0, 200)
-            }
-            return _new
-        },
-        [],
-        r => r
-    );
-    const [systemMessages, dispatchSystemMessages] = useReducer(
-        (state, action) => {
-            let _new = [action, ...state];
-            if (_new.length >= 200) {
-                _new = _new.slice(0, 200)
-            }
-            return _new
-        },
-        [],
-        r => r
-    );
+const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clientUserName) => {
+    const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
+    const [giftMessages, dispatchGiftMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
     const giftRef = useRef(null);
     const sendMessage = useCallback((msg, destination, headers = {}) => {
-        if (user) {
+        if (clientUuid) {
             if (stompClientRef.current && stompClientRef.current.connected) {
                 let _headers = {
-                    anchorUuid: anchor.anchorUuid,
-                    anchorName: anchor.user.userName,
+                    anchorUuid: anchorUuid,
+                    anchorUserName: anchorUserName,
                     room_topic: destinationTopic,
+                    clientUuid: clientUuid,
+                    clientUserName: clientUserName,
                 }
-                stompClientRef.current.publish({
-                    destination: destination,
-                    body: JSON.stringify(msg),
-                    headers: {..._headers, ...headers}
-                });
-                return true
+                try {
+                    stompClientRef.current.publish({
+                        destination: destination,
+                        body: JSON.stringify(msg),
+                        headers: {..._headers, ...headers}
+                    });
+                    return true
+                } catch (e) {
+                    console.log(e);
+                }
             }
         } else {
             message.info("please log in");
         }
-    }, [user, anchor, destinationTopic]);
+    }, [anchorUserName, anchorUuid, clientUserName, clientUuid, destinationTopic]);
     const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
     const sendGiftMessage = useCallback((msg) => sendMessage(MessageUtil.createGiftMessage(msg), "/app/gift"), [sendMessage]);
-    const sendSystemMessage = useCallback((msg) => sendMessage(MessageUtil.createSystemMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
 
     useEffect(() => {
         if (!stompClientRef.current) {
@@ -115,24 +80,28 @@ const useStomp = (destinationTopic, user, anchor) => {
                 brokerURL: `${wsPrefix}`,
                 connectHeaders: {
                     // passcode: 'password',
-                    user: user ? JSON.stringify(user) : null,
+                    user: clientUuid ? clientUuid : 'null',
                 },
                 connectionTimeout: 10 * 1000,
-                debug: function (str) {
-                    console.log("debug:", str);
-                },
-                onStompError: function (frame) {
-                    // Will be invoked in case of error encountered at Broker
-                    // Bad login/passcode typically will cause an error
-                    // Complaint brokers will set `message` header with a brief message. Body may contain details.
-                    // Compliant brokers will terminate the connection after any error
-                    console.log('Broker reported error: ' + frame.headers['message']);
-                    console.log('Additional details: ' + frame.body);
-                },
-                reconnectDelay: 5000,
-                // heartbeatIncoming: 4000,
-                // heartbeatOutgoing: 4000,
+                reconnectDelay: 5 * 1000,
+                heartbeatIncoming: 4000,
+                heartbeatOutgoing: 4000,
+                // debug: (str) => console.log("debug:", str),
             });
+            stompClientRef.current.beforeConnect = async () => {
+                console.log(`attemp connect stomp ${destinationTopic}`);
+            }
+            stompClientRef.current.onWebSocketClose = function (evt) {
+                console.log("onWebSocketClose: 远程主机连接断开");
+            }
+            stompClientRef.current.onStompError = function (frame) {
+                // Will be invoked in case of error encountered at Broker
+                // Bad login/passcode typically will cause an error
+                // Complaint brokers will set `message` header with a brief message. Body may contain details.
+                // Compliant brokers will terminate the connection after any error
+                console.log('Broker reported error: ' + frame.headers['message']);
+                console.log('Additional details: ' + frame.body);
+            }
             stompClientRef.current.onConnect = function (frame) {
                 // console.log(JSON.stringify(frame));
                 stompClientRef.current.subscribe(destinationTopic, (message) => {
@@ -157,23 +126,17 @@ const useStomp = (destinationTopic, user, anchor) => {
                         }
                         dispatchGiftMessages(messageObj)
                     }
-                    if (messageObj.type === MessageUtil.systemMessage) {
-                        dispatchSystemMessages(messageObj)
-                    }
                 });
-                stompClientRef.current.subscribe("/user/queue/person", (m) => {
-                    const m1 = JSON.parse(m.body);
-                    if (m1.type === 'money_not_enough') {
-                        message.info("money not enough");
-                    }
-                });
+                if (clientUuid) {
+                    stompClientRef.current.subscribe("/user/queue/person", (m) => {
+                        const m1 = JSON.parse(m.body);
+                        if (m1.type === 'money_not_enough') {
+                            message.info("money not enough");
+                        }
+                    });
+                }
             }
-            stompClientRef.current.onWebSocketClose = function (evt) {
-                console.log("onWebSocketClose: 远程主机连接断开");
-            }
-            if (stompClientRef.current && !stompClientRef.current.connected) {
-                stompClientRef.current.activate();
-            }
+            stompClientRef.current.activate();
         }
         return () => {
             if (stompClientRef.current) {
@@ -181,35 +144,13 @@ const useStomp = (destinationTopic, user, anchor) => {
                 stompClientRef.current = null;
             }
         }
-    }, [destinationTopic, user]);
-    return [danmuRef, giftRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage]
+    }, [clientUuid, destinationTopic]);
+    return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage]
 }
 
-const query = (room_uuid) => {
-    return clientBackendFetch.formPostJson("/anchor/query", {room_uuid}).then(r => {
-        if (r && r.data) {
-            return r.data
-        }
-    })
-}
-
-export default function Room({uuid}) {
+export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     const {user} = useContext(GlobalContext);
-    const [anchor, setAnchor] = useState(null);
-    const [streamUrl, setStreamUrl] = useState(null);
-    useEffect(() => {
-        if (!anchor) {
-            query(uuid).then(anchor => {
-                setAnchor(anchor);
-                console.log(anchor);
-                if (anchor?.room?.streamAddress) {
-                    let s = `${streamServer}${anchor?.room?.streamAddress}.flv?${anchor.room.streamParam}`;
-                    setStreamUrl(s);
-                }
-            })
-        }
-    }, [anchor, uuid]);
-    const [danmuRef, giftRef, chatMessages, giftMessages, systemMessages, sendChatMessage, sendGiftMessage, sendSystemMessage] = useStomp(`/topic/${uuid}`, user, anchor);
+    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchor.anchorUuid, anchorUser.userName, user?.userUuid, user?.userName);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
@@ -228,7 +169,7 @@ export default function Room({uuid}) {
                             </div>
                         </div>
                         <div className={styles.layout2_bottom}>
-                            <Gifts send={sendGiftMessage}/>
+                            <Gifts send={(data) => sendGiftMessage(JSON.stringify(data))}/>
                         </div>
                     </div>
                 </div>
@@ -254,7 +195,7 @@ export default function Room({uuid}) {
                             </div>
                         </div>
                         <div className={styles.layout3_bottom}>
-                            <ChatSendButton handSend={sendChatMessage}/>
+                            <ChatSendButton handSend={(data) => sendChatMessage(data)}/>
                         </div>
                     </div>
                 </div>

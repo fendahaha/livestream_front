@@ -10,7 +10,6 @@ const test_data = [
     {'href': '/event', 'name': 'event'},
     {'href': '/tv', 'name': 'tv'},
     {'href': '/follow', 'name': 'follow'},
-    {'href': '/adasd', 'name': 'asdasda'},
 ];
 
 export default function Header({navs = test_data}) {

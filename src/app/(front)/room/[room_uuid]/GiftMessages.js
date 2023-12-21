@@ -1,6 +1,6 @@
 import {forwardRef, useImperativeHandle, useMemo, useReducer} from "react";
 import {imagePrefix} from "@/util/requestUtil";
-import styles from "./giftMessages.module.css";
+import styles from "./GiftMessages.module.css";
 
 const FendaGiftMessage = ({msg}, ref) => {
     const style = useMemo(() => {
@@ -24,13 +24,9 @@ function getTop() {
     return Math.ceil(Math.random() * 10) * 45 + 'px'
 }
 
-export const FendaGifts = forwardRef(function FendaDanmu(props, ref) {
-    const [msg, dispatchMsg] = useReducer((state, action) => {
-        if (state.length >= 200) {
-            return [...state.slice(-200), action]
-        }
-        return [...state, action]
-    }, [], r => r);
+export const FendaGifts = forwardRef(function FendaGifts(props, ref) {
+    const [msg, dispatchMsg] = useReducer((state, action) => [...state, action].slice(-200),
+        [], r => r);
     useImperativeHandle(ref, () => {
         return {
             addMessage(m) {

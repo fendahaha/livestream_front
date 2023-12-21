@@ -9,3 +9,7 @@ export const logout = (successCallback) => {
             }
         })
 }
+
+export const get_all_gifts = () => {
+    return clientBackendFetch.postJson("/gift/all").then(r => r?.data)
+}

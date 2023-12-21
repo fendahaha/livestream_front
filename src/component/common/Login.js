@@ -169,7 +169,6 @@ export default function Login({onSuccess}) {
     ];
 
     const finish = useCallback((data) => {
-        console.log(data);
         if (activeTab === '1') {
             clientBackendFetch.postJson("/user/login", data)
                 .then(d => {

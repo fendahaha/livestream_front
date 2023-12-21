@@ -1,22 +1,23 @@
-// 'use client'
 import Room from "@/app/(front)/room/[room_uuid]/room";
 import {redirect} from "next/navigation";
-import {nodeBackendFetch} from "@/util/requestUtil";
-import {headers} from "next/headers";
+import {getHeaderParam, is_room_online, queryAnchorByRoomUuid} from "@/app/_func/server";
+import {streamServer} from "@/util/requestUtil";
 
-const is_online = async (room_uuid) => {
-    return nodeBackendFetch.formPostJson("/room/is_online", {room_uuid}).then(r => {
-        if (r && r.data) {
-            return r.data
-        }
-    })
-}
 
 export default async function Page() {
-    const headersList = headers()
-    const room_uuid = headersList.get('room_uuid')
-    if (await is_online(room_uuid)) {
-        return <Room uuid={room_uuid}></Room>
+    const room_uuid = getHeaderParam('room_uuid');
+    if (await is_room_online(room_uuid)) {
+        const anchor = await queryAnchorByRoomUuid(room_uuid);
+        if (anchor) {
+            const anchorUser = anchor.user;
+            const room = anchor.room;
+            const streamUrl = `${streamServer}${room.streamAddress}.flv?${room.streamParam}`;
+            const topic = `/topic/${room_uuid}`;
+            return <Room uuid={room_uuid} anchor={anchor} anchorUser={anchorUser} room={room} streamUrl={streamUrl}
+                         topic={topic}></Room>
+        } else {
+            redirect("/");
+        }
     } else {
         redirect("/");
     }
