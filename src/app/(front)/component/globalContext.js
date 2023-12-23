@@ -1,30 +1,45 @@
 'use client'
-import {createContext, useMemo, useReducer} from "react";
+import {createContext, useMemo, useReducer, useState} from "react";
 
-export const GlobalContext = createContext({user: null, updateUser: null});
+const globalContextDefaultValue = {userInfo: {user: null, anchor: null, client: null}, updateUserInfo: null};
+export const GlobalContext = createContext(globalContextDefaultValue);
 
-export function GlobalContextManager({children, user}) {
-    const [u, dispatchU] = useReducer((prevState, action) => {
+export function GlobalContextManager({children, userInfo}) {
+    const [user_info, dispatchU] = useReducer((prevState, action) => {
+        const {user, anchor, client} = prevState
         const _action = action.action;
         const _data = action.data;
-        if (_action === 'update') {
+        if (_action === 'updateUser') {
             for (const dataKey in _data) {
-                prevState[dataKey] = _data[dataKey]
+                user[dataKey] = _data[dataKey]
             }
-            return {...prevState}
+            return {...prevState, user}
+        }
+        if (_action === 'updateAnchor') {
+            for (const dataKey in _data) {
+                anchor[dataKey] = _data[dataKey]
+            }
+            return {...prevState, anchor}
+        }
+        if (_action === 'updateClient') {
+            for (const dataKey in _data) {
+                client[dataKey] = _data[dataKey]
+            }
+            return {...prevState, client}
         }
         if (_action === 'replace') {
             if (_data) {
                 return {..._data}
             }
-            return null
+            return globalContextDefaultValue
         }
-    }, user, r => {
-        return r
+    }, userInfo, r => {
+        return r ? r : globalContextDefaultValue
     });
+
     const contextValue = useMemo(() => {
-        return {user: u, updateUser: dispatchU}
-    }, [u]);
+        return {userInfo: user_info, updateUserInfo: dispatchU}
+    }, [user_info]);
     return (
         <GlobalContext.Provider value={contextValue}>
             {children}

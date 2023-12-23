@@ -89,7 +89,8 @@ const AvatarUpload = ({onSuccess, filePath}) => {
 
 export default function Tab1() {
     const actionRef = useRef();
-    const {user, updateUser} = useContext(GlobalContext);
+    const {userInfo, updateUserInfo} = useContext(GlobalContext);
+    const {user, anchor, client} = userInfo;
     const columns = [
         {
             title: '用户名',
@@ -119,16 +120,16 @@ export default function Tab1() {
         clientBackendFetch.postJson('/user/update', data)
             .then(r => {
                 if (r) {
-                    updateUser({action: 'update', data: data});
+                    updateUserInfo({action: 'updateUser', data: data});
                     message.success("success");
                 }
             })
-    }, [updateUser, user?.userUuid])
+    }, [user?.userUuid])
     const handleSave = useCallback((key, row) => {
         const data = {'userUuid': user.userUuid};
         data[key] = row[key];
-        editUser(data, () => updateUser({action: 'update', data: data}));
-    }, [updateUser, user?.userUuid])
+        editUser(data, () => updateUserInfo({action: 'updateUser', data: data}));
+    }, [user?.userUuid])
     const handleRequest = useCallback(() => {
         return {success: true, data: user ? user : {}}
     }, [user])

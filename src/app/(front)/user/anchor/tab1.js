@@ -1,9 +1,8 @@
 import {ProDescriptions} from '@ant-design/pro-components';
-import {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {message, Upload} from "antd";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
 
 async function editUser(data, onSuccess) {
     clientBackendFetch.post('/user/update', data)
@@ -87,9 +86,9 @@ const AvatarUpload = ({onSuccess, filePath}) => {
     </>)
 }
 
-export default function Tab1() {
+export default function Tab1({anchor}) {
+    const {user, room} = anchor;
     const actionRef = useRef();
-    const {user, updateUser} = useContext(GlobalContext);
     const columns = [
         {
             title: '用户名',
@@ -119,18 +118,17 @@ export default function Tab1() {
         clientBackendFetch.postJson('/user/update', data)
             .then(r => {
                 if (r) {
-                    updateUser({action: 'update', data: data});
                     message.success("success");
                 }
             })
-    }, [updateUser, user?.userUuid])
+    }, [user?.userUuid])
     const handleSave = useCallback((key, row) => {
         const data = {'userUuid': user.userUuid};
         data[key] = row[key];
-        editUser(data, () => updateUser({action: 'update', data: data}));
-    }, [updateUser, user?.userUuid])
-    const handleRequest = useCallback(() => {
-        return {success: true, data: user ? user : {}}
+        editUser(data);
+    }, [user?.userUuid])
+    const handleRequest = useCallback(async () => {
+        return {success: true, data: user}
     }, [user])
     return (
         <>

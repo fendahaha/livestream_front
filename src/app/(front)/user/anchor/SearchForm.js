@@ -1,7 +1,7 @@
 import {Button, Form, Input, InputNumber} from "antd";
 import React from "react";
 
-export default function SearchForm({setSearchData, setPagination}) {
+export default function SearchForm({setSearchData, setPagination, anchor}) {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         setSearchData(values);
@@ -12,7 +12,8 @@ export default function SearchForm({setSearchData, setPagination}) {
         });
     };
     return (
-        <Form form={form} name="horizontal" layout="inline" onFinish={onFinish}>
+        <Form form={form} name="horizontal" layout="inline" onFinish={onFinish}
+              initialValues={{anchorUuid: anchor.anchorUuid}}>
             <Form.Item name="clientName"
                        rules={[
                            {
@@ -22,14 +23,10 @@ export default function SearchForm({setSearchData, setPagination}) {
                        ]}>
                 <Input placeholder="clientName"/>
             </Form.Item>
-            <Form.Item name="anchorName"
-                       rules={[
-                           {
-                               type: 'string',
-                               whitespace: true,
-                           },
-                       ]}>
-                <Input placeholder="anchorName"/>
+            <Form.Item name="anchorUuid"
+                       hidden={true}
+            >
+                <Input placeholder="anchorUuid"/>
             </Form.Item>
             <Form.Item name="giftName"
                        rules={[

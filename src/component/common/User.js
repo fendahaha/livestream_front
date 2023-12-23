@@ -10,7 +10,8 @@ import {logout} from "@/app/_func/client";
 
 export default function User() {
     const [loginModalOpen, setLoginModalOpen] = useState(false);
-    const {user, updateUser} = useContext(GlobalContext);
+    const {userInfo, updateUserInfo} = useContext(GlobalContext);
+    const {user, anchor, client} = userInfo;
     const userAvatar = useMemo(() => {
         return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
     }, []);
@@ -32,7 +33,7 @@ export default function User() {
                 >
                     <Login onSuccess={(user) => {
                         setLoginModalOpen(false);
-                        updateUser({action: 'replace', data: user});
+                        updateUserInfo({action: 'replace', data: user});
                     }}/>
                 </Modal>
             </Tooltip>}
@@ -45,7 +46,7 @@ export default function User() {
                             {
                                 key: '1',
                                 label: (
-                                    <Link href={user.userType === 3 ? '/user/client' : '/user/anchor1'}>
+                                    <Link href={user.userType === 3 ? '/user/client' : '/user/anchor'}>
                                         <Button>修改资料</Button>
                                     </Link>
                                 )
@@ -55,7 +56,7 @@ export default function User() {
                                 label: (
                                     <Button danger onClick={() => {
                                         logout(() => {
-                                            updateUser({action: 'replace', data: null});
+                                            updateUserInfo({action: 'replace', data: null});
                                             message.success("已退出登录")
                                             router.refresh();
                                         });

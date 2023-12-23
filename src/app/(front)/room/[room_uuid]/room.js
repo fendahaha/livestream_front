@@ -149,7 +149,8 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clie
 }
 
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
-    const {user} = useContext(GlobalContext);
+    const {userInfo, updateUserInfo} = useContext(GlobalContext);
+    const {user} = userInfo;
     const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchor.anchorUuid, anchorUser.userName, user?.userUuid, user?.userName);
     return (
         <div className={styles.container}>

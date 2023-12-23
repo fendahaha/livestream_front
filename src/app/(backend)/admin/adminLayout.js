@@ -6,15 +6,20 @@ import {GithubFilled, InfoCircleFilled, LogoutOutlined, QuestionCircleFilled} fr
 import {PageContainer, ProCard, ProLayout} from "@ant-design/pro-components";
 import Link from "next/link";
 import {logout} from "@/app/_func/client";
+import {useContext} from "react";
+import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {imagePrefix} from "@/util/requestUtil";
 
 export default function AdminLayout({children}) {
+    const {userInfo, updateUserInfo} = useContext(GlobalContext);
+    const {user, anchor, client} = userInfo;
     const s = usePathname();
     const router = useRouter();
     const props = {
         siderWidth: 216,
         avatarProps: {
-            src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-            title: '七妮妮',
+            src: `${imagePrefix}/${user.userAvatar}`,
+            title: user.userDisplayName,
             size: 'small',
             render: (props, dom) => {
                 return (
