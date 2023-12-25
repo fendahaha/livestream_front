@@ -42,21 +42,9 @@ const defaultProps = {
                 icon: <SmileFilled/>,
             },
             {
-                path: '/admin/user',
-                name: 'user',
+                path: '/admin/client',
+                name: 'client',
                 icon: <SmileFilled/>,
-                routes: [
-                    {
-                        path: 'edit',
-                        name: 'edit',
-                        icon: <SmileFilled/>,
-                    },
-                    {
-                        path: 'list',
-                        name: 'list',
-                        icon: <SmileFilled/>,
-                    }
-                ]
             },
             {
                 path: 'https://ant.design',
