@@ -1,28 +1,8 @@
 import {ProDescriptions} from '@ant-design/pro-components';
-import {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {message, Upload} from "antd";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
-
-async function editUser(data, onSuccess) {
-    clientBackendFetch.post('/user/update', data)
-        .then(res => {
-            if (res.status === 200) {
-                return res.json()
-            }
-        })
-        .then(r => {
-            if (r && r.data) {
-                if (onSuccess) {
-                    onSuccess()
-                }
-                message.success("修改成功")
-            } else {
-                message.error("修改失败")
-            }
-        })
-}
 
 const AvatarUpload = ({onSuccess, filePath}) => {
     const [loading, setLoading] = useState(false);
@@ -42,11 +22,10 @@ const AvatarUpload = ({onSuccess, filePath}) => {
             const {name, response} = info.file
             if (response.code === 200) {
                 const fileObject = response.data[name];
+                const fileUrl = `${imagePrefix}/${fileObject.fileCategory}/${fileObject.fileUniqueName}`
+                setImageUrl(fileUrl);
                 if (onSuccess) {
                     onSuccess(fileObject)
-                } else {
-                    const fileUrl = `${imagePrefix}/${fileObject.fileCategory}/${fileObject.fileUniqueName}`
-                    setImageUrl(fileUrl);
                 }
             }
         }
@@ -87,40 +66,80 @@ const AvatarUpload = ({onSuccess, filePath}) => {
     </>)
 }
 
-export default function Tab1() {
+
+export function ClientDetail({client}) {
     const actionRef = useRef();
-    const {userInfo, updateUserInfo} = useContext(GlobalContext);
-    const {user, anchor, client} = userInfo;
+    const columns = [
+        {
+            title: '等级',
+            dataIndex: 'clientLeavel',
+            ellipsis: true,
+            valueType: 'number',
+        },
+        {
+            title: '钱包',
+            dataIndex: 'clientMoney',
+            ellipsis: true,
+            valueType: 'number',
+        },
+        {
+            title: '消费',
+            dataIndex: 'clientMoneySended',
+            ellipsis: true,
+            valueType: 'number',
+        },
+        {
+            title: '充值',
+            dataIndex: 'clientMoneyRecharged',
+            ellipsis: true,
+            valueType: 'number',
+        },
+    ];
+    return (
+        <ProDescriptions
+            actionRef={actionRef}
+            title={''}
+            request={async () => ({success: true, data: client})}
+            columns={columns}
+        />
+    )
+}
+
+export function ClientUserDetail({user}) {
+    const actionRef = useRef();
     const columns = [
         {
             title: '用户名',
             dataIndex: 'userDisplayName',
             ellipsis: true,
+            valueType: 'string',
         },
         {
             title: '邮箱',
             dataIndex: 'userEmail',
             copyable: true,
             ellipsis: true,
+            valueType: 'email',
         },
         {
             title: '电话',
             dataIndex: 'userPhone',
             copyable: true,
             ellipsis: true,
+            valueType: 'number',
         },
         {
             title: '国家',
             dataIndex: 'userCountry',
             ellipsis: true,
+            valueType: 'string',
         },
     ];
     const handleAvatarUpload = useCallback((fileObject) => {
         const data = {userUuid: user?.userUuid, userAvatar: fileObject.filePath};
         clientBackendFetch.postJson('/user/update', data)
             .then(r => {
-                if (r) {
-                    updateUserInfo({action: 'updateUser', data: data});
+                if (r && r.data) {
                     message.success("success");
                 }
             })
@@ -128,21 +147,34 @@ export default function Tab1() {
     const handleSave = useCallback((key, row) => {
         const data = {'userUuid': user.userUuid};
         data[key] = row[key];
-        editUser(data, () => updateUserInfo({action: 'updateUser', data: data}));
+        clientBackendFetch.postJson('/user/update', data)
+            .then(r => {
+                if (r && r.data) {
+                    message.success("修改成功")
+                } else {
+                    message.error("修改失败")
+                }
+            })
     }, [user?.userUuid])
-    const handleRequest = useCallback(() => {
-        return {success: true, data: user ? user : {}}
-    }, [user])
     return (
         <>
             <ProDescriptions
                 actionRef={actionRef}
                 title={<AvatarUpload onSuccess={handleAvatarUpload} filePath={user?.userAvatar}/>}
-                request={handleRequest}
+                request={async () => ({success: true, data: user})}
                 editable={{onSave: handleSave}}
                 columns={columns}
-            >
-            </ProDescriptions>
+            />
         </>
     );
+}
+
+export default function Tab1({clientInfo}) {
+    const {user, client} = clientInfo;
+    return (
+        <>
+            <ClientUserDetail user={user}/>
+            <ClientDetail client={client}/>
+        </>
+    )
 };

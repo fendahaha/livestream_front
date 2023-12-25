@@ -47,7 +47,7 @@ export default function User() {
                                 key: '1',
                                 label: (
                                     <Link href={user.userType === 3 ? '/user/client' : '/user/anchor'}>
-                                        <Button>修改资料</Button>
+                                        <Button>用户中心</Button>
                                     </Link>
                                 )
                             },

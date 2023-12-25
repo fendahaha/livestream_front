@@ -13,7 +13,7 @@ export default function AnchorPage() {
     const {user} = userInfo;
     const [anchor, setAnchor] = useState(null);
     useEffect(() => {
-        clientBackendFetch.formPostJson('/anchor/query_by_useruuid', {'user_uuid': user.userUuid})
+        clientBackendFetch.formPostJson('/anchor/query_by_useruuid', {'user_uuid': user?.userUuid})
             .then(r => r?.data)
             .then(r => setAnchor(r))
     }, [user?.userUuid])
@@ -41,11 +41,12 @@ export default function AnchorPage() {
     return (
         <FixWidthDiv>
             <div>
-                <Tabs
+                {anchor && <Tabs
                     tabPosition={'left'}
                     size={'large'}
                     items={items}
-                />
+                />}
+                {!anchor && <div style={{textAlign: 'center'}}><Spin/></div>}
             </div>
         </FixWidthDiv>
     );
