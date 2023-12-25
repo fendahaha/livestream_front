@@ -340,3 +340,57 @@ export function CreateButton({initialFormItems, onFinish}) {
         </span>
     );
 }
+
+export const NoActionDataList = ({
+                             searchData,
+                             pagination,
+                             setPagination,
+                             initialColumns,
+                             get_data,
+                         }) => {
+    const [tableLoading, setTableLoading] = useState(true);
+    const [form] = Form.useForm();
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        const params = {
+            pageNum: pagination.current,
+            pageSize: pagination.pageSize,
+            ...searchData,
+        };
+
+        get_data(params).then(r => {
+            if (r) {
+                const {list, total} = r;
+                setData(list);
+                setPagination({...pagination, total});
+                setTableLoading(false);
+            }
+        })
+    }, [searchData, JSON.stringify(pagination)]);
+    return (
+        <Form form={form} component={false}>
+            <Table
+                loading={tableLoading}
+                bordered={true}
+                size={'small'}
+                rowKey={(record) => record.id}
+                rowClassName="editable-row"
+                columns={initialColumns}
+                dataSource={data}
+                pagination={{
+                    position: ['bottomRight'],
+                    showSizeChanger: true,
+                    pageSizeOptions: [10, 20, 50, 100],
+                    showTotal: (total, range) => `Total ${total} items`,
+                    ...pagination,
+                }}
+                onChange={(_pagination, filters, sorter) => {
+                    if (_pagination?.current) {
+                        const {current, pageSize, total} = _pagination;
+                        setPagination({..._pagination})
+                    }
+                }}
+            />
+        </Form>
+    );
+};

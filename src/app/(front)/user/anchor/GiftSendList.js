@@ -5,7 +5,7 @@ import {message, Tooltip} from "antd";
 import {clientBackendFetch} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import {DataList} from "@/component/antform";
+import {NoActionDataList} from "@/component/antform";
 import SearchForm from "@/app/(front)/user/anchor/SearchForm";
 
 const initialColumns = [
@@ -13,32 +13,22 @@ const initialColumns = [
         title: 'clientName',
         dataIndex: 'clientName',
         ellipsis: true,
-        editable: true,
-        editInputType: 'text',
     },
     {
         title: 'anchorName',
         dataIndex: 'anchorName',
-        editable: true,
-        editInputType: 'text',
     },
     {
         title: 'giftName',
         dataIndex: 'giftName',
-        editable: true,
-        editInputType: 'text',
     },
     {
         title: 'giftValue',
         dataIndex: 'giftValue',
-        editable: true,
-        editInputType: 'number',
     },
     {
         title: 'giftSendDate',
         dataIndex: 'giftSendDate',
-        editable: false,
-        editInputType: 'date',
         render: (_, record) => _.format('YYYY-MM-DD HH:mm:ss')
     },
 ];
@@ -108,9 +98,8 @@ export default function GiftSendList({anchor}) {
                 </span>
             </div>
             <div style={{padding: '0 10px', marginBottom: 10}}>
-                <DataList searchData={searchData} pagination={pagination} setPagination={setPagination}
-                          initialColumns={initialColumns} get_data={get_data} update_data={update_data}
-                          delete_data={delete_data}/>
+                <NoActionDataList searchData={searchData} pagination={pagination} setPagination={setPagination}
+                          initialColumns={initialColumns} get_data={get_data}/>
             </div>
         </>
     );

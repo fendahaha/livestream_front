@@ -6,7 +6,7 @@ import {message, Tooltip} from "antd";
 import {clientBackendFetch} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import {DataList} from "@/component/antform";
+import {NoActionDataList} from "@/component/antform";
 
 const initialColumns = [
     {
@@ -108,9 +108,8 @@ export default function GiftSendList() {
                 </span>
             </div>
             <div style={{padding: '0 10px', marginBottom: 10}}>
-                <DataList searchData={searchData} pagination={pagination} setPagination={setPagination}
-                          initialColumns={initialColumns} get_data={get_data} update_data={update_data}
-                          delete_data={delete_data}/>
+                <NoActionDataList searchData={searchData} pagination={pagination} setPagination={setPagination}
+                          initialColumns={initialColumns} get_data={get_data}/>
             </div>
         </>
     );
