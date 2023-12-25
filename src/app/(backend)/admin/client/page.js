@@ -63,13 +63,15 @@ const initialColumns = [
         title: 'clientMoneySended',
         dataIndex: 'clientMoneySended',
         ellipsis: true,
-        editable: false,
+        editable: true,
+        editInputType: 'number',
     },
     {
         title: 'clientMoneyRecharged',
         dataIndex: 'clientMoneyRecharged',
         ellipsis: true,
-        editable: false,
+        editable: true,
+        editInputType: 'number',
     },
     {
         title: 'createAt',
@@ -99,8 +101,8 @@ const get_data = (params) => {
     })
 }
 const update_data = async (item) => {
-    item['giftCreateAt'] = item['giftCreateAt'].format("YYYY-MM-DD HH:mm:ss");
-    await clientBackendFetch.postJson('/gift/update', item).then(r => {
+    item['createAt'] = item['createAt'].format("YYYY-MM-DD HH:mm:ss");
+    await clientBackendFetch.postJson(`/client/update/${item.userUuid}`, item).then(r => {
         if (r?.data) {
             message.success("success")
         } else {
