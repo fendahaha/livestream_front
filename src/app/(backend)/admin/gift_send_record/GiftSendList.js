@@ -95,6 +95,7 @@ export default function GiftSendList() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
             }}>
+                <span/>
                 <span style={{
                     paddingRight: '10px',
                     fontSize: '22px',

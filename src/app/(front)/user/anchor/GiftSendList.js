@@ -85,6 +85,7 @@ export default function GiftSendList({anchor}) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
             }}>
+                <span/>
                 <span style={{
                     paddingRight: '10px',
                     fontSize: '22px',
