@@ -1,6 +1,6 @@
 import 'server-only'
 import {headers} from "next/headers";
-import {clientBackendFetch, nodeBackendFetch} from "@/util/requestUtil";
+import {nodeBackendFetch} from "@/util/requestUtil";
 
 export const setHeaderParam = (headers, params) => {
     const requestHeaders = new Headers(headers);
@@ -17,17 +17,8 @@ export const getHeaderParam = (paramName) => {
 export async function getLoginUser() {
     const headersInstance = headers();
     const cookieHeaderValue = headersInstance.get("cookie");
-    return await nodeBackendFetch.post('/user/getLoginUser', null, {cookie: cookieHeaderValue})
-        .then(res => {
-            if (res.status === 200) {
-                return res.json()
-            }
-        })
-        .then(r => {
-            if (r) {
-                return r.data
-            }
-        })
+    return await nodeBackendFetch.postJson('/user/getLoginUser', null, {cookie: cookieHeaderValue})
+        .then(r => r?.data)
 }
 
 export const get_anchors = async () => {

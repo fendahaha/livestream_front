@@ -13,8 +13,8 @@ async function get_login_user(request) {
         },
     });
     if (response.status === 200) {
-        const userInfo = (await response.json()).data;
-        return userInfo.user
+        const user = (await response.json()).data;
+        return user
     }
     return null
 }

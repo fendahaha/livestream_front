@@ -9,8 +9,7 @@ import Tab2 from "@/app/(front)/user/anchor/tab2";
 import GiftSendList from "@/app/(front)/user/anchor/GiftSendList";
 
 export default function AnchorPage() {
-    const {userInfo, updateUserInfo} = useContext(GlobalContext);
-    const {user} = userInfo;
+    const {user, updateUser} = useContext(GlobalContext);
     const [anchor, setAnchor] = useState(null);
     useEffect(() => {
         clientBackendFetch.formPostJson('/anchor/query_by_useruuid', {'user_uuid': user?.userUuid})

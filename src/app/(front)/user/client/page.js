@@ -7,8 +7,7 @@ import {clientBackendFetch} from "@/util/requestUtil";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 
 export default function Component() {
-    const {userInfo, updateUserInfo} = useContext(GlobalContext);
-    const {user} = userInfo;
+    const {user, updateUser} = useContext(GlobalContext);
     const [client, setClient] = useState(null);
     useEffect(() => {
         clientBackendFetch.getJson(`/client/${user?.userUuid}`)

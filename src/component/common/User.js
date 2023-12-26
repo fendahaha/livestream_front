@@ -9,8 +9,7 @@ import {useRouter} from "next/navigation";
 import {logout} from "@/app/_func/client";
 
 export default function User() {
-    const {userInfo, updateUserInfo} = useContext(GlobalContext);
-    const {user, anchor, client} = userInfo;
+    const {user, updateUser} = useContext(GlobalContext);
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const userAvatar = useMemo(() => {
         return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
@@ -32,7 +31,7 @@ export default function User() {
                 >
                     <Login onSuccess={(user) => {
                         setLoginModalOpen(false);
-                        updateUserInfo({action: 'replace', data: user});
+                        updateUser({action: 'replace', data: user});
                     }}/>
                 </Modal>
             </Tooltip>}
@@ -55,8 +54,8 @@ export default function User() {
                                 label: (
                                     <Button danger onClick={() => {
                                         logout(() => {
-                                            updateUserInfo({action: 'replace', data: null});
-                                            message.success("已退出登录")
+                                            updateUser({action: 'replace', data: null});
+                                            message.success("已退出登录");
                                         });
                                     }}>退出登录</Button>
                                 )

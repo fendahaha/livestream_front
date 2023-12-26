@@ -11,15 +11,14 @@ import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {imagePrefix} from "@/util/requestUtil";
 
 export default function AdminLayout({children}) {
-    const {userInfo, updateUserInfo} = useContext(GlobalContext);
-    const {user, anchor, client} = userInfo;
+    const {user, updateUser} = useContext(GlobalContext);
     const s = usePathname();
     const router = useRouter();
     const props = {
         siderWidth: 216,
         avatarProps: {
             src: `${imagePrefix}/${user.userAvatar}`,
-            title: user.userDisplayName,
+            title: user?.userDisplayName,
             size: 'small',
             render: (props, dom) => {
                 return (

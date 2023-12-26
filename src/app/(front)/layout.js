@@ -14,12 +14,11 @@ export const metadata = {
 }
 
 export default async function RootLayout({children}) {
-    const userInfo = await getLoginUser();
     return (
         <html lang="en">
         <body className={inter.className}>
         <StyledComponentsRegistry>
-            <GlobalContextManager userInfo={userInfo}>
+            <GlobalContextManager userInfo={await getLoginUser()}>
                 <div className={styles.main}>
                     <div className={styles.header}>
                         <Header/>

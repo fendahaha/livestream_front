@@ -1,45 +1,27 @@
 'use client'
-import {createContext, useMemo, useReducer, useState} from "react";
+import {createContext, useMemo, useReducer} from "react";
 
-const globalContextDefaultValue = {userInfo: {user: null, anchor: null, client: null}, updateUserInfo: null};
+const globalContextDefaultValue = {user: null, updateUser: null};
 export const GlobalContext = createContext(globalContextDefaultValue);
 
 export function GlobalContextManager({children, userInfo}) {
-    const [user_info, dispatchU] = useReducer((prevState, action) => {
-        const {user, anchor, client} = prevState
+    const [user, updateUser] = useReducer((prevState, action) => {
         const _action = action.action;
         const _data = action.data;
-        if (_action === 'updateUser') {
+        if (_action === 'update') {
             for (const dataKey in _data) {
-                user[dataKey] = _data[dataKey]
+                prevState[dataKey] = _data[dataKey]
             }
-            return {...prevState, user}
-        }
-        if (_action === 'updateAnchor') {
-            for (const dataKey in _data) {
-                anchor[dataKey] = _data[dataKey]
-            }
-            return {...prevState, anchor}
-        }
-        if (_action === 'updateClient') {
-            for (const dataKey in _data) {
-                client[dataKey] = _data[dataKey]
-            }
-            return {...prevState, client}
+            return {...prevState}
         }
         if (_action === 'replace') {
-            if (_data) {
-                return {..._data}
-            }
-            return globalContextDefaultValue
+            return _data
         }
-    }, userInfo, r => {
-        return r ? r : globalContextDefaultValue
-    });
+    }, userInfo, r => r);
 
     const contextValue = useMemo(() => {
-        return {userInfo: user_info, updateUserInfo: dispatchU}
-    }, [user_info]);
+        return {user, updateUser}
+    }, [user]);
     return (
         <GlobalContext.Provider value={contextValue}>
             {children}
