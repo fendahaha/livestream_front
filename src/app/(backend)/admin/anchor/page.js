@@ -6,8 +6,8 @@ import {clientBackendFetch, imagePrefix, rtmpServer} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {CreateButton, DataList, ImageUploadFormItem} from "@/component/antform";
-import {MyCopyableToolTip} from "@/component/global/common";
 import SearchForm from "@/app/(backend)/admin/anchor/SearchForm";
+import {MyCopyableToolTip} from "@/component/ant_common";
 
 const initialColumns = [
     {

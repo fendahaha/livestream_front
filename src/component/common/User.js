@@ -9,13 +9,12 @@ import {useRouter} from "next/navigation";
 import {logout} from "@/app/_func/client";
 
 export default function User() {
-    const [loginModalOpen, setLoginModalOpen] = useState(false);
     const {userInfo, updateUserInfo} = useContext(GlobalContext);
     const {user, anchor, client} = userInfo;
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
     const userAvatar = useMemo(() => {
         return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
     }, []);
-    let router = useRouter();
     return (
         <>
             {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>
@@ -58,7 +57,6 @@ export default function User() {
                                         logout(() => {
                                             updateUserInfo({action: 'replace', data: null});
                                             message.success("已退出登录")
-                                            router.refresh();
                                         });
                                     }}>退出登录</Button>
                                 )
