@@ -31,7 +31,7 @@ export default function ZhuboRankList({list}) {
     }
     const s1 = top.map(e => {
         return (
-            <a className={`${styles.zhubo} ${e.rank}`} href={''} key={e.name}>
+            <a className={`${styles.zhubo} ${e.rank}`} href={''} key={e.room_uuid}>
                 <div className={styles.s1}>
                     <img src={`${imagePrefix}/${e.avatar}`} alt={''} className={styles.avatar}/>
                 </div>
@@ -46,7 +46,7 @@ export default function ZhuboRankList({list}) {
 
     const s2 = others.map(e => {
         return (
-            <div className={styles.zb} key={e.name}>
+            <div className={styles.zb} key={e.room_uuid}>
                 <a href={''} className={styles.zb_link}>
                     <div className={styles.t1}>
                         <img src={e.rank} alt={''} className={styles.zb_i1}/>

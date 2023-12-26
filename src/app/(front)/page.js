@@ -5,7 +5,8 @@ import ZhuboRankList from "@/app/(front)/component/ZhuboRankList";
 import {FixWidthDiv} from "@/component/common/WidthDiv";
 import MyEmpty from "@/component/ant_common";
 import {get_anchors, get_rank_anchors} from "@/app/_func/server";
-
+import {cookies} from "next/headers";
+// export const dynamic = 'force-dynamic'
 const test_data = [
     {img: '/nav/nav1.jpg', link: ''},
     {img: '/nav/nav2.jpg', link: ''},
@@ -21,6 +22,7 @@ export default async function Home() {
                 <div>
                     <MyCarousel data={test_data}/>
                 </div>
+                <p>{new Date().getMilliseconds()}</p>
                 <div className={styles.layout}>
                     <div className={styles.left}>
                         {anchors.length ? <div className={styles.anchor_list}><ZhuboStreamList list={anchors}/></div> :

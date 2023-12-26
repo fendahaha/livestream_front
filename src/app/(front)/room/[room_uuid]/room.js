@@ -41,7 +41,7 @@ const MessageUtil = {
         return this.createMessage(this.systemMessage, data);
     }
 }
-const useStomp = (destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
+const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const [giftMessages, dispatchGiftMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const stompClientRef = useRef(null);
@@ -84,10 +84,11 @@ const useStomp = (destinationTopic, anchorUserUuid, anchorUserName, userUuid, us
     useEffect(() => {
         if (!stompClientRef.current) {
             stompClientRef.current = new Client({
-                brokerURL: `${wsPrefix}`,
+                brokerURL: `${wsPrefix}?userUuid=${userUuid}&roomUuid=${roomUuid}`,
                 connectHeaders: {
                     // passcode: 'password',
-                    user: userUuid ? userUuid : 'null',
+                    // userUuid: userUuid ? userUuid : 'null',
+                    // roomUuid: roomUuid,
                 },
                 connectionTimeout: 10 * 1000,
                 reconnectDelay: 5 * 1000,
@@ -151,13 +152,13 @@ const useStomp = (destinationTopic, anchorUserUuid, anchorUserName, userUuid, us
                 stompClientRef.current = null;
             }
         }
-    }, [userUuid, destinationTopic]);
+    }, [userUuid, destinationTopic, roomUuid]);
     return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage]
 }
 
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     const {user, updateUser} = useContext(GlobalContext);
-    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
+    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
@@ -194,7 +195,7 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
                                         {
                                             key: '2',
                                             label: 'Tab 2',
-                                            children: <OnlineUsers/>,
+                                            children: <OnlineUsers room_uuid={room.roomUuid}/>,
                                         },
                                     ]
                                 }>

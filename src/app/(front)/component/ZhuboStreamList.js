@@ -27,7 +27,7 @@ export default function ZhuboStreamList({list}) {
     const items = list.map(e => {
         let isOnlineClass = e.online ? styles.online : styles.offline;
         return (
-            <div className={styles.item} key={e.name}>
+            <div className={styles.item} key={e.room_uuid}>
                 <div className={isOnlineClass}>
                     <img src={`${imagePrefix}/${e.avatar}`} alt={""} className={styles.item_img}/>
                     <div className={styles.item_info}>

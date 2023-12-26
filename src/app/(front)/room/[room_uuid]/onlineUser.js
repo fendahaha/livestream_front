@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Avatar, Divider, List, Skeleton} from 'antd';
+import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 
-export const OnlineUsers = () => {
+export const OnlineUsers = ({room_uuid}) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const loadMoreData = () => {
@@ -10,10 +11,21 @@ export const OnlineUsers = () => {
             return;
         }
         setLoading(true);
-        fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
-            .then((res) => res.json())
+        // fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
+        //     .then((res) => res.json())
+        //     .then((body) => {
+        //         setData([...data, ...body.results]);
+        //         setLoading(false);
+        //     })
+        //     .catch(() => {
+        //         setLoading(false);
+        //     });
+        clientBackendFetch.getJson(`/room/${room_uuid}/onlineLoginUsers`)
             .then((body) => {
-                setData([...data, ...body.results]);
+                let users = body.data.map(e => {
+                    return JSON.parse(e)
+                })
+                setData([...data, ...users]);
                 setLoading(false);
             })
             .catch(() => {
@@ -36,7 +48,7 @@ export const OnlineUsers = () => {
             <InfiniteScroll
                 dataLength={data.length}
                 next={loadMoreData}
-                hasMore={data.length < 50}
+                hasMore={false}
                 loader={
                     <Skeleton
                         avatar
@@ -52,13 +64,13 @@ export const OnlineUsers = () => {
                 <List
                     dataSource={data}
                     renderItem={(item) => (
-                        <List.Item key={item.email}>
+                        <List.Item key={item.userUuid}>
                             <List.Item.Meta
-                                avatar={<Avatar src={item.picture.large}/>}
-                                title={<a href="https://ant.design">{item.name.last}</a>}
-                                description={item.email}
+                                avatar={<Avatar src={`${imagePrefix}/${item.userAvatar}`}/>}
+                                title={<a>{item.userDisplayName}</a>}
+                                description={item.userCountry}
                             />
-                            <div>Content</div>
+                            <div>{''}</div>
                         </List.Item>
                     )}
                 />
