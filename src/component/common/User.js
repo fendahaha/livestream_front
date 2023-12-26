@@ -1,5 +1,5 @@
 'use client'
-import {useContext, useMemo, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import {Avatar, Button, Dropdown, message, Modal, Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import Login from "@/component/common/Login";
@@ -7,14 +7,28 @@ import Link from "next/link";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {useRouter} from "next/navigation";
 import {logout} from "@/app/_func/client";
+import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 
 export default function User() {
+    const router = useRouter();
     const {user, updateUser} = useContext(GlobalContext);
     const [loginModalOpen, setLoginModalOpen] = useState(false);
+    const [_user, set_user] = useState(null);
+    useEffect(() => {
+        clientBackendFetch.getJson(`/user/${user?.userUuid}`).then(r => {
+            set_user(r?.data)
+        })
+    }, [user?.userUuid]);
     const userAvatar = useMemo(() => {
-        return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
-    }, []);
-    const router = useRouter();
+        if (_user?.userAvatar) {
+            return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}
+                           src={`${imagePrefix}/${_user?.userAvatar}`}/>
+        } else {
+            return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
+        }
+    }, [_user?.userAvatar]);
+
+
     return (
         <>
             {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>

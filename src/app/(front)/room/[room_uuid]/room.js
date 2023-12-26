@@ -41,7 +41,7 @@ const MessageUtil = {
         return this.createMessage(this.systemMessage, data);
     }
 }
-const useStomp = (destinationTopic, anchorUuid, anchorUserName, userUuid, userName, userType) => {
+const useStomp = (destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const [giftMessages, dispatchGiftMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const stompClientRef = useRef(null);
@@ -51,10 +51,10 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, userUuid, userNa
         if (userUuid) {
             if (stompClientRef.current && stompClientRef.current.connected) {
                 let _headers = {
-                    anchorUuid: anchorUuid,
+                    anchorUserUuid: anchorUserUuid,
                     anchorUserName: anchorUserName,
                     room_topic: destinationTopic,
-                    clientUuid: userUuid,
+                    clientUserUuid: userUuid,
                     clientUserName: userName,
                 }
                 try {
@@ -71,7 +71,7 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, userUuid, userNa
         } else {
             message.info("please log in");
         }
-    }, [anchorUserName, anchorUuid, userName, userUuid, destinationTopic]);
+    }, [anchorUserName, anchorUserUuid, userName, userUuid, destinationTopic]);
     const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
     const sendGiftMessage = useCallback((msg) => {
         if (userTypeUtil.is_client(userType)) {
@@ -137,8 +137,8 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, userUuid, userNa
                 if (userUuid) {
                     stompClientRef.current.subscribe("/user/queue/person", (m) => {
                         const m1 = JSON.parse(m.body);
-                        if (m1.type === 'money_not_enough') {
-                            message.info("money not enough");
+                        if (m1.type === 'error') {
+                            message.info(m1.msg);
                         }
                     });
                 }
@@ -157,7 +157,7 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, userUuid, userNa
 
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     const {user, updateUser} = useContext(GlobalContext);
-    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchor.anchorUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
+    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
