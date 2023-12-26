@@ -14,6 +14,7 @@ export default function User() {
     const userAvatar = useMemo(() => {
         return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
     }, []);
+    const router = useRouter();
     return (
         <>
             {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>
@@ -32,6 +33,7 @@ export default function User() {
                     <Login onSuccess={(user) => {
                         setLoginModalOpen(false);
                         updateUser({action: 'replace', data: user});
+                        router.refresh();
                     }}/>
                 </Modal>
             </Tooltip>}
@@ -55,6 +57,7 @@ export default function User() {
                                     <Button danger onClick={() => {
                                         logout(() => {
                                             updateUser({action: 'replace', data: null});
+                                            router.refresh();
                                             message.success("已退出登录");
                                         });
                                     }}>退出登录</Button>

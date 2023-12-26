@@ -14,6 +14,7 @@ import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {message} from "antd";
+import {userTypeUtil} from "@/util/userUtil";
 
 const MessageUtil = {
     chatMessage: 3,
@@ -40,21 +41,21 @@ const MessageUtil = {
         return this.createMessage(this.systemMessage, data);
     }
 }
-const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clientUserName) => {
+const useStomp = (destinationTopic, anchorUuid, anchorUserName, userUuid, userName, userType) => {
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const [giftMessages, dispatchGiftMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const stompClientRef = useRef(null);
     const danmuRef = useRef(null);
     const giftRef = useRef(null);
     const sendMessage = useCallback((msg, destination, headers = {}) => {
-        if (clientUuid) {
+        if (userUuid) {
             if (stompClientRef.current && stompClientRef.current.connected) {
                 let _headers = {
                     anchorUuid: anchorUuid,
                     anchorUserName: anchorUserName,
                     room_topic: destinationTopic,
-                    clientUuid: clientUuid,
-                    clientUserName: clientUserName,
+                    clientUuid: userUuid,
+                    clientUserName: userName,
                 }
                 try {
                     stompClientRef.current.publish({
@@ -70,9 +71,15 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clie
         } else {
             message.info("please log in");
         }
-    }, [anchorUserName, anchorUuid, clientUserName, clientUuid, destinationTopic]);
+    }, [anchorUserName, anchorUuid, userName, userUuid, destinationTopic]);
     const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
-    const sendGiftMessage = useCallback((msg) => sendMessage(MessageUtil.createGiftMessage(msg), "/app/gift"), [sendMessage]);
+    const sendGiftMessage = useCallback((msg) => {
+        if (userTypeUtil.is_client(userType)) {
+            sendMessage(MessageUtil.createGiftMessage(msg), "/app/gift");
+        } else {
+            message.info("只有用户可以发送礼物");
+        }
+    }, [sendMessage, userType]);
 
     useEffect(() => {
         if (!stompClientRef.current) {
@@ -80,7 +87,7 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clie
                 brokerURL: `${wsPrefix}`,
                 connectHeaders: {
                     // passcode: 'password',
-                    user: clientUuid ? clientUuid : 'null',
+                    user: userUuid ? userUuid : 'null',
                 },
                 connectionTimeout: 10 * 1000,
                 reconnectDelay: 5 * 1000,
@@ -127,7 +134,7 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clie
                         dispatchGiftMessages(messageObj)
                     }
                 });
-                if (clientUuid) {
+                if (userUuid) {
                     stompClientRef.current.subscribe("/user/queue/person", (m) => {
                         const m1 = JSON.parse(m.body);
                         if (m1.type === 'money_not_enough') {
@@ -144,13 +151,13 @@ const useStomp = (destinationTopic, anchorUuid, anchorUserName, clientUuid, clie
                 stompClientRef.current = null;
             }
         }
-    }, [clientUuid, destinationTopic]);
+    }, [userUuid, destinationTopic]);
     return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage]
 }
 
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     const {user, updateUser} = useContext(GlobalContext);
-    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchor.anchorUuid, anchorUser.userName, user?.userUuid, user?.userName);
+    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(topic, anchor.anchorUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>

@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server'
 import {backendUrlBase} from "@/util/requestUtil";
 import {setHeaderParam} from "@/app/_func/server";
-import {headers} from "next/headers";
+import {userTypeUtil} from "@/util/userUtil";
 
 
 async function get_login_user(request) {
@@ -17,12 +17,6 @@ async function get_login_user(request) {
         return user
     }
     return null
-}
-
-const userType = {
-    'admin': 1,
-    'anchor': 2,
-    'client': 3,
 }
 
 export async function middleware(request) {
@@ -56,7 +50,7 @@ export async function middleware(request) {
     if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
         try {
             const user = await get_login_user(request);
-            if (!user || user['userType'] !== userType.admin) {
+            if (!user || !userTypeUtil.is_admin(user?.userType)) {
                 return NextResponse.redirect(`${origin}/admin-login`)
             }
         } catch (e) {
@@ -66,7 +60,7 @@ export async function middleware(request) {
     if (pathname.startsWith("/user")) {
         try {
             const user = await get_login_user(request);
-            if (!user || user['userType'] === userType.admin) {
+            if (!user || userTypeUtil.is_admin(user?.userType)) {
                 return NextResponse.redirect(`${origin}/login`)
             }
         } catch (e) {
