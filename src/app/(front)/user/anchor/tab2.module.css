@@ -1,0 +1,51 @@
+.anchor_image {
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.anchor_image:after {
+    content: '';
+    display: block;
+    margin-bottom: 100%;
+}
+
+.anchor_image_item {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.anchor_image_del {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: inline-block;
+    font-size: 26px;
+    color: white;
+}
+
+.anchor_image:hover .anchor_image_del {
+    color: red;
+}
+
+.anchor_images {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 15px;
+}
+
+.fd_ant_upload {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
