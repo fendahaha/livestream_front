@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 import {Image, Modal} from "antd";
 import styles from './ZhuboOfflineCover.module.css';
@@ -91,7 +91,7 @@ const OfflineCoverHeader = ({anchor, user}) => {
         </>
     )
 }
-export const OfflineCover = ({userUuid}) => {
+export const ImagesModal = ({children, userUuid}) => {
     const [open, setOpen] = useState(false);
     const [anchor, setAnchor] = useState(null);
     useEffect(() => {
@@ -137,8 +137,7 @@ export const OfflineCover = ({userUuid}) => {
     }
     return (
         <>
-            <div className={styles.offline_cover} onClick={() => setOpen(true)}>
-            </div>
+            {children ? React.cloneElement(children, {onClick: () => setOpen(true)}) : ''}
             <Modal {...props}>
                 {images}
             </Modal>
