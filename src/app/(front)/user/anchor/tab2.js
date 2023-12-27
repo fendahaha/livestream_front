@@ -4,6 +4,7 @@ import {clientBackendFetch, imagePrefix, rtmpServer} from "@/util/requestUtil";
 import {message, Typography, Upload} from "antd";
 import styles from './tab2.module.css';
 import {DeleteOutlined, InboxOutlined} from "@ant-design/icons";
+import {get_attribute_of_anchorConfig, update_attribute_of_anchorConfig} from "@/app/_func/client";
 
 const AnchorInfo = ({anchor}) => {
     const {user, room} = anchor;
@@ -104,24 +105,6 @@ const AnchorInfo = ({anchor}) => {
         </div>
     );
 };
-
-function get_attribute_of_anchorConfig(anchorConfig, attributeName, defaultValue) {
-    let config = {};
-    if (anchorConfig) {
-        config = JSON.parse(anchorConfig)
-    }
-    return config[attributeName] ? config[attributeName] : defaultValue;
-}
-
-function update_attribute_of_anchorConfig(anchorConfig, attributeName, defaultValue, callback) {
-    let config = {};
-    if (anchorConfig) {
-        config = JSON.parse(anchorConfig)
-    }
-    let v = config[attributeName] ? config[attributeName] : defaultValue;
-    config[attributeName] = callback(v)
-    return JSON.stringify(config);
-}
 
 const AnchorImage = ({filePath, del}) => {
     return (

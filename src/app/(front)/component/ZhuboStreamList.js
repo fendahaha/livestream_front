@@ -1,7 +1,10 @@
 'use client'
 import styles from "./ZhuboStreamList.module.css";
 import Link from "next/link";
-import {imagePrefix} from "@/util/requestUtil";
+import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
+import {Modal} from "antd";
+import {useEffect, useState} from "react";
+import {OfflineCover} from "@/app/(front)/component/ZhuboOfflineCover";
 
 const test_data = [
     {'country': '/country/tw.svg', 'img': '/zb/zb1.png', 'name': 'as', 'is_online': true},
@@ -23,6 +26,8 @@ const test_data = [
     {'country': '/country/tw.svg', 'img': '/zb/zb17.png', 'name': 'adassr3d', 'is_online': true},
     {'country': '/country/tw.svg', 'img': '/zb/zb18.png', 'name': 'adassdfdd', 'is_online': true},
 ]
+
+
 export default function ZhuboStreamList({list}) {
     const items = list.map(e => {
         let isOnlineClass = e.online ? styles.online : styles.offline;
@@ -42,7 +47,10 @@ export default function ZhuboStreamList({list}) {
                             <div className={styles.live_link_button}>go to live</div>
                         </Link>
                         :
-                        <div className={styles.offline_cover}></div>
+                        <OfflineCover userUuid={e.user_uuid}/>
+                        // <div className={styles.offline_cover}>
+                        //
+                        // </div>
                     }
                 </div>
             </div>

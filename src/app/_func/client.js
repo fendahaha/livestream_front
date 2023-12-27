@@ -13,3 +13,21 @@ export const logout = (successCallback) => {
 export const get_all_gifts = () => {
     return clientBackendFetch.postJson("/gift/all").then(r => r?.data)
 }
+
+export function get_attribute_of_anchorConfig(anchorConfig, attributeName, defaultValue) {
+    let config = {};
+    if (anchorConfig) {
+        config = JSON.parse(anchorConfig)
+    }
+    return config[attributeName] ? config[attributeName] : defaultValue;
+}
+
+export function update_attribute_of_anchorConfig(anchorConfig, attributeName, defaultValue, callback) {
+    let config = {};
+    if (anchorConfig) {
+        config = JSON.parse(anchorConfig)
+    }
+    let v = config[attributeName] ? config[attributeName] : defaultValue;
+    config[attributeName] = callback(v)
+    return JSON.stringify(config);
+}

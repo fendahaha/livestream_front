@@ -22,7 +22,7 @@ export default async function Home() {
                 <div>
                     <MyCarousel data={test_data}/>
                 </div>
-                <p>{new Date().getMilliseconds()}</p>
+                {/*<p>{new Date().getMilliseconds()}</p>*/}
                 <div className={styles.layout}>
                     <div className={styles.left}>
                         {anchors.length ? <div className={styles.anchor_list}><ZhuboStreamList list={anchors}/></div> :
