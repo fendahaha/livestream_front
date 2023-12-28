@@ -20,6 +20,7 @@ const MessageUtil = {
     chatMessage: 3,
     giftMessage: 2,
     systemMessage: 1,
+    roomMessage: 4,
     currDate() {
         return new Date().getTime()
     },
@@ -39,6 +40,9 @@ const MessageUtil = {
     },
     createSystemMessage(data) {
         return this.createMessage(this.systemMessage, data);
+    },
+    createRoomMessage(data) {
+        return this.createMessage(this.roomMessage, data);
     }
 }
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
@@ -133,6 +137,9 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
                             }
                         }
                         dispatchGiftMessages(messageObj)
+                    }
+                    if (messageObj.type === MessageUtil.roomMessage) {
+                        console.log(messageObj);
                     }
                 });
                 if (userUuid) {
