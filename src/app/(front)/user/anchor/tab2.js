@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {ProDescriptions} from "@ant-design/pro-components";
 import {clientBackendFetch, imagePrefix, rtmpServer} from "@/util/requestUtil";
 import {message, Switch, Typography, Upload} from "antd";
@@ -6,18 +6,43 @@ import styles from './tab2.module.css';
 import {DeleteOutlined, InboxOutlined} from "@ant-design/icons";
 import {get_attribute_of_anchorConfig, update_attribute_of_anchorConfig} from "@/app/_func/client";
 
-const AnchorStatusChange = ({userUuid}) => {
+const AnchorStatusChange = ({userUuid, anchorUuid}) => {
+    const [checked, setChecked] = useState(false);
+    const [loading, setLoading] = useState(false);
     const props = {
-        defaultChecked: true,
-        onChange: (checked) => {
-            // console.log(checked);
-        },
-        onClick:(checked)=>{
-            console.log(checked);
+        checkedChildren: '在线',
+        unCheckedChildren: '下线',
+        checked: checked,
+        disabled: loading,
+        loading: loading,
+        onClick: () => {
+            if (loading) {
+                return
+            }
+            setLoading(true);
+            clientBackendFetch.getJson("/anchor/setOnlineStatus", {user_uuid: userUuid, status: checked ? 0 : 1})
+                .then(r => {
+                    if (r?.data) {
+                        setChecked(!checked);
+                    }
+                })
+                .finally(() => {
+                    setLoading(false);
+                })
         }
     }
+    useEffect(() => {
+        clientBackendFetch.getJson("/anchor/is_online", {anchor_uuid: anchorUuid})
+            .then(r => {
+                if (r?.data) {
+                    setChecked(true);
+                } else {
+                    setChecked(false);
+                }
+            })
+    }, [anchorUuid]);
     return (
-        <Switch checkedChildren="开启" unCheckedChildren="关闭" {...props}/>
+        <Switch {...props}/>
     )
 }
 const AnchorInfo = ({anchor}) => {
@@ -99,7 +124,7 @@ const AnchorInfo = ({anchor}) => {
             anchorHeight: s.anchorHeight,
             anchorWieght: s.anchorWieght,
             roomEnable: room.roomEnable,
-            streamAddress: `${rtmpServer}/${room.streamAddress}`,
+            streamAddress: `${rtmpServer}${room.streamAddress}?${room.streamParam}`,
             streamType: room.streamType,
             anchorRemark: anchor.anchorRemark,
         }
@@ -110,7 +135,7 @@ const AnchorInfo = ({anchor}) => {
             <ProDescriptions
                 column={3}
                 actionRef={actionRef}
-                title={''}
+                title={<AnchorStatusChange userUuid={anchor.userUuid} anchorUuid={anchor.anchorUuid}/>}
                 request={handleRequest}
                 editable={{onSave: handleSave}}
                 columns={columns}
@@ -228,7 +253,6 @@ const AnchorImages = ({anchor}) => {
 export default function Page({anchor}) {
     return (
         <>
-            <AnchorStatusChange userUuid={anchor.userUuid}/>
             <AnchorInfo anchor={anchor}/>
             <Typography.Title ellipsis={true} level={2} type={'secondary'} style={{textAlign: "center"}}>
                 主播封面图
