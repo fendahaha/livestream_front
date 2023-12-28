@@ -3,7 +3,7 @@ import styles from './room.module.css';
 import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/chatMsgs";
-import {useCallback, useContext, useEffect, useReducer, useRef} from "react";
+import {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
@@ -46,6 +46,7 @@ const MessageUtil = {
     }
 }
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
+    const [onlineUserUpdateSign, setOnlineUserUpdateSign] = useState(new Date().getTime());
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const [giftMessages, dispatchGiftMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const stompClientRef = useRef(null);
@@ -96,8 +97,8 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
                 },
                 connectionTimeout: 10 * 1000,
                 reconnectDelay: 5 * 1000,
-                heartbeatIncoming: 4000,
-                heartbeatOutgoing: 4000,
+                heartbeatIncoming: 10 * 1000,
+                heartbeatOutgoing: 5 * 1000,
                 // debug: (str) => console.log("debug:", str),
             });
             stompClientRef.current.beforeConnect = async () => {
@@ -139,7 +140,13 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
                         dispatchGiftMessages(messageObj)
                     }
                     if (messageObj.type === MessageUtil.roomMessage) {
-                        console.log(messageObj);
+                        let data = JSON.parse(messageObj.data);
+                        if (data === 'OnlineUserAdd') {
+                            setOnlineUserUpdateSign(new Date().getTime());
+                        }
+                        if (data === 'OnlineUserDel') {
+                            setOnlineUserUpdateSign(new Date().getTime());
+                        }
                     }
                 });
                 if (userUuid) {
@@ -150,6 +157,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
                         }
                     });
                 }
+                setOnlineUserUpdateSign(new Date().getTime());
             }
             stompClientRef.current.activate();
         }
@@ -160,12 +168,12 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
             }
         }
     }, [userUuid, destinationTopic, roomUuid]);
-    return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage]
+    return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign]
 }
 
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     const {user, updateUser} = useContext(GlobalContext);
-    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
+    const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
     return (
         <div className={styles.container}>
             <div className={styles.layout1}>
@@ -202,7 +210,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
                                         {
                                             key: '2',
                                             label: 'Tab 2',
-                                            children: <OnlineUsers room_uuid={room.roomUuid}/>,
+                                            children: <OnlineUsers room_uuid={room.roomUuid}
+                                                                   updateSign={onlineUserUpdateSign}/>,
                                         },
                                     ]
                                 }>

@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import {Avatar, Divider, List, Skeleton} from 'antd';
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 
-export const OnlineUsers = ({room_uuid}) => {
+export const OnlineUsers = ({room_uuid, updateSign}) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const loadMoreData = () => {
@@ -25,7 +25,7 @@ export const OnlineUsers = ({room_uuid}) => {
                 let users = body.data.map(e => {
                     return JSON.parse(e)
                 })
-                setData([...data, ...users]);
+                setData([...users]);
                 setLoading(false);
             })
             .catch(() => {
@@ -34,7 +34,7 @@ export const OnlineUsers = ({room_uuid}) => {
     };
     useEffect(() => {
         loadMoreData();
-    }, []);
+    }, [updateSign]);
     return (
         <div
             id="scrollableDiv"
