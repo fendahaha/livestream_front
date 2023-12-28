@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server'
 import {backendUrlBase} from "@/util/requestUtil";
 import {setHeaderParam} from "@/app/_func/server";
-import {userTypeUtil} from "@/util/userUtil";
+import {userTypeUtil} from "@/util/commonUtil";
 
 
 async function get_login_user(request) {

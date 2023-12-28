@@ -16,3 +16,7 @@ export const userTypeUtil = {
     }
 }
 
+export const PageType = {
+    'Home': 'home',
+    'Room': 'room',
+}

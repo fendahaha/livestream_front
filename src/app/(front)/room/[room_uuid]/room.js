@@ -14,7 +14,7 @@ import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {message} from "antd";
-import {userTypeUtil} from "@/util/userUtil";
+import {PageType, userTypeUtil} from "@/util/commonUtil";
 
 const MessageUtil = {
     chatMessage: 3,
@@ -89,11 +89,9 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
     useEffect(() => {
         if (!stompClientRef.current) {
             stompClientRef.current = new Client({
-                brokerURL: `${wsPrefix}?userUuid=${userUuid}&roomUuid=${roomUuid}`,
+                brokerURL: `${wsPrefix}?userUuid=${userUuid}&pageType=${PageType.Room}&roomUuid=${roomUuid}`,
                 connectHeaders: {
                     // passcode: 'password',
-                    // userUuid: userUuid ? userUuid : 'null',
-                    // roomUuid: roomUuid,
                 },
                 connectionTimeout: 10 * 1000,
                 reconnectDelay: 5 * 1000,
