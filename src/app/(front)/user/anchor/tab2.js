@@ -1,11 +1,25 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {ProDescriptions} from "@ant-design/pro-components";
 import {clientBackendFetch, imagePrefix, rtmpServer} from "@/util/requestUtil";
-import {message, Typography, Upload} from "antd";
+import {message, Switch, Typography, Upload} from "antd";
 import styles from './tab2.module.css';
 import {DeleteOutlined, InboxOutlined} from "@ant-design/icons";
 import {get_attribute_of_anchorConfig, update_attribute_of_anchorConfig} from "@/app/_func/client";
 
+const AnchorStatusChange = ({userUuid}) => {
+    const props = {
+        defaultChecked: true,
+        onChange: (checked) => {
+            // console.log(checked);
+        },
+        onClick:(checked)=>{
+            console.log(checked);
+        }
+    }
+    return (
+        <Switch checkedChildren="开启" unCheckedChildren="关闭" {...props}/>
+    )
+}
 const AnchorInfo = ({anchor}) => {
     const {user, room} = anchor;
     const actionRef = useRef();
@@ -214,6 +228,7 @@ const AnchorImages = ({anchor}) => {
 export default function Page({anchor}) {
     return (
         <>
+            <AnchorStatusChange userUuid={anchor.userUuid}/>
             <AnchorInfo anchor={anchor}/>
             <Typography.Title ellipsis={true} level={2} type={'secondary'} style={{textAlign: "center"}}>
                 主播封面图
