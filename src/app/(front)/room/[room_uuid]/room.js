@@ -14,37 +14,7 @@ import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {message} from "antd";
-import {PageType, userTypeUtil} from "@/util/commonUtil";
-
-const MessageUtil = {
-    chatMessage: 3,
-    giftMessage: 2,
-    systemMessage: 1,
-    roomMessage: 4,
-    currDate() {
-        return new Date().getTime()
-    },
-    createMessage(type, data) {
-        return {
-            id: v4(),
-            type: type,
-            data: data,
-            time: this.currDate()
-        }
-    },
-    createChatMessage(data) {
-        return this.createMessage(this.chatMessage, data);
-    },
-    createGiftMessage(data) {
-        return this.createMessage(this.giftMessage, data);
-    },
-    createSystemMessage(data) {
-        return this.createMessage(this.systemMessage, data);
-    },
-    createRoomMessage(data) {
-        return this.createMessage(this.roomMessage, data);
-    }
-}
+import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const [onlineUserUpdateSign, setOnlineUserUpdateSign] = useState(new Date().getTime());
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);

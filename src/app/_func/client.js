@@ -1,5 +1,5 @@
 import 'client-only'
-import {clientBackendFetch} from "@/util/requestUtil";
+import {clientBackendFetch, nodeBackendFetch} from "@/util/requestUtil";
 
 export const logout = (successCallback) => {
     clientBackendFetch.post('/user/logout', null)
@@ -30,4 +30,22 @@ export function update_attribute_of_anchorConfig(anchorConfig, attributeName, de
     let v = config[attributeName] ? config[attributeName] : defaultValue;
     config[attributeName] = callback(v)
     return JSON.stringify(config);
+}
+
+export const get_anchors = () => {
+    return clientBackendFetch.postJson("/anchor/allAnchors")
+        .then(r => {
+            if (r?.data) {
+                return r?.data
+            }
+            return [];
+        })
+}
+export const get_rank_anchors = () => {
+    return clientBackendFetch.postJson("/anchor/rank").then(r => {
+        if (r?.data) {
+            return r?.data
+        }
+        return [];
+    })
 }
