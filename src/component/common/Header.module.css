@@ -17,7 +17,7 @@
     width: 100%;
     min-height: 50px;
     display: grid;
-    grid-template-columns: 150px 1fr 250px;
+    grid-template-columns: 150px 1fr auto;
 }
 
 .left {

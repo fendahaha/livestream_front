@@ -4,6 +4,7 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import Search from "antd/es/input/Search";
 import User from "@/component/common/User";
+import LanguageChange from "@/component/common/LanguageChange";
 
 const test_data = [
     {'href': '/', 'name': 'home'},
@@ -42,6 +43,7 @@ export default function Header({navs = test_data}) {
                             style={{width: 200}}
                         />
                         <User/>
+                        <LanguageChange/>
                     </div>
                 </div>
             </div>

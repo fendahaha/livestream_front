@@ -1,11 +1,12 @@
 import 'server-only'
-import {headers} from "next/headers";
+import {cookies, headers} from "next/headers";
 import {nodeBackendFetch} from "@/util/requestUtil";
-import {getDictionary, getLocale} from "@/dictionaries";
+import {getDictionary, getLocale, locale_cookie_config} from "@/dictionaries";
 
 export async function getLocaleInfo() {
-    const headers1 = headers();
-    const locale = getLocale({'accept-language': headers1.get("accept-language")});
+    const accept_language = headers().get("accept-language");
+    const locale_cookie = cookies().get(locale_cookie_config.cookie_name)
+    const locale = getLocale(locale_cookie?.value, {'accept-language': accept_language});
     const dictionary = await getDictionary(locale);
     return {locale, dictionary}
 }
