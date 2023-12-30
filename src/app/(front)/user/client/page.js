@@ -4,7 +4,7 @@ import {Spin, Tabs} from "antd";
 import Tab1 from "@/app/(front)/user/client/tab1";
 import {useContext, useEffect, useState} from "react";
 import {clientBackendFetch} from "@/util/requestUtil";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {GlobalContext} from "@/component/context/globalContext";
 
 export default function Component() {
     const {user, updateUser} = useContext(GlobalContext);

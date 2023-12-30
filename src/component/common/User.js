@@ -4,7 +4,7 @@ import {Avatar, Button, Dropdown, message, Modal, Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import Login from "@/component/common/Login";
 import Link from "next/link";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {GlobalContext} from "@/component/context/globalContext";
 import {useRouter} from "next/navigation";
 import {logout} from "@/app/_func/client";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";

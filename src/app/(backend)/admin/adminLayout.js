@@ -7,7 +7,7 @@ import {PageContainer, ProCard, ProLayout} from "@ant-design/pro-components";
 import Link from "next/link";
 import {logout} from "@/app/_func/client";
 import {useContext} from "react";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {GlobalContext} from "@/component/context/globalContext";
 import {imagePrefix} from "@/util/requestUtil";
 
 export default function AdminLayout({children}) {

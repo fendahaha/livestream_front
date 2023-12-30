@@ -1,17 +1,13 @@
 import 'server-only'
 import {headers} from "next/headers";
 import {nodeBackendFetch} from "@/util/requestUtil";
+import {getDictionary, getLocale} from "@/dictionaries";
 
-export const setHeaderParam = (headers, params) => {
-    const requestHeaders = new Headers(headers);
-    for (const paramKey in params) {
-        requestHeaders.set(paramKey, params[paramKey]);
-    }
-    return requestHeaders
-}
-export const getHeaderParam = (paramName) => {
-    const headersList = headers()
-    return headersList.get(paramName)
+export async function getLocaleInfo() {
+    const headers1 = headers();
+    const locale = getLocale({'accept-language': headers1.get("accept-language")});
+    const dictionary = await getDictionary(locale);
+    return {locale, dictionary}
 }
 
 export async function getLoginUser() {

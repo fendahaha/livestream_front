@@ -3,7 +3,7 @@ import {FixWidthDiv} from "@/component/common/WidthDiv";
 import {Spin, Tabs} from "antd";
 import {clientBackendFetch} from "@/util/requestUtil";
 import {useContext, useEffect, useState} from "react";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {GlobalContext} from "@/component/context/globalContext";
 import Tab1 from "@/app/(front)/user/anchor/tab1";
 import Tab2 from "@/app/(front)/user/anchor/tab2";
 import Tab3 from "@/app/(front)/user/anchor/tab3";

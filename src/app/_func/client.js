@@ -1,5 +1,5 @@
 import 'client-only'
-import {clientBackendFetch, nodeBackendFetch} from "@/util/requestUtil";
+import {clientBackendFetch} from "@/util/requestUtil";
 
 export const logout = (successCallback) => {
     clientBackendFetch.post('/user/logout', null)

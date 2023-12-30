@@ -11,7 +11,7 @@ import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
 import {wsPrefix} from "@/util/requestUtil";
 import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
-import {GlobalContext} from "@/app/(front)/component/globalContext";
+import {GlobalContext} from "@/component/context/globalContext";
 import {message} from "antd";
 import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 

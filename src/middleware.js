@@ -43,31 +43,31 @@ export async function middleware(request) {
                 statusText: 'server error'
             })
         }
-    }
-
-    if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
-        try {
-            const user = await get_login_user(request);
-            if (!user || !userTypeUtil.is_admin(user?.userType)) {
+    } else {
+        if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
+            try {
+                const user = await get_login_user(request);
+                if (!user || !userTypeUtil.is_admin(user?.userType)) {
+                    return NextResponse.redirect(`${origin}/admin-login`)
+                }
+            } catch (e) {
                 return NextResponse.redirect(`${origin}/admin-login`)
             }
-        } catch (e) {
-            return NextResponse.redirect(`${origin}/admin-login`)
         }
-    }
-    if (pathname.startsWith("/user")) {
-        try {
-            const user = await get_login_user(request);
-            if (!user || userTypeUtil.is_admin(user?.userType)) {
+        if (pathname.startsWith("/user")) {
+            try {
+                const user = await get_login_user(request);
+                if (!user || userTypeUtil.is_admin(user?.userType)) {
+                    return NextResponse.redirect(`${origin}/login`)
+                }
+            } catch (e) {
                 return NextResponse.redirect(`${origin}/login`)
             }
-        } catch (e) {
-            return NextResponse.redirect(`${origin}/login`)
         }
     }
     return NextResponse.next()
 }
 
 export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)',],
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico|static).*)',],
 }

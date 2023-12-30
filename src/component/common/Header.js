@@ -19,7 +19,7 @@ export default function Header({navs = test_data}) {
             <div>
                 <div className={styles.content}>
                     <div className={styles.left}>
-                        <img src={"/logo.svg"} alt={"logo"} className={styles.logo}/>
+                        <img src={"/static/logo.svg"} alt={"logo"} className={styles.logo}/>
                     </div>
                     <div className={styles.middle}>
                         <ul className={styles.navs}>
