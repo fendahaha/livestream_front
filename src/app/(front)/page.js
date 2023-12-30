@@ -1,6 +1,6 @@
 import {MyCarousel} from "@/app/(front)/component/Slider";
 import {FixWidthDiv} from "@/component/common/WidthDiv";
-import {get_anchors, get_rank_anchors, getLocaleInfo} from "@/app/_func/server";
+import {get_anchors, get_rank_anchors} from "@/app/_func/server";
 import ZhuboStreamRankList from "@/app/(front)/component/ZhuboStreamRankList";
 
 const test_data = [
@@ -10,7 +10,6 @@ const test_data = [
 ];
 
 export default async function Home() {
-    const {locale, dictionary} = await getLocaleInfo()
     const anchors = await get_anchors();
     const rank_anchors = await get_rank_anchors();
     return (
@@ -20,8 +19,6 @@ export default async function Home() {
                     <MyCarousel data={test_data}/>
                 </div>
                 {/*<p>{new Date().getMilliseconds()}</p>*/}
-                <p>{locale}</p>
-                <p>{dictionary.products.cart}</p>
                 <ZhuboStreamRankList anchors={anchors} rank_anchors={rank_anchors}/>
             </FixWidthDiv>
         </div>

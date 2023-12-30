@@ -1,4 +1,3 @@
-// import 'server-only'
 import Negotiator from "negotiator";
 import {match} from "@formatjs/intl-localematcher";
 
@@ -16,15 +15,19 @@ export const getDictionary = async (locale) => dictionaries[locale]()
 //     return import(`@/dictionaries/${locale}.json`).then((module) => module.default)
 // }
 
+/**
+ * getLocale
+ * */
+export const supportLocales = ['en', 'zh', 'vi', 'th', 'id']//id:印度尼西亚 th:泰国 vi:越南
+export const defaultLocale = 'en';
+
 export function getLocale(headers) {
     // let headers = {'accept-language': 'en-US,zh-CN;q=0.5'}
     let languages = new Negotiator({headers}).languages()
-    let locales = ['en', 'zh', 'vi', 'th', 'id']//id:印度尼西亚 th:泰国 vi:越南
-    let defaultLocale = 'en'
-    // const strings = LookupSupportedLocales(locales, languages);
+    // const strings = LookupSupportedLocales(supportLocales, languages);
     let locale = defaultLocale;
     try {
-        locale = match(languages, locales, defaultLocale, {algorithm: 'lookup'})
+        locale = match(languages, supportLocales, defaultLocale, {algorithm: 'lookup'})
     } catch (e) {
         // console.log(e);
     }

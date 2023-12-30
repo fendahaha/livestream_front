@@ -4,7 +4,8 @@ import './global.css';
 import styles from "./layout.module.css";
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
 import {GlobalContextManager} from "@/component/context/globalContext";
-import {getLoginUser} from "@/app/_func/server";
+import {getLocaleInfo, getLoginUser} from "@/app/_func/server";
+import LocaleContextManager from "@/component/context/localeContext";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -14,20 +15,23 @@ export const metadata = {
 }
 
 export default async function RootLayout({children}) {
+    const {locale, dictionary} = await getLocaleInfo()
     return (
         <html lang="en">
         <body className={inter.className}>
         <StyledComponentsRegistry>
-            <GlobalContextManager userInfo={await getLoginUser()}>
-                <div className={styles.main}>
-                    <div className={styles.header}>
-                        <Header/>
+            <LocaleContextManager locale={locale} dictionary={dictionary}>
+                <GlobalContextManager userInfo={await getLoginUser()}>
+                    <div className={styles.main}>
+                        <div className={styles.header}>
+                            <Header/>
+                        </div>
+                        <div className={styles.body}>
+                            {children}
+                        </div>
                     </div>
-                    <div className={styles.body}>
-                        {children}
-                    </div>
-                </div>
-            </GlobalContextManager>
+                </GlobalContextManager>
+            </LocaleContextManager>
         </StyledComponentsRegistry>
         </body>
         </html>

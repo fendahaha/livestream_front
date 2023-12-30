@@ -1,5 +1,8 @@
 {
-  "products": {
-    "cart": "Add to Cart - zh"
+  "User": {
+    "title": "请点击登录",
+    "userCenter": "用户中心",
+    "logoutButtonText": "退出登录",
+    "logoutSuccessMsg": "已退出登录"
   }
 }

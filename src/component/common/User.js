@@ -8,8 +8,10 @@ import {GlobalContext} from "@/component/context/globalContext";
 import {useRouter} from "next/navigation";
 import {logout} from "@/app/_func/client";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
+import {LocaleContext} from "@/component/context/localeContext";
 
 export default function User() {
+    const {locale, dictionary} = useContext(LocaleContext);
     const router = useRouter();
     const {user, updateUser} = useContext(GlobalContext);
     const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -27,11 +29,9 @@ export default function User() {
             return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
         }
     }, [_user?.userAvatar]);
-
-
     return (
         <>
-            {!user && <Tooltip placement="right" title={"未登录"} arrow={true}>
+            {!user && <Tooltip placement="right" title={dictionary.User.title} arrow={true}>
                 <div onClick={() => setLoginModalOpen(true)}>
                     {userAvatar}
                 </div>
@@ -61,20 +61,20 @@ export default function User() {
                                 key: '1',
                                 label: (
                                     <Link href={user.userType === 3 ? '/user/client' : '/user/anchor'}>
-                                        <Button>用户中心</Button>
+                                        <Button block={true}>{dictionary.User.userCenter}</Button>
                                     </Link>
                                 )
                             },
                             {
                                 key: '2',
                                 label: (
-                                    <Button danger onClick={() => {
+                                    <Button danger block={true} onClick={() => {
                                         logout(() => {
                                             updateUser({action: 'replace', data: null});
                                             router.refresh();
-                                            message.success("已退出登录");
+                                            message.success(dictionary.User.logoutSuccessMsg);
                                         });
-                                    }}>退出登录</Button>
+                                    }}>{dictionary.User.logoutButtonText}</Button>
                                 )
                             }
                         ]

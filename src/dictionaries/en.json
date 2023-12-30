@@ -1,5 +1,8 @@
 {
-  "products": {
-    "cart": "Add to Cart - en"
+  "User": {
+    "title": "please click to log in",
+    "userCenter": "User Center",
+    "logoutButtonText": "logout",
+    "logoutSuccessMsg": "logout success"
   }
 }
