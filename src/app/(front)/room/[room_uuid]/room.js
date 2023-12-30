@@ -8,13 +8,13 @@ import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
 import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
-import {v4} from "uuid";
 import {wsPrefix} from "@/util/requestUtil";
 import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import {message} from "antd";
 import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
+
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const [onlineUserUpdateSign, setOnlineUserUpdateSign] = useState(new Date().getTime());
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);

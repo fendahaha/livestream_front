@@ -2,7 +2,7 @@ import {ProDescriptions} from '@ant-design/pro-components';
 import {Input, Tooltip} from 'antd';
 import {useRef} from 'react';
 
-export default function Tab2() {
+export default function ProDescriptions_demo() {
     const actionRef = useRef();
     return (
         <ProDescriptions

@@ -1,11 +1,10 @@
 import Room from "@/app/(front)/room/[room_uuid]/room";
 import {redirect} from "next/navigation";
-import {getHeaderParam, is_room_online, queryAnchorByRoomUuid} from "@/app/_func/server";
+import {is_room_online, queryAnchorByRoomUuid} from "@/app/_func/server";
 import {streamServer} from "@/util/requestUtil";
 
-
-export default async function Page() {
-    const room_uuid = getHeaderParam('room_uuid');
+export default async function Page({params}) {
+    const room_uuid = params['room_uuid'];
     if (await is_room_online(room_uuid)) {
         const anchor = await queryAnchorByRoomUuid(room_uuid);
         if (anchor) {

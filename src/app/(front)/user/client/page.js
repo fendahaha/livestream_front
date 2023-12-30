@@ -20,21 +20,14 @@ export default function Component() {
             key: 1,
             children: <Tab1 clientInfo={client}/>,
         },
-        // {
-        //     label: '充值',
-        //     key: 2,
-        //     children: '2',
-        // }
     ];
     return (
         <FixWidthDiv>
             <div>
-                {client && <Tabs
-                    tabPosition={'left'}
-                    size={'large'}
-                    items={items}
-                />}
-                {!client && <div style={{textAlign: 'center'}}><Spin/></div>}
+                {client?
+                    <Tabs tabPosition={'left'} size={'large'} items={items}/>
+                    :<div style={{textAlign: 'center'}}><Spin/></div>
+                }
             </div>
         </FixWidthDiv>
     );

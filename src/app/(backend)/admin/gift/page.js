@@ -1,12 +1,11 @@
 'use client'
 import React, {useState} from 'react';
-import SearchForm from "@/app/(backend)/admin/gift/SearchForm";
 import {ReloadOutlined} from "@ant-design/icons";
 import {Image, Input, InputNumber, message, Tooltip} from "antd";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import {CreateButton, DataList, ImageUploadFormItem} from "@/component/antform";
+import {CreateButton, DataList, ImageUploadFormItem, SearchForm} from "@/component/antform";
 
 const initialColumns = [
     {
@@ -144,6 +143,33 @@ const onCreateFinish = (values) => {
         }
     })
 }
+
+const searchFormItems = [
+    {
+        formItemProps: {
+            name: 'giftName',
+            rules: [
+                {
+                    type: 'string',
+                    whitespace: true,
+                },
+            ],
+        },
+        input: <Input placeholder="giftName"/>,
+    },
+    {
+        formItemProps: {
+            name: 'giftValue',
+            rules: [
+                {
+                    type: 'number',
+                    message: 'must be number!',
+                },
+            ],
+        },
+        input: <InputNumber placeholder='giftValue'/>,
+    },
+]
 export default function Page() {
     const [searchData, setSearchData] = useState({});
     const [pagination, setPagination] = useState({
@@ -151,10 +177,18 @@ export default function Page() {
         pageSize: 10,
         total: 0,
     });
+    const onFinish = (values) => {
+        setSearchData(values);
+        setPagination({
+            current: 1,
+            pageSize: 10,
+            total: 0,
+        });
+    }
     return (
         <>
             <div style={{padding: '0 10px', marginBottom: 20}}>
-                <SearchForm setSearchData={setSearchData} setPagination={setPagination}/>
+                <SearchForm onFinish={onFinish} items={searchFormItems}/>
             </div>
             <div style={{
                 padding: '0 10px',

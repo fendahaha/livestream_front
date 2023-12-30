@@ -49,3 +49,13 @@
     align-items: center;
     justify-content: center;
 }
+
+.title {
+    color: rgba(0, 0, 0, 0.45);
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.571;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+}

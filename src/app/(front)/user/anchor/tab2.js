@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {ProDescriptions} from "@ant-design/pro-components";
 import {clientBackendFetch, imagePrefix, rtmpServer} from "@/util/requestUtil";
 import {message, Switch, Typography, Upload} from "antd";
@@ -73,6 +73,12 @@ const AnchorInfo = ({anchor}) => {
             span: 2,
         },
         {
+            title: '打赏金额',
+            dataIndex: 'anchorMoney',
+            editable: false,
+            span: 3,
+        },
+        {
             title: '直播房间标题',
             dataIndex: 'anchorRemark',
             copyable: true,
@@ -95,52 +101,58 @@ const AnchorInfo = ({anchor}) => {
             valueType: 'digit',
         },
     ];
-    const handleSave = useCallback((key, row) => {
-        const data = {anchorUuid: anchor.anchorUuid};
-        if (['anchorHeight', 'anchorSanwei', 'anchorWieght'].includes(key)) {
-            let anchorConfig = {};
+    const proDescriptionsProps = {
+        column: 3,
+        actionRef: actionRef,
+        request: () => {
+            let s = {};
             if (anchor.anchorConfig) {
-                anchorConfig = JSON.parse(anchor.anchorConfig)
+                s = JSON.parse(anchor.anchorConfig)
             }
-            anchorConfig[key] = row[key];
-            data['anchorConfig'] = JSON.stringify(anchorConfig);
-        } else {
-            data[key] = row[key];
-        }
-        clientBackendFetch.postJson('/anchor/update2', data)
-            .then(r => {
-                if (r) {
-                    message.success("success");
+            let d = {
+                anchorSanwei: s.anchorSanwei,
+                anchorHeight: s.anchorHeight,
+                anchorWieght: s.anchorWieght,
+                roomEnable: room.roomEnable,
+                streamAddress: `${rtmpServer}${room.streamAddress}?${room.streamParam}`,
+                streamType: room.streamType,
+                anchorRemark: anchor.anchorRemark,
+                anchorMoney: anchor.anchorMoney,
+            }
+            return {success: true, data: d}
+        },
+        editable: {
+            onSave: (key, row) => {
+                const data = {anchorUuid: anchor.anchorUuid};
+                if (['anchorHeight', 'anchorSanwei', 'anchorWieght'].includes(key)) {
+                    let anchorConfig = {};
+                    if (anchor.anchorConfig) {
+                        anchorConfig = JSON.parse(anchor.anchorConfig)
+                    }
+                    anchorConfig[key] = row[key];
+                    data['anchorConfig'] = JSON.stringify(anchorConfig);
+                } else {
+                    data[key] = row[key];
                 }
-            })
-    }, [anchor])
-    const handleRequest = useCallback(() => {
-        let s = {};
-        if (anchor.anchorConfig) {
-            s = JSON.parse(anchor.anchorConfig)
-        }
-        let d = {
-            anchorSanwei: s.anchorSanwei,
-            anchorHeight: s.anchorHeight,
-            anchorWieght: s.anchorWieght,
-            roomEnable: room.roomEnable,
-            streamAddress: `${rtmpServer}${room.streamAddress}?${room.streamParam}`,
-            streamType: room.streamType,
-            anchorRemark: anchor.anchorRemark,
-        }
-        return {success: true, data: d}
-    }, [anchor])
+                clientBackendFetch.postJson('/anchor/update2', data)
+                    .then(r => {
+                        if (r) {
+                            message.success("success");
+                        }
+                    })
+            }
+        },
+        title: (
+            <div className={styles.title}>
+                <span>在线状态：</span>
+                <AnchorStatusChange userUuid={anchor.userUuid} anchorUuid={anchor.anchorUuid}/>
+            </div>
+        ),
+        columns: columns
+    }
     return (
         <div>
-            <ProDescriptions
-                column={3}
-                actionRef={actionRef}
-                title={<AnchorStatusChange userUuid={anchor.userUuid} anchorUuid={anchor.anchorUuid}/>}
-                request={handleRequest}
-                editable={{onSave: handleSave}}
-                columns={columns}
-            >
-            </ProDescriptions>
+            <ProDescriptions {...proDescriptionsProps}></ProDescriptions>
         </div>
     );
 };

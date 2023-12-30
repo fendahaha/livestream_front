@@ -1,12 +1,11 @@
 'use client'
 import React, {useState} from 'react';
 import {ReloadOutlined} from "@ant-design/icons";
-import {Image, message, Tooltip} from "antd";
+import {Image, Input, InputNumber, message, Tooltip} from "antd";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import {DataList} from "@/component/antform";
-import SearchForm from "@/app/(backend)/admin/client/SearchForm";
+import {DataList, SearchForm} from "@/component/antform";
 
 const initialColumns = [
     {
@@ -123,6 +122,29 @@ const delete_data = (record, successCallback) => {
     })
 }
 
+const searchFormItems = [
+    {
+        formItemProps: {
+            name:'userDisplayName',
+            rules:[],
+        },
+        input: <Input placeholder="userDisplayName"/>,
+    },
+    {
+        formItemProps: {
+            name:'userPhone',
+            rules:[{type: 'number', message: 'must be number!'},],
+        },
+        input: <InputNumber placeholder='userPhone'/>,
+    },
+    {
+        formItemProps: {
+            name:'userCountry',
+            rules:[],
+        },
+        input: <Input placeholder="userCountry"/>,
+    },
+]
 export default function Page() {
     const [searchData, setSearchData] = useState({});
     const [pagination, setPagination] = useState({
@@ -130,10 +152,18 @@ export default function Page() {
         pageSize: 10,
         total: 0,
     });
+    const onFinish = (values) => {
+        setSearchData(values);
+        setPagination({
+            current: 1,
+            pageSize: 10,
+            total: 0,
+        });
+    }
     return (
         <>
             <div style={{padding: '0 10px', marginBottom: 20}}>
-                <SearchForm setSearchData={setSearchData} setPagination={setPagination}/>
+                <SearchForm onFinish={onFinish} items={searchFormItems}/>
             </div>
             <div style={{
                 padding: '0 10px',

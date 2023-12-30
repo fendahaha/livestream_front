@@ -6,7 +6,7 @@ import {useContext, useEffect, useState} from "react";
 import {GlobalContext} from "@/app/(front)/component/globalContext";
 import Tab1 from "@/app/(front)/user/anchor/tab1";
 import Tab2 from "@/app/(front)/user/anchor/tab2";
-import GiftSendList from "@/app/(front)/user/anchor/GiftSendList";
+import Tab3 from "@/app/(front)/user/anchor/tab3";
 
 export default function AnchorPage() {
     const {user, updateUser} = useContext(GlobalContext);
@@ -20,32 +20,26 @@ export default function AnchorPage() {
         {
             label: '基本信息',
             key: 1,
-            children: anchor ? <Tab1 anchor={anchor}/> : <Spin tip="Loading">
-                <div className="content" style={{height: 100}}/>
-            </Spin>,
+            children: <Tab1 anchor={anchor}/>,
         },
         {
             label: '直播设置',
             key: 2,
-            children: anchor ? <Tab2 anchor={anchor}/> : <Spin tip="Loading">
-                <div className="content" style={{height: 100}}/>
-            </Spin>,
+            children: <Tab2 anchor={anchor}/>,
         },
         {
-            label: '接受礼物记录',
+            label: '打赏记录',
             key: 3,
-            children: <GiftSendList anchor={anchor}/>,
+            children: <Tab3 anchor={anchor}/>,
         }
     ];
     return (
         <FixWidthDiv>
             <div>
-                {anchor && <Tabs
-                    tabPosition={'left'}
-                    size={'large'}
-                    items={items}
-                />}
-                {!anchor && <div style={{textAlign: 'center'}}><Spin/></div>}
+                {anchor ?
+                    <Tabs tabPosition={'left'} size={'large'} items={items}/>
+                    : <div style={{textAlign: 'center'}}><Spin/></div>
+                }
             </div>
         </FixWidthDiv>
     );

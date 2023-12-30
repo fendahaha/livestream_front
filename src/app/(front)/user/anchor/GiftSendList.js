@@ -1,12 +1,11 @@
 'use client'
 import React, {useState} from 'react';
 import {ReloadOutlined} from "@ant-design/icons";
-import {message, Tooltip} from "antd";
+import {Input, InputNumber, message, Tooltip} from "antd";
 import {clientBackendFetch} from "@/util/requestUtil";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import {NoActionDataList} from "@/component/antform";
-import SearchForm from "@/app/(front)/user/anchor/SearchForm";
+import {NoActionDataList, SearchForm} from "@/component/antform";
 
 const initialColumns = [
     {
@@ -66,6 +65,52 @@ const delete_data = (record, successCallback) => {
         }
     })
 }
+
+const searchFormItems = [
+    {
+        formItemProps: {
+            name: 'clientName',
+            rules: [
+                {
+                    type: 'string',
+                    whitespace: true,
+                },
+            ]
+        },
+        input: <Input placeholder="clientName"/>,
+    },
+    {
+        formItemProps: {
+            name: 'anchorUuid',
+            hidden: true,
+        },
+        input: <Input placeholder="anchorUuid"/>,
+    },
+    {
+        formItemProps: {
+            name: 'giftName',
+            rules: [
+                {
+                    type: 'string',
+                    whitespace: true,
+                },
+            ],
+        },
+        input: <Input placeholder="giftName"/>,
+    },
+    {
+        formItemProps: {
+            name: 'giftValue',
+            rules: [
+                {
+                    type: 'number',
+                    message: 'must be number!',
+                },
+            ],
+        },
+        input: <InputNumber placeholder='giftValue'/>,
+    },
+]
 export default function GiftSendList({anchor}) {
     const [searchData, setSearchData] = useState({anchorUuid: anchor.anchorUuid});
     const [pagination, setPagination] = useState({
@@ -73,10 +118,21 @@ export default function GiftSendList({anchor}) {
         pageSize: 10,
         total: 0,
     });
+    const onFinish = (values) => {
+        setSearchData(values);
+        setPagination({
+            current: 1,
+            pageSize: 10,
+            total: 0,
+        });
+    }
+    const searchFormProps = {
+        initialValues: {anchorUuid: anchor.anchorUuid},
+    }
     return (
         <>
             <div style={{padding: '0 10px', marginBottom: 20}}>
-                <SearchForm setSearchData={setSearchData} setPagination={setPagination} anchor={anchor}/>
+                <SearchForm onFinish={onFinish} formProps={searchFormProps} items={searchFormItems}/>
             </div>
             <div style={{
                 padding: '0 10px',
@@ -100,7 +156,7 @@ export default function GiftSendList({anchor}) {
             </div>
             <div style={{padding: '0 10px', marginBottom: 10}}>
                 <NoActionDataList searchData={searchData} pagination={pagination} setPagination={setPagination}
-                          initialColumns={initialColumns} get_data={get_data}/>
+                                  initialColumns={initialColumns} get_data={get_data}/>
             </div>
         </>
     );

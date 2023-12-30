@@ -341,13 +341,41 @@ export function CreateButton({initialFormItems, onFinish}) {
     );
 }
 
+export function SearchForm({onFinish, items = [], formProps = {}}) {
+    const [form] = Form.useForm();
+    const handleFinish = (values) => onFinish && onFinish(values);
+    return (
+        <Form form={form} name="horizontal" layout="inline" onFinish={handleFinish} {...formProps}>
+            {items.map(item => {
+                return (
+                    <Form.Item {...item.formItemProps} key={item.formItemProps.name}>
+                        {item.input}
+                    </Form.Item>
+                )
+            })}
+            <Form.Item shouldUpdate>
+                {() => (
+                    <Button type="primary" htmlType="submit"
+                            disabled={!!form.getFieldsError().filter(({errors}) => errors.length).length}
+                    >
+                        Search
+                    </Button>
+                )}
+            </Form.Item>
+            <Form.Item>
+                <Button onClick={() => form.resetFields()}>Reset</Button>
+            </Form.Item>
+        </Form>
+    )
+}
+
 export const NoActionDataList = ({
-                             searchData,
-                             pagination,
-                             setPagination,
-                             initialColumns,
-                             get_data,
-                         }) => {
+                                     searchData,
+                                     pagination,
+                                     setPagination,
+                                     initialColumns,
+                                     get_data,
+                                 }) => {
     const [tableLoading, setTableLoading] = useState(true);
     const [form] = Form.useForm();
     const [data, setData] = useState([]);

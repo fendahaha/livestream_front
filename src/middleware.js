@@ -1,8 +1,6 @@
 import {NextResponse} from 'next/server'
 import {backendUrlBase} from "@/util/requestUtil";
-import {setHeaderParam} from "@/app/_func/server";
 import {userTypeUtil} from "@/util/commonUtil";
-
 
 async function get_login_user(request) {
     const JSESSIONID = request.cookies.get('JSESSIONID');
@@ -67,15 +65,6 @@ export async function middleware(request) {
             return NextResponse.redirect(`${origin}/login`)
         }
     }
-    if (pathname.startsWith("/room")) {
-        let params = {'room_uuid': pathname.replace("/room/", "")};
-        return NextResponse.next({
-            request: {
-                headers: setHeaderParam(headers, params),
-            },
-        })
-    }
-
     return NextResponse.next()
 }
 
