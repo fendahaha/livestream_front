@@ -8,10 +8,10 @@ import {GlobalContext} from "@/component/context/globalContext";
 import {useRouter} from "next/navigation";
 import {logout} from "@/app/_func/client";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
-import {LocaleContext} from "@/component/context/localeContext";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export default function User() {
-    const {locale, dictionary} = useContext(LocaleContext);
+    const {getDict} = useMyLocale('User');
     const router = useRouter();
     const {user, updateUser} = useContext(GlobalContext);
     const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -22,16 +22,19 @@ export default function User() {
         })
     }, [user?.userUuid]);
     const userAvatar = useMemo(() => {
+        const props = {
+            icon: <UserOutlined/>,
+            style: {marginLeft: 10, cursor: 'pointer'},
+        }
         if (_user?.userAvatar) {
-            return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}
-                           src={`${imagePrefix}/${_user?.userAvatar}`}/>
+            return <Avatar {...props} src={`${imagePrefix}/${_user?.userAvatar}`}/>
         } else {
-            return <Avatar icon={<UserOutlined/>} style={{marginLeft: 10, 'cursor': 'pointer'}}/>
+            return <Avatar {...props}/>
         }
     }, [_user?.userAvatar]);
     return (
         <>
-            {!user && <Tooltip placement="right" title={dictionary.User.title} arrow={true}>
+            {!user && <Tooltip placement="bottom" title={getDict('title')} arrow={true}>
                 <div onClick={() => setLoginModalOpen(true)}>
                     {userAvatar}
                 </div>
