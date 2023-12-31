@@ -49,7 +49,7 @@ const initialColumns = [
         title: 'anchorSanwei',
         dataIndex: 'anchorSanwei',
         editable: true,
-        editInputType: 'number',
+        editInputType: 'text',
     },
     {
         title: 'anchorHeight',
@@ -172,7 +172,7 @@ const initialFormItems = [
         label: 'anchorSanwei',
         name: 'anchorSanwei',
         rules: [{required: true, message: 'this is required'}],
-        input: <InputNumber style={{width: '100%'}}/>
+        input: <Input/>
     },
     {
         label: 'anchorHeight',

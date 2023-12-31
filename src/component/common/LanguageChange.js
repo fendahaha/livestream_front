@@ -2,8 +2,10 @@
 import {Button, Dropdown, Tooltip} from "antd";
 import {setLocaleCookie, supportLocales} from "@/dictionaries";
 import {GlobalOutlined} from "@ant-design/icons";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export default function LanguageChange() {
+    const {locale} = useMyLocale();
     const languages = supportLocales;
     const onClick = (lang) => {
         setLocaleCookie(lang);
@@ -13,7 +15,7 @@ export default function LanguageChange() {
         {
             key: e,
             label: (
-                <Button block={true} onClick={() => onClick(e)}>{e}</Button>
+                <Button block={true} type={e === locale ? 'primary' : 'text'} onClick={() => onClick(e)}>{e}</Button>
             )
         }
     ))
@@ -21,7 +23,7 @@ export default function LanguageChange() {
         margin: '0 5px',
         cursor: 'pointer',
         fontSize: '29px',
-        color: '#7CA43C'
+        color: '#1677ff',
     }
     return (
         <Dropdown placement="bottomLeft" arrow menu={{items: items}}>

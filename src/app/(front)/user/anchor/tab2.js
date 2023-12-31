@@ -88,7 +88,7 @@ const AnchorInfo = ({anchor}) => {
         {
             title: '三维',
             dataIndex: 'anchorSanwei',
-            valueType: 'digit',
+            valueType: 'text',
         },
         {
             title: '身高',

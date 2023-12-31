@@ -8,13 +8,15 @@ import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
 import {OnlineUsers} from "@/app/(front)/room/[room_uuid]/onlineUser";
-import {wsPrefix} from "@/util/requestUtil";
+import {imagePrefix, wsPrefix} from "@/util/requestUtil";
 import Gifts from "@/app/(front)/room/[room_uuid]/Gifts";
 import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/component/context/globalContext";
-import {message} from "antd";
+import {Avatar, message} from "antd";
 import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {useMyLocale} from "@/component/context/localeContext";
+import {UserOutlined} from "@ant-design/icons";
+import {SubscribeButton} from "@/component/ant_common";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -152,6 +154,11 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
                     <div className={styles.layout2}>
                         <div className={styles.layout2_top}>
                             <span className={styles.zhubo_info_title}>{anchor?.anchorRemark}</span>
+                            <div className={styles.zhubo_info_avatar}>
+                                <Avatar icon={<UserOutlined/>} size={50}
+                                        src={`${imagePrefix}/${anchorUser.userAvatar}`}/>
+                                <SubscribeButton>Subscribe</SubscribeButton>
+                            </div>
                         </div>
                         <div className={styles.layout2_middle}>
                             {streamUrl ? <FlvContainer url={streamUrl}/> : ''}
