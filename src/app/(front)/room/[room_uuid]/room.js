@@ -14,8 +14,10 @@ import {FendaGifts} from "@/app/(front)/room/[room_uuid]/GiftMessages";
 import {GlobalContext} from "@/component/context/globalContext";
 import {message} from "antd";
 import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
+import {useMyLocale} from "@/component/context/localeContext";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
+    const {getDict} = useMyLocale('Room');
     const [onlineUserUpdateSign, setOnlineUserUpdateSign] = useState(new Date().getTime());
     const [chatMessages, dispatchChatMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
     const [giftMessages, dispatchGiftMessages] = useReducer((state, action) => [action, ...state].slice(-200), []);
@@ -44,7 +46,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
                 }
             }
         } else {
-            message.info("please log in");
+            message.info(getDict('please_log_in'));
         }
     }, [anchorUserName, anchorUserUuid, userName, userUuid, destinationTopic]);
     const sendChatMessage = useCallback((msg) => sendMessage(MessageUtil.createChatMessage(msg), destinationTopic), [sendMessage, destinationTopic]);
@@ -52,7 +54,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
         if (userTypeUtil.is_client(userType)) {
             sendMessage(MessageUtil.createGiftMessage(msg), "/app/gift");
         } else {
-            message.info("只有用户可以发送礼物");
+            message.info(getDict('only_user_send_gift'));
         }
     }, [sendMessage, userType]);
 
@@ -140,6 +142,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
 }
 
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
+    const {getDict} = useMyLocale('Room');
     const {user, updateUser} = useContext(GlobalContext);
     const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
     return (
@@ -172,12 +175,12 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
                                     [
                                         {
                                             key: '1',
-                                            label: 'Tab 1',
+                                            label: getDict('tab1'),
                                             children: <ChatMsgs msgs={chatMessages}/>,
                                         },
                                         {
                                             key: '2',
-                                            label: 'Tab 2',
+                                            label: getDict('tab2'),
                                             children: <OnlineUsers room_uuid={room.roomUuid}
                                                                    updateSign={onlineUserUpdateSign}/>,
                                         },

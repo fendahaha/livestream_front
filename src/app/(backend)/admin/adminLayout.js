@@ -1,6 +1,6 @@
 'use client'
 import {usePathname, useRouter} from "next/navigation";
-import defaultProps from "@/app/(backend)/admin/adminLayoutProps";
+import {get_defaultProps} from "@/app/(backend)/admin/adminLayoutProps";
 import {App, Dropdown, message} from "antd";
 import {GithubFilled, InfoCircleFilled, LogoutOutlined, QuestionCircleFilled} from "@ant-design/icons";
 import {PageContainer, ProCard, ProLayout} from "@ant-design/pro-components";
@@ -9,8 +9,10 @@ import {logout} from "@/app/_func/client";
 import {useContext} from "react";
 import {GlobalContext} from "@/component/context/globalContext";
 import {imagePrefix} from "@/util/requestUtil";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export default function AdminLayout({children}) {
+    const {getDict}=useMyLocale('AdminLayout');
     const {user, updateUser} = useContext(GlobalContext);
     const s = usePathname();
     const router = useRouter();
@@ -25,10 +27,10 @@ export default function AdminLayout({children}) {
                     <Dropdown
                         menu={{
                             items: [{
-                                key: 'logout', icon: <LogoutOutlined/>, label: '退出登录',
+                                key: 'logout', icon: <LogoutOutlined/>, label: getDict('logout'),
                                 onClick: () => {
                                     logout(() => {
-                                        message.success("已退出登录");
+                                        message.success(getDict("logout_success"));
                                         router.refresh();
                                     });
                                 },
@@ -40,7 +42,7 @@ export default function AdminLayout({children}) {
                 );
             },
         },
-        ...defaultProps,
+        ...get_defaultProps(getDict),
         location: {pathname: s},
         actionsRender: (props) => {
             if (props.isMobile) return [];

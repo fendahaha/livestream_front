@@ -39,6 +39,7 @@ export default function User() {
                     {userAvatar}
                 </div>
                 <Modal
+                    width={650}
                     title=""
                     centered
                     open={loginModalOpen}
@@ -64,7 +65,7 @@ export default function User() {
                                 key: '1',
                                 label: (
                                     <Link href={user.userType === 3 ? '/user/client' : '/user/anchor'}>
-                                        <Button block={true}>{dictionary.User.userCenter}</Button>
+                                        <Button block={true}>{getDict('userCenter')}</Button>
                                     </Link>
                                 )
                             },
@@ -75,9 +76,9 @@ export default function User() {
                                         logout(() => {
                                             updateUser({action: 'replace', data: null});
                                             router.refresh();
-                                            message.success(dictionary.User.logoutSuccessMsg);
+                                            message.success(getDict('logoutSuccessMsg'));
                                         });
-                                    }}>{dictionary.User.logoutButtonText}</Button>
+                                    }}>{getDict('logoutButtonText')}</Button>
                                 )
                             }
                         ]

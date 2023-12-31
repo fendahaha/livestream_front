@@ -48,6 +48,9 @@
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.02);
     color: black;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tab.active {

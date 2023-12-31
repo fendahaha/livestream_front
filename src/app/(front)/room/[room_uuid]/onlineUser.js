@@ -2,8 +2,10 @@ import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Avatar, Divider, List, Skeleton} from 'antd';
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export const OnlineUsers = ({room_uuid, updateSign}) => {
+    const {getDict} = useMyLocale('Room');
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const loadMoreData = () => {
@@ -58,7 +60,7 @@ export const OnlineUsers = ({room_uuid, updateSign}) => {
                         active
                     />
                 }
-                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                endMessage={<Divider plain>{getDict('no_more_user')} 🤐</Divider>}
                 scrollableTarget="scrollableDiv"
             >
                 <List

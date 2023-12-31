@@ -2,8 +2,10 @@
 import {useEffect, useRef, useState} from "react";
 import flv from "flv.js";
 import {message} from "antd";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export default function FlvContainer({url}) {
+    const {getDict} = useMyLocale('Room');
     const videoRef = useRef(null);
     const flvPlayerRef = useRef(null);
     const [isStreamOnline, setIsStreamOnline] = useState(true);
@@ -20,7 +22,7 @@ export default function FlvContainer({url}) {
             flvPlayer.attachMediaElement(videoRef.current);
             flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo) => {
                 console.log(errorType, errorInfo);
-                message.warning(`主播貌似下播了`, 10);
+                message.warning(getDict('anchor_offline'), 5);
                 setIsStreamOnline(false);
             });
             flvPlayerRef.current = flvPlayer;
