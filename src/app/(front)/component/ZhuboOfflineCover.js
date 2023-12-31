@@ -5,7 +5,7 @@ import styles from './ZhuboOfflineCover.module.css';
 import {get_attribute_of_anchorConfig} from "@/app/_func/client";
 import MyEmpty from "@/component/ant_common";
 import {GlobalContext} from "@/component/context/globalContext";
-import {SubscribeButton} from "@/component/subscribeButton";
+import {SubscribeButton, UnSubscribeButton} from "@/component/subscribeButton";
 
 const OfflineCoverHeader = ({anchor, anchorUser}) => {
     const {user} = useContext(GlobalContext);
@@ -32,11 +32,22 @@ const OfflineCoverHeader = ({anchor, anchorUser}) => {
                     </div>
                 </div>
                 <div className={'buttons'}>
-                    <SubscribeButton clientUserType={user?.userType}
-                                     clientUserUuid={user?.userUuid}
-                                     anchorUserUuid={anchorUser.userUuid}>
-                        Subscribe
-                    </SubscribeButton>
+                    <div>
+                        <SubscribeButton clientUserType={user?.userType}
+                                         clientUserUuid={user?.userUuid}
+                                         anchorUserUuid={anchorUser.userUuid}
+                                         style={{minWidth: 100}}>
+                            Link
+                        </SubscribeButton>
+                    </div>
+                    <div>
+                        <UnSubscribeButton clientUserType={user?.userType}
+                                           clientUserUuid={user?.userUuid}
+                                           anchorUserUuid={anchorUser.userUuid}
+                                           style={{minWidth: 100}}>
+                            UnLike
+                        </UnSubscribeButton>
+                    </div>
                 </div>
             </div>
             <style jsx>{`
@@ -79,6 +90,10 @@ const OfflineCoverHeader = ({anchor, anchorUser}) => {
 
               .buttons {
                 flex: 0 0 100px;
+              }
+
+              .buttons > * {
+                margin: 5px 0;
               }
 
               .config span {

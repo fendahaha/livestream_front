@@ -17,9 +17,11 @@ export default function User() {
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const [_user, set_user] = useState(null);
     useEffect(() => {
-        clientBackendFetch.getJson(`/user/${user?.userUuid}`).then(r => {
-            set_user(r?.data)
-        })
+        if (user?.userUuid) {
+            clientBackendFetch.getJson(`/user/${user?.userUuid}`).then(r => {
+                set_user(r?.data)
+            })
+        }
     }, [user?.userUuid]);
     const userAvatar = useMemo(() => {
         const props = {

@@ -71,6 +71,11 @@ export function unfollowAnchor(clientUserUuid, anchorUserUuid) {
 }
 
 export function get_client_followed_anchors(clientUserUuid) {
-    clientBackendFetch.getJson(`/follows/client/${clientUserUuid}`)
-        .then(r => r?.data)
+    return clientBackendFetch.getJson(`/follows/client/${clientUserUuid}`)
+        .then(r => {
+            if (r?.data) {
+                return r?.data
+            }
+            return []
+        })
 }

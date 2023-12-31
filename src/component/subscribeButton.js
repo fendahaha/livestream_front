@@ -22,9 +22,9 @@ export const SubscribeButton = ({children, clientUserType, clientUserUuid, ancho
             message.info("please login!");
         }
     }
+    const style = {backgroundColor: '#FF7575', color: 'white'};
     return (
-        <Button danger shape={'round'} icon={<LikeOutlined/>} onClick={follow}
-                style1={{backgroundColor: '#FF7575', color: 'white'}} {...props}>{children}</Button>
+        <Button danger shape={'round'} icon={<LikeOutlined/>} onClick={follow} {...props}>{children}</Button>
     )
 }
 
