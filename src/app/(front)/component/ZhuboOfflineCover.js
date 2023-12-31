@@ -1,22 +1,24 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
-import {Button, Image, Modal} from "antd";
+import {Image, Modal} from "antd";
 import styles from './ZhuboOfflineCover.module.css';
 import {get_attribute_of_anchorConfig} from "@/app/_func/client";
-import MyEmpty, {SubscribeButton} from "@/component/ant_common";
-import {HeartOutlined} from "@ant-design/icons";
+import MyEmpty from "@/component/ant_common";
+import {GlobalContext} from "@/component/context/globalContext";
+import {SubscribeButton} from "@/component/subscribeButton";
 
-const OfflineCoverHeader = ({anchor, user}) => {
+const OfflineCoverHeader = ({anchor, anchorUser}) => {
+    const {user} = useContext(GlobalContext);
     const anchorSanwei = get_attribute_of_anchorConfig(anchor.anchorConfig, 'anchorSanwei', '')
     const anchorHeight = get_attribute_of_anchorConfig(anchor.anchorConfig, 'anchorHeight', '')
     const anchorWieght = get_attribute_of_anchorConfig(anchor.anchorConfig, 'anchorWieght', '')
     return (
         <>
             <div className={'header'}>
-                <div className={'avatar'}><img src={`${imagePrefix}/${user.userAvatar}`} alt={''}/></div>
+                <div className={'avatar'}><img src={`${imagePrefix}/${anchorUser.userAvatar}`} alt={''}/></div>
                 <div className={'info'}>
                     <h2 className={'anchorName'}>
-                        <span>{user.userDisplayName}</span>
+                        <span>{anchorUser.userDisplayName}</span>
                         <img src={'/country/tw.svg'} alt={''} className={'country'}/>
                     </h2>
                     <div className={'detail'}>
@@ -30,7 +32,11 @@ const OfflineCoverHeader = ({anchor, user}) => {
                     </div>
                 </div>
                 <div className={'buttons'}>
-                    <SubscribeButton>Subscribe</SubscribeButton>
+                    <SubscribeButton clientUserType={user?.userType}
+                                     clientUserUuid={user?.userUuid}
+                                     anchorUserUuid={anchorUser.userUuid}>
+                        Subscribe
+                    </SubscribeButton>
                 </div>
             </div>
             <style jsx>{`
@@ -143,7 +149,7 @@ export const ImagesModal = ({children, userUuid}) => {
 
     const props = {
         centered: false,
-        title: anchor ? <OfflineCoverHeader anchor={anchor} user={anchor.user}/> : '',
+        title: anchor ? <OfflineCoverHeader anchor={anchor} anchorUser={anchor.user}/> : '',
         footer: null,
         open: open,
         destroyOnClose: true,

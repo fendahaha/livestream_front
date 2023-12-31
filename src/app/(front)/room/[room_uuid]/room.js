@@ -3,7 +3,7 @@ import styles from './room.module.css';
 import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/chatMsgs";
-import {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import {FendaDanmu} from "@/app/(front)/room/[room_uuid]/BarrageMessages";
 import {MyTabs} from "@/app/(front)/room/[room_uuid]/tabs";
@@ -16,7 +16,7 @@ import {Avatar, message} from "antd";
 import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {useMyLocale} from "@/component/context/localeContext";
 import {UserOutlined} from "@ant-design/icons";
-import {SubscribeButton} from "@/component/ant_common";
+import {SubscribeButton} from "@/component/subscribeButton";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -157,7 +157,11 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
                             <div className={styles.zhubo_info_avatar}>
                                 <Avatar icon={<UserOutlined/>} size={50}
                                         src={`${imagePrefix}/${anchorUser.userAvatar}`}/>
-                                <SubscribeButton>Subscribe</SubscribeButton>
+                                <SubscribeButton clientUserType={user?.userType}
+                                                 clientUserUuid={user?.userUuid}
+                                                 anchorUserUuid={anchorUser.userUuid}>
+                                    Subscribe
+                                </SubscribeButton>
                             </div>
                         </div>
                         <div className={styles.layout2_middle}>

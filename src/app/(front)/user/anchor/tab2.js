@@ -48,6 +48,7 @@ const AnchorStatusChange = ({userUuid, anchorUuid}) => {
 const AnchorInfo = ({anchor}) => {
     const {user, room} = anchor;
     const actionRef = useRef();
+    console.log(anchor);
     const columns = [
         {
             title: '直播地址',
@@ -76,7 +77,13 @@ const AnchorInfo = ({anchor}) => {
             title: '打赏金额',
             dataIndex: 'anchorMoney',
             editable: false,
-            span: 3,
+            span: 1,
+        },
+        {
+            title: '关注人数',
+            dataIndex: 'anchorFollowers',
+            editable: false,
+            span: 2,
         },
         {
             title: '直播房间标题',
@@ -118,6 +125,7 @@ const AnchorInfo = ({anchor}) => {
                 streamType: room.streamType,
                 anchorRemark: anchor.anchorRemark,
                 anchorMoney: anchor.anchorMoney,
+                anchorFollowers: anchor.anchorFollowers,
             }
             return {success: true, data: d}
         },

@@ -49,3 +49,28 @@ export const get_rank_anchors = () => {
         return [];
     })
 }
+
+export function followAnchor(clientUserUuid, anchorUserUuid) {
+    return clientBackendFetch.formPostJson('/follows/follow', {clientUserUuid, anchorUserUuid})
+        .then(r => {
+            if (r?.data) {
+                return true
+            }
+            return false
+        })
+}
+
+export function unfollowAnchor(clientUserUuid, anchorUserUuid) {
+    return clientBackendFetch.formPostJson('/follows/unfollow', {clientUserUuid, anchorUserUuid})
+        .then(r => {
+            if (r?.data) {
+                return true
+            }
+            return false
+        })
+}
+
+export function get_client_followed_anchors(clientUserUuid) {
+    clientBackendFetch.getJson(`/follows/client/${clientUserUuid}`)
+        .then(r => r?.data)
+}
