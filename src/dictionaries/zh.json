@@ -43,5 +43,52 @@
     "anchor": "主播",
     "giftSendRecord": "礼物打赏记录",
     "client": "注册用户"
+  },
+  "AnchorUserPage": {
+    "tabs": {
+      "tabLabel1": "基本信息",
+      "tabLabel2": "直播设置",
+      "tabLabel3": "打赏记录"
+    },
+    "tab1": {
+      "username": "用户名",
+      "email": "邮箱",
+      "phone": "电话",
+      "country": "国家"
+    },
+    "tab2": {
+      "online": "在线",
+      "offline": "下线",
+      "stream_address": "直播地址",
+      "can_stream": "是否可以直播",
+      "stream_type": "直播类型",
+      "moneyReceive": "打赏金额",
+      "follows": "关注人数",
+      "room_title": "直播房间标题",
+      "sanwei": "三围",
+      "height": "身高",
+      "weight": "体重",
+      "onlineStatus": "在线状态：",
+      "upload_success": "上传成功",
+      "upload_fail": "上传失败",
+      "anchor_images": "主播封面图"
+    }
+  },
+  "ClientUserPage": {
+    "tabs": {
+      "tabLabel1": "基本信息"
+    },
+    "tab1": {
+      "level": "等级",
+      "money": "钱包",
+      "moneySent": "消费",
+      "rechargeMoney": "充值",
+      "username": "用户名",
+      "email": "邮箱",
+      "phone": "电话",
+      "country": "国家",
+      "edit success": "修改成功",
+      "edit fail": "修改失败"
+    }
   }
 }

@@ -5,8 +5,10 @@ import Tab1 from "@/app/(front)/user/client/tab1";
 import {useContext, useEffect, useState} from "react";
 import {clientBackendFetch} from "@/util/requestUtil";
 import {GlobalContext} from "@/component/context/globalContext";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export default function Component() {
+    const {getDict} = useMyLocale('ClientUserPage', 'tabs');
     const {user, updateUser} = useContext(GlobalContext);
     const [client, setClient] = useState(null);
     useEffect(() => {
@@ -16,7 +18,7 @@ export default function Component() {
     }, [user?.userUuid]);
     const items = [
         {
-            label: '基本信息',
+            label: getDict('tabLabel1'),
             key: 1,
             children: <Tab1 clientInfo={client}/>,
         },
@@ -24,9 +26,9 @@ export default function Component() {
     return (
         <FixWidthDiv>
             <div>
-                {client?
+                {client ?
                     <Tabs tabPosition={'left'} size={'large'} items={items}/>
-                    :<div style={{textAlign: 'center'}}><Spin/></div>
+                    : <div style={{textAlign: 'center'}}><Spin/></div>
                 }
             </div>
         </FixWidthDiv>

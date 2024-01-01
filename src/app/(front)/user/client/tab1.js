@@ -3,6 +3,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {message, Upload} from "antd";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
+import {useMyLocale} from "@/component/context/localeContext";
 
 const AvatarUpload = ({onSuccess, filePath}) => {
     const [loading, setLoading] = useState(false);
@@ -68,28 +69,30 @@ const AvatarUpload = ({onSuccess, filePath}) => {
 
 
 export function ClientDetail({client}) {
+    const {getDict} = useMyLocale('ClientUserPage', 'tab1');
     const actionRef = useRef();
     const columns = [
         {
-            title: '等级',
+            title: getDict('level'),
             dataIndex: 'clientLeavel',
             ellipsis: true,
             valueType: 'number',
+            span: 3,
         },
         {
-            title: '钱包',
+            title: getDict('money'),
             dataIndex: 'clientMoney',
             ellipsis: true,
             valueType: 'number',
         },
         {
-            title: '消费',
+            title: getDict('moneySent'),
             dataIndex: 'clientMoneySended',
             ellipsis: true,
             valueType: 'number',
         },
         {
-            title: '充值',
+            title: getDict('rechargeMoney'),
             dataIndex: 'clientMoneyRecharged',
             ellipsis: true,
             valueType: 'number',
@@ -97,6 +100,7 @@ export function ClientDetail({client}) {
     ];
     return (
         <ProDescriptions
+            column={3}
             actionRef={actionRef}
             title={''}
             request={async () => ({success: true, data: client})}
@@ -106,30 +110,31 @@ export function ClientDetail({client}) {
 }
 
 export function ClientUserDetail({user}) {
+    const {getDict} = useMyLocale('ClientUserPage', 'tab1');
     const actionRef = useRef();
     const columns = [
         {
-            title: '用户名',
+            title: getDict('username'),
             dataIndex: 'userDisplayName',
             ellipsis: true,
             valueType: 'string',
         },
         {
-            title: '邮箱',
+            title: getDict('email'),
             dataIndex: 'userEmail',
             copyable: true,
             ellipsis: true,
             valueType: 'email',
         },
         {
-            title: '电话',
+            title: getDict('phone'),
             dataIndex: 'userPhone',
             copyable: true,
             ellipsis: true,
             valueType: 'number',
         },
         {
-            title: '国家',
+            title: getDict('country'),
             dataIndex: 'userCountry',
             ellipsis: true,
             valueType: 'string',
@@ -140,7 +145,7 @@ export function ClientUserDetail({user}) {
         clientBackendFetch.postJson('/user/update', data)
             .then(r => {
                 if (r && r.data) {
-                    message.success("success");
+                    message.success(getDict("edit_success"));
                 }
             })
     }, [user?.userUuid])
@@ -150,9 +155,9 @@ export function ClientUserDetail({user}) {
         clientBackendFetch.postJson('/user/update', data)
             .then(r => {
                 if (r && r.data) {
-                    message.success("修改成功")
+                    message.success(getDict("edit_success"))
                 } else {
-                    message.error("修改失败")
+                    message.info(getDict("edit_fail"))
                 }
             })
     }, [user?.userUuid])

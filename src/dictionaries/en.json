@@ -43,5 +43,52 @@
     "anchor": "anchor",
     "giftSendRecord": "giftSendRecord",
     "client": "client"
+  },
+  "AnchorUserPage": {
+    "tabs": {
+      "tabLabel1": "Basic Information",
+      "tabLabel2": "stream settings",
+      "tabLabel3": "Reward record"
+    },
+    "tab1": {
+      "username": "username",
+      "email": "email",
+      "phone": "phone",
+      "country": "country"
+    },
+    "tab2": {
+      "online": "online",
+      "offline": "offline",
+      "stream_address": "stream address",
+      "can_stream": "stream ability",
+      "stream_type": "stream type",
+      "moneyReceive": "Reward amount",
+      "follows": "Number of followers",
+      "room_title": "Live room title",
+      "sanwei": "Measurements",
+      "height": "height",
+      "weight": "weight",
+      "onlineStatus": "online status：",
+      "upload_success": "upload success",
+      "upload_fail": "upload fail",
+      "anchor_images": "Anchor cover pictures"
+    }
+  },
+  "ClientUserPage": {
+    "tabs": {
+      "tabLabel1": "Basic Information"
+    },
+    "tab1": {
+      "level": "level",
+      "money": "wallet",
+      "moneySent": "spends",
+      "rechargeMoney": "Recharge amount",
+      "username": "username",
+      "email": "email",
+      "phone": "phone",
+      "country": "country",
+      "edit_success": "edit success",
+      "edit_fail": "edit fail"
+    }
   }
 }

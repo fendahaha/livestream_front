@@ -5,13 +5,15 @@ import {message, Switch, Typography, Upload} from "antd";
 import styles from './tab2.module.css';
 import {DeleteOutlined, InboxOutlined} from "@ant-design/icons";
 import {get_attribute_of_anchorConfig, update_attribute_of_anchorConfig} from "@/app/_func/client";
+import {useMyLocale} from "@/component/context/localeContext";
 
 const AnchorStatusChange = ({userUuid, anchorUuid}) => {
+    const {getDict} = useMyLocale('AnchorUserPage','tab2');
     const [checked, setChecked] = useState(false);
     const [loading, setLoading] = useState(false);
     const props = {
-        checkedChildren: '在线',
-        unCheckedChildren: '下线',
+        checkedChildren: getDict('online'),
+        unCheckedChildren: getDict('offline'),
         checked: checked,
         disabled: loading,
         loading: loading,
@@ -46,12 +48,13 @@ const AnchorStatusChange = ({userUuid, anchorUuid}) => {
     )
 }
 const AnchorInfo = ({anchor}) => {
+    const {getDict} = useMyLocale('AnchorUserPage','tab2');
     const {user, room} = anchor;
     const actionRef = useRef();
     console.log(anchor);
     const columns = [
         {
-            title: '直播地址',
+            title: getDict('stream_address'),
             dataIndex: 'streamAddress',
             copyable: true,
             editable: false,
@@ -59,7 +62,7 @@ const AnchorInfo = ({anchor}) => {
             span: 3,
         },
         {
-            title: '是否可以直播',
+            title: getDict('can_stream'),
             dataIndex: 'roomEnable',
             editable: false,
             valueEnum: {
@@ -68,42 +71,42 @@ const AnchorInfo = ({anchor}) => {
             },
         },
         {
-            title: '直播类型',
+            title: getDict('stream_type'),
             dataIndex: 'streamType',
             editable: false,
             span: 2,
         },
         {
-            title: '打赏金额',
+            title: getDict('moneyReceive'),
             dataIndex: 'anchorMoney',
             editable: false,
             span: 1,
         },
         {
-            title: '关注人数',
+            title: getDict('follows'),
             dataIndex: 'anchorFollowers',
             editable: false,
             span: 2,
         },
         {
-            title: '直播房间标题',
+            title: getDict('room_title'),
             dataIndex: 'anchorRemark',
             copyable: true,
             ellipsis: true,
             span: 3,
         },
         {
-            title: '三维',
+            title: getDict('sanwei'),
             dataIndex: 'anchorSanwei',
             valueType: 'text',
         },
         {
-            title: '身高',
+            title: getDict('height'),
             dataIndex: 'anchorHeight',
             valueType: 'digit',
         },
         {
-            title: '体重',
+            title: getDict('weight'),
             dataIndex: 'anchorWieght',
             valueType: 'digit',
         },
@@ -152,7 +155,7 @@ const AnchorInfo = ({anchor}) => {
         },
         title: (
             <div className={styles.title}>
-                <span>在线状态：</span>
+                <span>{getDict('onlineStatus')}</span>
                 <AnchorStatusChange userUuid={anchor.userUuid} anchorUuid={anchor.anchorUuid}/>
             </div>
         ),
@@ -177,6 +180,7 @@ const AnchorImage = ({filePath, del}) => {
 }
 
 const AnchorImages = ({anchor}) => {
+    const {getDict} = useMyLocale('AnchorUserPage','tab2');
     const anchorUuid = anchor.anchorUuid;
     const [anchorConfig, setAnchorConfig] = useState(anchor.anchorConfig)
     const upload_success_callback = (fileObject) => {
@@ -187,11 +191,11 @@ const AnchorImages = ({anchor}) => {
             .then(r => {
                 if (r?.data) {
                     setAnchorConfig(new_anchorConfig);
-                    message.success("上传成功");
+                    message.success(getDict('upload_success'));
                 }
             })
             .catch(() => {
-                message.success("上传失败");
+                message.info(getDict('upload_fail'));
             })
     }
     const del = (filePath) => {
@@ -210,7 +214,7 @@ const AnchorImages = ({anchor}) => {
                 }
             })
             .catch(() => {
-                message.success("fail");
+                message.info("fail");
             })
     }
     const images = useMemo(() => {
@@ -238,12 +242,13 @@ const AnchorImages = ({anchor}) => {
                 if (response.data[name]) {
                     upload_success_callback(response.data[name]);
                 } else {
-                    message.error("上传失败")
+                    message.info(getDict('upload_fail'));
                 }
             }
             if (file.status === 'error') {
                 console.log(info);
-                message.error("上传失败（网络错误）")
+                message.error(getDict('upload_fail'));
+
             }
         },
     };
@@ -271,11 +276,12 @@ const AnchorImages = ({anchor}) => {
 }
 
 export default function Page({anchor}) {
+    const {getDict} = useMyLocale('AnchorUserPage','tab2');
     return (
         <>
             <AnchorInfo anchor={anchor}/>
             <Typography.Title ellipsis={true} level={2} type={'secondary'} style={{textAlign: "center"}}>
-                主播封面图
+                {getDict('anchor_images')}
             </Typography.Title>
             <AnchorImages anchor={anchor}/>
         </>

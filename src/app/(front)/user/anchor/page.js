@@ -7,8 +7,10 @@ import {GlobalContext} from "@/component/context/globalContext";
 import Tab1 from "@/app/(front)/user/anchor/tab1";
 import Tab2 from "@/app/(front)/user/anchor/tab2";
 import Tab3 from "@/app/(front)/user/anchor/tab3";
+import {useMyLocale} from "@/component/context/localeContext";
 
 export default function AnchorPage() {
+    const {getDict} = useMyLocale('AnchorUserPage','tabs');
     const {user, updateUser} = useContext(GlobalContext);
     const [anchor, setAnchor] = useState(null);
     useEffect(() => {
@@ -18,17 +20,17 @@ export default function AnchorPage() {
     }, [user?.userUuid])
     const items = [
         {
-            label: '基本信息',
+            label: getDict('tabLabel1'),
             key: 1,
             children: <Tab1 anchor={anchor}/>,
         },
         {
-            label: '直播设置',
+            label: getDict('tabLabel2'),
             key: 2,
             children: <Tab2 anchor={anchor}/>,
         },
         {
-            label: '打赏记录',
+            label: getDict('tabLabel3'),
             key: 3,
             children: <Tab3 anchor={anchor}/>,
         }

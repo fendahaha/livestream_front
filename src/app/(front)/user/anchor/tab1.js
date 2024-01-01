@@ -3,6 +3,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {message, Upload} from "antd";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import {clientBackendFetch, imagePrefix} from "@/util/requestUtil";
+import {useMyLocale} from "@/component/context/localeContext";
 
 async function editUser(data, onSuccess) {
     clientBackendFetch.post('/user/update', data)
@@ -16,9 +17,9 @@ async function editUser(data, onSuccess) {
                 if (onSuccess) {
                     onSuccess()
                 }
-                message.success("修改成功")
+                message.success("success")
             } else {
-                message.error("修改失败")
+                message.error("fail")
             }
         })
 }
@@ -87,28 +88,29 @@ const AvatarUpload = ({onSuccess, filePath}) => {
 }
 
 export default function Tab1({anchor}) {
+    const {getDict} = useMyLocale('AnchorUserPage','tab1');
     const {user, room} = anchor;
     const actionRef = useRef();
     const columns = [
         {
-            title: '用户名',
+            title: getDict('username'),
             dataIndex: 'userDisplayName',
             ellipsis: true,
         },
         {
-            title: '邮箱',
+            title: getDict('email'),
             dataIndex: 'userEmail',
             copyable: true,
             ellipsis: true,
         },
         {
-            title: '电话',
+            title: getDict('phone'),
             dataIndex: 'userPhone',
             copyable: true,
             ellipsis: true,
         },
         {
-            title: '国家',
+            title: getDict('country'),
             dataIndex: 'userCountry',
             ellipsis: true,
         },
