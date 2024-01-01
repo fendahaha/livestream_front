@@ -4,5 +4,91 @@
     "userCenter": "User Center",
     "logoutButtonText": "logout",
     "logoutSuccessMsg": "logout success"
+  },
+  "Room": {
+    "please_log_in": "please log in",
+    "only_user_send_gift": "only login user can send gift",
+    "tab1": "Message",
+    "tab2": "OnlineUsers",
+    "anchor_offline": "seems like anchor is offline",
+    "no_more_user": "It is all, nothing more"
+  },
+  "Login": {
+    "user_or_anchor": "client or anchor",
+    "please_input_user_or_anchor": "please input client or anchor name!",
+    "password": "password",
+    "please_input_password": "please input password!",
+    "email": "email",
+    "please_input_email": "please input email!",
+    "phone": "phone",
+    "please_input_phone": "please input phone!",
+    "strong": "strength: strong",
+    "normal": "strength: normal",
+    "weak": "strength: weak",
+    "login": "login",
+    "register": "register",
+    "login_success": "login success",
+    "username_password_error": "username or password error",
+    "register_success": "register success",
+    "unknown_error": "unknown error"
+  },
+  "AdminLayout": {
+    "logout": "logout",
+    "logout_success": "logout success",
+    "admin": "admin",
+    "media": "media",
+    "list": "list",
+    "upload": "upload",
+    "gift": "gift",
+    "anchor": "anchor",
+    "giftSendRecord": "giftSendRecord",
+    "client": "client"
+  },
+  "AnchorUserPage": {
+    "tabs": {
+      "tabLabel1": "Basic Information",
+      "tabLabel2": "stream settings",
+      "tabLabel3": "Reward record"
+    },
+    "tab1": {
+      "username": "username",
+      "email": "email",
+      "phone": "phone",
+      "country": "country"
+    },
+    "tab2": {
+      "online": "online",
+      "offline": "offline",
+      "stream_address": "stream address",
+      "can_stream": "stream ability",
+      "stream_type": "stream type",
+      "moneyReceive": "Reward amount",
+      "follows": "Number of followers",
+      "room_title": "Live room title",
+      "sanwei": "Measurements",
+      "height": "height",
+      "weight": "weight",
+      "onlineStatus": "online status：",
+      "upload_success": "upload success",
+      "upload_fail": "upload fail",
+      "anchor_images": "Anchor cover pictures"
+    }
+  },
+  "ClientUserPage": {
+    "tabs": {
+      "tabLabel1": "Basic Information"
+    },
+    "tab1": {
+      "level": "level",
+      "money": "wallet",
+      "moneySent": "spends",
+      "rechargeMoney": "Recharge amount",
+      "username": "username",
+      "email": "email",
+      "phone": "phone",
+      "country": "country",
+      "edit_success": "edit success",
+      "edit_fail": "edit fail"
+    }
   }
 }

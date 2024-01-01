@@ -15,7 +15,10 @@ export default function LanguageChange() {
         {
             key: e,
             label: (
-                <Button block={true} type={e === locale ? 'primary' : 'text'} onClick={() => onClick(e)}>{e}</Button>
+                <Tooltip placement={"right"} title={e.title}>
+                    <Button block={true} type={e.name === locale ? 'primary' : 'text'}
+                            onClick={() => onClick(e.name)}>{e.title}</Button>
+                </Tooltip>
             )
         }
     ))
