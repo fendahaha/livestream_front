@@ -7,6 +7,7 @@ import styles from './follows.module.css';
 import {get_client_followed_anchors} from "@/app/_func/client";
 import {imagePrefix} from "@/util/requestUtil";
 import {ImagesModal} from "@/app/(front)/component/ZhuboOfflineCover";
+import {SubscribeContext} from "@/component/subscribeButton";
 
 export function Anchor({anchor}) {
     const {user, room} = anchor
@@ -42,6 +43,7 @@ export function FollowedAnchors({anchors}) {
 }
 
 export default function Follows() {
+    const subscribeContext = useContext(SubscribeContext);
     const {user} = useContext(GlobalContext);
     const [anchors, setAnchors] = useState([]);
     useEffect(() => {
@@ -53,7 +55,7 @@ export default function Follows() {
         } else {
             setAnchors([]);
         }
-    }, [user?.userUuid]);
+    }, [user?.userUuid, subscribeContext]);
     return (
         <>
             {user && userTypeUtil.is_client(user?.userType) ?
