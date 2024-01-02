@@ -2,7 +2,8 @@ import {MyCarousel} from "@/app/(front)/component/Slider";
 import {FixWidthDiv} from "@/component/common/WidthDiv";
 import {get_anchors, get_rank_anchors} from "@/app/_func/server";
 import ZhuboStreamRankList from "@/app/(front)/component/ZhuboStreamRankList";
-
+// Opt out of caching for all data requests in the route segment
+export const dynamic = 'force-dynamic'
 const test_data = [
     {img: '/nav/nav1.jpg', link: ''},
     {img: '/nav/nav2.jpg', link: ''},
@@ -18,7 +19,6 @@ export default async function Home() {
                 <div>
                     <MyCarousel data={test_data}/>
                 </div>
-                {/*<p>{new Date().getMilliseconds()}</p>*/}
                 <ZhuboStreamRankList anchors={anchors} rank_anchors={rank_anchors}/>
             </FixWidthDiv>
         </div>

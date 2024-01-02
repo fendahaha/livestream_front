@@ -24,7 +24,7 @@ export default function ZhuboStreamRankList({anchors, rank_anchors}) {
                 reconnectDelay: 5 * 1000,
                 heartbeatIncoming: 10 * 1000,
                 heartbeatOutgoing: 5 * 1000,
-                // debug: (str) => console.log("debug:", str),
+                debug: (str) => console.log("debug:", str),
             });
             stompClientRef.current.onConnect = function (frame) {
                 stompClientRef.current.subscribe(destinationTopic, (message) => {
