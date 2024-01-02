@@ -60,6 +60,7 @@
       "online": "在线",
       "offline": "下线",
       "stream_address": "直播地址",
+      "streamParam": "推流码",
       "can_stream": "是否可以直播",
       "stream_type": "直播类型",
       "moneyReceive": "打赏金额",

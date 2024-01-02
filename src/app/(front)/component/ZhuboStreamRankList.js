@@ -32,7 +32,7 @@ export default function ZhuboStreamRankList({anchors, rank_anchors}) {
                     if (messageObj.type === MessageUtil.pageMessage) {
                         let data = JSON.parse(messageObj.data);
                         if (data === 'OnlineAnchorsUpdate') {
-                            setFirstUpdate(true);
+                            // setFirstUpdate(true);
                             setOnlineAnchorsUpdate(new Date().getTime());
                         }
                     }
@@ -48,21 +48,18 @@ export default function ZhuboStreamRankList({anchors, rank_anchors}) {
         }
     }, []);
     useEffect(() => {
-        if (firstUpdate) {
-            console.log(1);
-            get_anchors().then(r => {
-                setAnchorList(r)
-            })
-            get_rank_anchors().then(r => {
-                setRankAnchorList(r)
-            })
-        }
-    }, [firstUpdate, onlineAnchorsUpdate])
+        get_anchors().then(r => {
+            setAnchorList(r)
+        })
+        get_rank_anchors().then(r => {
+            setRankAnchorList(r)
+        })
+    }, [onlineAnchorsUpdate])
     return (
         <div>
             <div className={styles.layout}>
                 <div className={styles.left}>
-                    {anchors.length ?
+                    {anchorList.length ?
                         <div className={styles.anchor_list}>
                             <ZhuboStreamList list={anchorList}/>
                         </div>
@@ -70,7 +67,7 @@ export default function ZhuboStreamRankList({anchors, rank_anchors}) {
                     }
                 </div>
                 <div className={styles.right}>
-                    {rank_anchors.length ? <ZhuboRankList list={rankAnchorList}/>
+                    {rankAnchorList.length ? <ZhuboRankList list={rankAnchorList}/>
                         : <MyEmpty/>}
                 </div>
             </div>

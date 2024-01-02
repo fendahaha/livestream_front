@@ -60,6 +60,7 @@
       "online": "online",
       "offline": "offline",
       "stream_address": "stream address",
+      "streamParam": "stream code",
       "can_stream": "stream ability",
       "stream_type": "stream type",
       "moneyReceive": "Reward amount",
