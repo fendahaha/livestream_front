@@ -33,7 +33,7 @@ export default async function RootLayout({children}) {
                 <GlobalContextManager userInfo={await getLoginUser()}>
                     <div className={styles.main}>
                         <div className={styles.header}>
-                            <Header/>
+                            {/*<Header/>*/}
                         </div>
                         <div className={styles.body}>
                             {children}

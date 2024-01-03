@@ -10,7 +10,7 @@ export default async function Component({params}) {
         if (anchor) {
             const anchorUser = anchor.user;
             const room = anchor.room;
-            const streamUrl = `${streamServer}${room.streamAddress}.flv?${room.streamParam}`;
+            const streamUrl = `${streamServer}${room.streamAddress}.m3u8?${room.streamParam}`;
             const topic = `/topic/${room_uuid}`;
             return <Room uuid={room_uuid} anchor={anchor} anchorUser={anchorUser} room={room} streamUrl={streamUrl}
                          topic={topic}></Room>

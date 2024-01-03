@@ -7,7 +7,6 @@ import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {Client} from "@stomp/stompjs";
 import {wsPrefix} from "@/util/requestUtil";
 import styles from './Room.module.css';
-import FlvContainer from "@/component/player/flv_container";
 import M3u8Container from "@/component/player/m3u8_container";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
@@ -63,7 +62,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
                 reconnectDelay: 5 * 1000,
                 heartbeatIncoming: 10 * 1000,
                 heartbeatOutgoing: 5 * 1000,
-                debug: (str) => console.log("debug:", str),
+                // debug: (str) => console.log("debug:", str),
             });
             stompClientRef.current.beforeConnect = async () => {
                 console.log(`attemp connect stomp ${destinationTopic}`);
@@ -137,7 +136,6 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                {/*<FlvContainer url={streamUrl}/>*/}
                 <M3u8Container url={streamUrl}/>
             </div>
         </div>
