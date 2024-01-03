@@ -1,11 +1,12 @@
 "use client"
 import {useEffect, useRef} from "react";
 import Hls from "hls.js";
-
+import {message} from "antd";
 export default function M3u8Container({url}) {
     const videoRef = useRef(null);
 
     useEffect(() => {
+        message.info("m3u8");
         let hls;
         if (videoRef.current) {
             if (Hls.isSupported()) {
@@ -27,13 +28,19 @@ export default function M3u8Container({url}) {
         return () => {
             if (hls) {
                 hls.destroy();
+            } else {
+                if (videoRef.current) {
+                    videoRef.current.stop()
+                }
             }
         };
     }, [url]);
 
     return (
-        <div>
-            <video ref={videoRef} controls style={{width: '800px'}} muted autoPlay/>
+        <div style={{
+            width: '100%', height: '100%', position: 'relative',
+        }}>
+            <video ref={videoRef} controls autoPlay muted style={{width: '100%', height: '100%',}}/>
         </div>
     );
 }

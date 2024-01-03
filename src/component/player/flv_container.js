@@ -32,6 +32,8 @@ export default function FlvContainer({url}) {
             return () => {
                 flvPlayer.destroy();
             };
+        } else {
+            message.info('flv is not supported');
         }
     }, [url]);
     useEffect(() => {

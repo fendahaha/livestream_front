@@ -8,6 +8,7 @@ import {Client} from "@stomp/stompjs";
 import {wsPrefix} from "@/util/requestUtil";
 import styles from './Room.module.css';
 import FlvContainer from "@/component/player/flv_container";
+import M3u8Container from "@/component/player/m3u8_container";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -136,7 +137,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                <FlvContainer url={streamUrl}/>
+                {/*<FlvContainer url={streamUrl}/>*/}
+                <M3u8Container url={streamUrl}/>
             </div>
         </div>
     );
