@@ -1,0 +1,139 @@
+.item {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.item:before {
+    content: '';
+    display: block;
+    margin-bottom: 100%;
+}
+
+.item:hover .item_img {
+    transform: scale(1.1);
+}
+
+.offline {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.online {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.offline .status {
+    background-color: #a4a4a4;
+}
+
+.offline .status:before {
+    content: 'Offline';
+}
+
+.offline_cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);;
+    z-index: 3;
+}
+
+.online .status:before {
+    content: 'Live';
+}
+
+.online .status {
+    background-color: red;
+}
+
+.item:hover .online .live_link {
+    display: flex;
+}
+
+.live_link {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.live_link_button {
+    display: block;
+    overflow: hidden;
+    background-color: red;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.item_img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all 0.2s linear;
+    object-fit: cover;
+}
+
+.item_info {
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.status {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: auto;
+    height: auto;
+    font-size: 12px;
+    color: white;
+    padding: 1px 4px;
+    border-radius: 5px;
+}
+
+.zhubo {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.zhubo_icon {
+    margin-right: 5px;
+    width: 20px;
+}
+
+.zhubo_name {
+    color: white;
+    font-size: 16px;
+}
+
+
+

@@ -9,16 +9,15 @@
 }
 
 .header {
-    height: 50px;
+    /*height: 50px;*/
     border: 1px solid red;
 }
 
 .body {
-    overflow: scroll;
-    padding: 10px 5px;
+    overflow: auto;
+    /*padding: 10px 5px;*/
 }
 
 .footer {
-    height: 60px;
     border: 1px solid blue;
 }

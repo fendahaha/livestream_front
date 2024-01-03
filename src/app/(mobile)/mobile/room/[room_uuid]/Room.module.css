@@ -1,0 +1,14 @@
+.room {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.stream_container {
+    border: 1px solid blue;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background: radial-gradient(at 50% 100%, #755757 0%, #4A4544 50%, #1E2225 100%);
+}

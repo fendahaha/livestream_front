@@ -1,0 +1,33 @@
+.footer {
+    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    overflow: hidden;
+}
+
+.item {
+    /*border: 1px solid red;*/
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: flex-start;
+    gap: 0;
+    color: black;
+}
+
+.item.active {
+    color: red;
+}
+
+.icon {
+    /*border: 1px solid black;*/
+    font-size: 24px;
+    line-height: 16px;
+}
+
+.text {
+    font-size: 12px;
+    font-weight: bolder;
+}
