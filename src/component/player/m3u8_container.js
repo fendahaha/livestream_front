@@ -7,25 +7,26 @@ export default function M3u8Container({url}) {
     const videoRef = useRef(null);
 
     useEffect(() => {
-        message.info("m3u8");
-        let hls;
         if (videoRef.current) {
             if (Hls.isSupported()) {
-                message.info("Hls.isSupported");
                 let config = {
                     debug: true,
                 }
-                hls = new Hls(config);
-                hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                let hls1 = new Hls(config);
+                hls1.on(Hls.Events.MEDIA_ATTACHED, function () {
                     console.log('video and hls.js are now bound together !');
                 });
-                hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                    videoRef.current.play();
+                hls1.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                    try {
+                        // videoRef.current.play();
+                    } catch (error) {
+                        console.log(error);
+                    }
                     console.log(
                         'manifest loaded, found ' + data.levels.length + ' quality level',
                     );
                 });
-                hls.on(Hls.Events.ERROR, function (event, data) {
+                hls1.on(Hls.Events.ERROR, function (event, data) {
                     let errorType = data.type;
                     let errorDetails = data.details;
                     let errorFatal = data.fatal;
@@ -33,7 +34,7 @@ export default function M3u8Container({url}) {
                         switch (data.type) {
                             case Hls.ErrorTypes.MEDIA_ERROR:
                                 console.log('fatal media error encountered, try to recover');
-                                hls.recoverMediaError();
+                                hls1.recoverMediaError();
                                 break;
                             case Hls.ErrorTypes.NETWORK_ERROR:
                                 console.error('fatal network error encountered', data);
@@ -44,38 +45,31 @@ export default function M3u8Container({url}) {
                                 break;
                             default:
                                 // cannot recover
-                                hls.destroy();
+                                hls1.destroy();
                                 break;
                         }
                     }
                 });
-                hls.loadSource(url);
-                hls.attachMedia(videoRef.current);
+                hls1.loadSource(url);
+                hls1.attachMedia(videoRef.current);
+                return () => {
+                    if (hls1) {
+                        hls1.destroy();
+                    }
+                };
             } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
                 // This will run in native HLS support like Safari
                 videoRef.current.src = url;
                 videoRef.current.addEventListener('loadedmetadata', function () {
-                    videoRef.current.play();
+                    message.info("loadedmetadata")
                 });
             }
         }
-
-        return () => {
-            if (hls) {
-                hls.destroy();
-            } else {
-                if (videoRef.current) {
-
-                }
-            }
-        };
     }, [url]);
 
     return (
-        <div style={{
-            width: '100%', height: '100%', position: 'relative',
-        }}>
-            <video ref={videoRef} controls autoPlay muted style={{width: '100%', height: '100%',}}/>
+        <div style={{width: '100%', height: '100%', position: 'relative',}}>
+            <video ref={videoRef} controls autoPlay muted playsInline style={{width: '100%', height: '100%',}}/>
         </div>
     );
 }

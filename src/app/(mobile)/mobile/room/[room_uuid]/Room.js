@@ -8,6 +8,9 @@ import {Client} from "@stomp/stompjs";
 import {wsPrefix} from "@/util/requestUtil";
 import styles from './Room.module.css';
 import M3u8Container from "@/component/player/m3u8_container";
+import {useRoomPageContext} from "@/component/context/PageContext";
+import IosHlsPlayer from "@/component/player/IosHlsPlayer";
+import FlvContainer from "@/component/player/flv_container";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -130,13 +133,14 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
     return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign]
 }
 export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
+    const {isIos} = useRoomPageContext();
     const {getDict} = useMyLocale('Room');
     const {user, updateUser} = useContext(GlobalContext);
     const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                <M3u8Container url={streamUrl}/>
+                {isIos ? <IosHlsPlayer url={streamUrl}/> : <FlvContainer url={streamUrl}/>}
             </div>
         </div>
     );

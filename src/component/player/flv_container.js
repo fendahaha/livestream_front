@@ -1,8 +1,8 @@
 'use client'
 import {useEffect, useRef, useState} from "react";
-import flv from "flv.js";
 import {message} from "antd";
 import {useMyLocale} from "@/component/context/localeContext";
+import Script from "next/script";
 
 export default function FlvContainer({url}) {
     const {getDict} = useMyLocale('Room');
@@ -10,8 +10,8 @@ export default function FlvContainer({url}) {
     const flvPlayerRef = useRef(null);
     const [isStreamOnline, setIsStreamOnline] = useState(true);
     useEffect(() => {
-        if (flv.isSupported()) {
-            const flvPlayer = flv.createPlayer({
+        if (flvjs.isSupported()) {
+            const flvPlayer = flvjs.createPlayer({
                 type: 'flv',
                 url: url,
                 isLive: true,
@@ -20,7 +20,7 @@ export default function FlvContainer({url}) {
                 cors: true,
             });
             flvPlayer.attachMediaElement(videoRef.current);
-            flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo) => {
+            flvPlayer.on(flvjs.Events.ERROR, (errorType, errorInfo) => {
                 console.log(errorType, errorInfo);
                 message.warning(getDict('anchor_offline'), 5);
                 setIsStreamOnline(false);
@@ -48,6 +48,8 @@ export default function FlvContainer({url}) {
         <div style={{
             width: '100%', height: '100%', position: 'relative',
         }}>
+            <Script src={'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.6.2/flv.min.js'}
+                    strategy={'beforeInteractive'}/>
             <video ref={videoRef} controls autoPlay muted style={{width: '100%', height: '100%',}}/>
         </div>
     )
