@@ -2,7 +2,15 @@
 import {createContext, useContext} from "react";
 
 export const RoomPageContext = createContext({isIos: false});
-export const useRoomPageContext = () => {
-    const roomPageContext = useContext(RoomPageContext);
-    return roomPageContext
+export const RoomPageContextManager = ({children, isIos}) => {
+    return (
+        <RoomPageContext.Provider value={{isIos: isIos}}>
+            {children}
+        </RoomPageContext.Provider>
+    )
 }
+export const useRoomPageContext = () => {
+    const {isIos} = useContext(RoomPageContext);
+    return {isIos}
+}
+

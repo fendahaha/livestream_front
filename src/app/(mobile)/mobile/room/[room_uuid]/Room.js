@@ -10,7 +10,6 @@ import styles from './Room.module.css';
 import M3u8Container from "@/component/player/m3u8_container";
 import {useRoomPageContext} from "@/component/context/PageContext";
 import IosHlsPlayer from "@/component/player/IosHlsPlayer";
-import FlvContainer from "@/component/player/flv_container";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -140,7 +139,7 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                {isIos ? <IosHlsPlayer url={streamUrl}/> : <FlvContainer url={streamUrl}/>}
+                {isIos ? <IosHlsPlayer url={streamUrl}/> : <M3u8Container url={streamUrl}/>}
             </div>
         </div>
     );

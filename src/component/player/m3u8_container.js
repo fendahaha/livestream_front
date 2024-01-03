@@ -12,11 +12,11 @@ export default function M3u8Container({url}) {
                 let config = {
                     debug: true,
                 }
-                let hls1 = new Hls(config);
-                hls1.on(Hls.Events.MEDIA_ATTACHED, function () {
+                let hlsClient = new Hls(config);
+                hlsClient.on(Hls.Events.MEDIA_ATTACHED, function () {
                     console.log('video and hls.js are now bound together !');
                 });
-                hls1.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                hlsClient.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
                     try {
                         // videoRef.current.play();
                     } catch (error) {
@@ -26,7 +26,7 @@ export default function M3u8Container({url}) {
                         'manifest loaded, found ' + data.levels.length + ' quality level',
                     );
                 });
-                hls1.on(Hls.Events.ERROR, function (event, data) {
+                hlsClient.on(Hls.Events.ERROR, function (event, data) {
                     let errorType = data.type;
                     let errorDetails = data.details;
                     let errorFatal = data.fatal;
@@ -34,7 +34,7 @@ export default function M3u8Container({url}) {
                         switch (data.type) {
                             case Hls.ErrorTypes.MEDIA_ERROR:
                                 console.log('fatal media error encountered, try to recover');
-                                hls1.recoverMediaError();
+                                hlsClient.recoverMediaError();
                                 break;
                             case Hls.ErrorTypes.NETWORK_ERROR:
                                 console.error('fatal network error encountered', data);
@@ -45,16 +45,16 @@ export default function M3u8Container({url}) {
                                 break;
                             default:
                                 // cannot recover
-                                hls1.destroy();
+                                hlsClient.destroy();
                                 break;
                         }
                     }
                 });
-                hls1.loadSource(url);
-                hls1.attachMedia(videoRef.current);
+                hlsClient.loadSource(url);
+                hlsClient.attachMedia(videoRef.current);
                 return () => {
-                    if (hls1) {
-                        hls1.destroy();
+                    if (hlsClient) {
+                        hlsClient.destroy();
                     }
                 };
             } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {

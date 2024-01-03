@@ -3,7 +3,7 @@ import {streamServer} from "@/util/requestUtil";
 import {redirect} from "next/navigation";
 import Room from "@/app/(mobile)/mobile/room/[room_uuid]/Room";
 import {headers} from "next/headers";
-import {RoomPageContext} from "@/component/context/PageContext";
+import {RoomPageContextManager} from "@/component/context/PageContext";
 
 export default async function Component({params}) {
     const isIos = /iPad|iPhone|iPod/.test(headers().get("user-agent"))
@@ -16,7 +16,7 @@ export default async function Component({params}) {
             const streamUrl = `${streamServer}${room.streamAddress}.m3u8?${room.streamParam}`;
             const topic = `/topic/${room_uuid}`;
             return (
-                <RoomPageContext.Provider value={{isIos}}>
+                <RoomPageContextManager isIos={isIos}>
                     <Room uuid={room_uuid}
                           anchor={anchor}
                           anchorUser={anchorUser}
@@ -25,7 +25,7 @@ export default async function Component({params}) {
                           topic={topic}>
 
                     </Room>
-                </RoomPageContext.Provider>
+                </RoomPageContextManager>
             )
         } else {
             redirect("/mobile");
