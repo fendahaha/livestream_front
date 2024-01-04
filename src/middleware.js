@@ -2,6 +2,10 @@ import {NextResponse} from 'next/server'
 import {backendUrlBase} from "@/util/requestUtil";
 import {userTypeUtil} from "@/util/commonUtil";
 
+function isMobile(userAgent) {
+    return /iPhone|iPad|iPod|Android/i.test(userAgent);
+}
+
 async function get_login_user(request) {
     const JSESSIONID = request.cookies.get('JSESSIONID');
     const response = await fetch(`${backendUrlBase}/user/getLoginUser`, {
@@ -44,12 +48,15 @@ export async function middleware(request) {
             })
         }
     } else {
-        if (!pathname.startsWith("/mobile")) {
-            const userAgent = headers.get("user-agent");
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
-            if (isMobile) {
-                const p = `/mobile${pathname}?${searchParams.toString()}`
-                return NextResponse.redirect(new URL(p, request.url))
+        // if (!pathname.startsWith("/mobile")) {
+        //     if (isMobile(headers.get("user-agent"))) {
+        //         const p = `/mobile${pathname}?${searchParams.toString()}`
+        //         return NextResponse.redirect(new URL(p, request.url))
+        //     }
+        // }
+        if (pathname === '/') {
+            if (isMobile(headers.get("user-agent"))) {
+                return NextResponse.redirect(new URL('/mobile', request.url))
             }
         }
         if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
