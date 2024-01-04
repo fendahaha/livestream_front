@@ -10,9 +10,12 @@ export default async function Page({params}) {
         if (anchor) {
             const anchorUser = anchor.user;
             const room = anchor.room;
-            const streamUrl = `${streamServer}${room.streamAddress}.flv?${room.streamParam}`;
+            const streamUrl = `${streamServer}${room.streamAddress}`;
+            const streamParam = `${room.streamParam}`;
             const topic = `/topic/${room_uuid}`;
-            return <Room uuid={room_uuid} anchor={anchor} anchorUser={anchorUser} room={room} streamUrl={streamUrl}
+            return <Room uuid={room_uuid} anchor={anchor} anchorUser={anchorUser} room={room}
+                         streamUrl={streamUrl}
+                         streamParam={streamParam}
                          topic={topic}></Room>
         } else {
             redirect("/");

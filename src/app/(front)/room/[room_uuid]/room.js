@@ -1,6 +1,6 @@
 'use client'
 import styles from './room.module.css';
-import FlvContainer from "@/component/player/flv_container";
+// import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/chatMsgs";
 import React, {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
@@ -17,6 +17,7 @@ import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {useMyLocale} from "@/component/context/localeContext";
 import {UserOutlined} from "@ant-design/icons";
 import {SubscribeButton} from "@/component/subscribeButton";
+import M3u8Container from "@/component/player/m3u8_container";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -62,11 +63,12 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
 
     useEffect(() => {
         if (!stompClientRef.current) {
+            let _params = `userUuid=${encodeURIComponent(userUuid)}`
+                + `&pageType=${encodeURIComponent(PageType.Room)}`
+                + `&roomUuid=${encodeURIComponent(roomUuid)}`;
             stompClientRef.current = new Client({
-                brokerURL: `${wsPrefix}?userUuid=${userUuid}&pageType=${PageType.Room}&roomUuid=${roomUuid}`,
-                connectHeaders: {
-                    // passcode: 'password',
-                },
+                brokerURL: `${wsPrefix}?${_params}`,
+                // connectHeaders: {passcode: 'password'},
                 connectionTimeout: 10 * 1000,
                 reconnectDelay: 5 * 1000,
                 heartbeatIncoming: 10 * 1000,
@@ -143,7 +145,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
     return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign]
 }
 
-export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
+export default function Room({anchor, anchorUser, room, streamUrl, streamParam, topic}) {
     const {getDict} = useMyLocale('Room');
     const {user, updateUser} = useContext(GlobalContext);
     const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
@@ -165,7 +167,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
                             </div>
                         </div>
                         <div className={styles.layout2_middle}>
-                            {streamUrl ? <FlvContainer url={streamUrl}/> : ''}
+                            {/*{streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}*/}
+                            {streamUrl ? <M3u8Container url={streamUrl} param={streamParam}/> : ''}
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
                             </div>

@@ -4,25 +4,13 @@ import {message, Spin} from "antd";
 import {useMyLocale} from "@/component/context/localeContext";
 import Script from "next/script";
 import styles from './flv_container.module.css';
-import {LoadingOutlined} from "@ant-design/icons";
+import {MyLoading} from "@/component/player/common";
 
-const MyLoading = ({isLoading = true}) => {
-    return (
-        <>
-            {isLoading ?
-                <div className={styles.loading}>
-                    <LoadingOutlined/>
-                </div>
-                : ''
-            }
-        </>
-    )
-}
-
-export default function FlvContainer({url}) {
+export default function FlvContainer({url, param}) {
     const {getDict} = useMyLocale('Room');
+    const streamUrl = `${url}.flv?${param}`;
     const [flv, setFlv] = useState(null);
-    const [flvLoading, setFlvLoading] = useState(true);
+    const [scriptLoading, setScriptLoading] = useState(true);
     const videoRef = useRef(null);
     const flvPlayerRef = useRef(null);
     const [shouldReplay, setShouldReplay] = useState(false);
@@ -31,7 +19,7 @@ export default function FlvContainer({url}) {
             if (flv.isSupported()) {
                 const flvPlayer = flv.createPlayer({
                     type: 'flv',
-                    url: url,
+                    url: streamUrl,
                     isLive: true,
                     enableStashBuffer: false,
                     // withCredentials: true,
@@ -43,7 +31,7 @@ export default function FlvContainer({url}) {
                     message.warning(getDict('anchor_offline'), 5);
                     setShouldReplay(true);
                 });
-                flvPlayer.on(flv.Events.MEDIA_INFO,(e)=>{
+                flvPlayer.on(flv.Events.MEDIA_INFO, (e) => {
                     console.log(e);
                 })
                 flvPlayerRef.current = flvPlayer;
@@ -57,7 +45,7 @@ export default function FlvContainer({url}) {
                 message.info('flv is not supported');
             }
         }
-    }, [flv, url]);
+    }, [flv, streamUrl]);
     useEffect(() => {
         if (shouldReplay) {
             setShouldReplay(false);
@@ -72,11 +60,11 @@ export default function FlvContainer({url}) {
                     strategy={'afterInteractive'}
                     onReady={() => {
                         setFlv(flvjs);
-                        setFlvLoading(false);
+                        setScriptLoading(false);
                     }}
             />
             <div className={styles.video_container}>
-                <MyLoading isLoading={flvLoading}/>
+                <MyLoading isLoading={scriptLoading}/>
                 <video ref={videoRef} controls autoPlay muted className={styles.video}/>
             </div>
         </>

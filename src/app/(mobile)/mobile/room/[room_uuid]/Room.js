@@ -131,7 +131,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
     }, [userUuid, destinationTopic, roomUuid]);
     return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign]
 }
-export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
+export default function Room({anchor, anchorUser, room, streamUrl, streamParam, topic}) {
     const {isIos} = useRoomPageContext();
     const {getDict} = useMyLocale('Room');
     const {user, updateUser} = useContext(GlobalContext);
@@ -139,7 +139,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, topic}) {
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                {isIos ? <IosHlsPlayer url={streamUrl}/> : <M3u8Container url={streamUrl}/>}
+                {isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :
+                    <M3u8Container url={streamUrl} param={streamParam}/>}
             </div>
         </div>
     );

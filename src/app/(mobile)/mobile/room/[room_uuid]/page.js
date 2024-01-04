@@ -13,7 +13,8 @@ export default async function Component({params}) {
         if (anchor) {
             const anchorUser = anchor.user;
             const room = anchor.room;
-            const streamUrl = `${streamServer}${room.streamAddress}.m3u8?${room.streamParam}`;
+            const streamUrl = `${streamServer}${room.streamAddress}`;
+            const streamParam = `${room.streamParam}`;
             const topic = `/topic/${room_uuid}`;
             return (
                 <RoomPageContextManager isIos={isIos}>
@@ -22,8 +23,8 @@ export default async function Component({params}) {
                           anchorUser={anchorUser}
                           room={room}
                           streamUrl={streamUrl}
+                          streamParam={streamParam}
                           topic={topic}>
-
                     </Room>
                 </RoomPageContextManager>
             )
