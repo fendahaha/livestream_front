@@ -1,6 +1,6 @@
 'use client'
 import styles from './room.module.css';
-// import FlvContainer from "@/component/player/flv_container";
+import FlvContainer from "@/component/player/flv_container";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/chatMsgs";
 import React, {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
@@ -17,7 +17,6 @@ import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {useMyLocale} from "@/component/context/localeContext";
 import {UserOutlined} from "@ant-design/icons";
 import {SubscribeButton} from "@/component/subscribeButton";
-import M3u8Container from "@/component/player/m3u8_container";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -167,8 +166,7 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
                             </div>
                         </div>
                         <div className={styles.layout2_middle}>
-                            {/*{streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}*/}
-                            {streamUrl ? <M3u8Container url={streamUrl} param={streamParam}/> : ''}
+                            {streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
                             </div>
