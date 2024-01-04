@@ -44,6 +44,14 @@ export async function middleware(request) {
             })
         }
     } else {
+        if (!pathname.startsWith("/mobile")) {
+            const userAgent = headers.get("user-agent");
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
+            if (isMobile) {
+                const p = `/mobile${pathname}?${searchParams.toString()}`
+                return NextResponse.redirect(new URL(p, request.url))
+            }
+        }
         if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
             try {
                 const user = await get_login_user(request);
