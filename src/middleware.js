@@ -48,15 +48,10 @@ export async function middleware(request) {
             })
         }
     } else {
-        // if (!pathname.startsWith("/mobile")) {
-        //     if (isMobile(headers.get("user-agent"))) {
-        //         const p = `/mobile${pathname}?${searchParams.toString()}`
-        //         return NextResponse.redirect(new URL(p, request.url))
-        //     }
-        // }
-        if (pathname === '/') {
+        if (pathname === '/' || pathname.startsWith("/room")) {
             if (isMobile(headers.get("user-agent"))) {
-                return NextResponse.redirect(new URL('/mobile', request.url))
+                const p = `/mobile${pathname}?${searchParams.toString()}`
+                return NextResponse.redirect(new URL(p, request.url))
             }
         }
         if (pathname.startsWith("/admin") && !pathname.startsWith("/admin-login")) {
