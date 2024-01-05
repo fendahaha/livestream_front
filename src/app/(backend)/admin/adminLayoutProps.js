@@ -48,7 +48,7 @@ export function get_defaultProps(getDict) {
                     icon: <SmileFilled/>,
                 },
                 {
-                    path: 'http://localhost:3000',
+                    path: '/',
                     name: '网站首页',
                     icon: <ChromeFilled/>,
                 },
