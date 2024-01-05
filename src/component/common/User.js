@@ -77,6 +77,7 @@ export default function User() {
                                     <Button danger block={true} onClick={() => {
                                         logout(() => {
                                             updateUser({action: 'replace', data: null});
+                                            set_user(null);
                                             router.refresh();
                                             message.success(getDict('logoutSuccessMsg'));
                                         });
