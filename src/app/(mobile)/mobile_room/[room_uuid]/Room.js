@@ -7,9 +7,11 @@ import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {Client} from "@stomp/stompjs";
 import {wsPrefix} from "@/util/requestUtil";
 import styles from './Room.module.css';
-import M3u8Container from "@/component/player/m3u8_container";
 import {useRoomPageContext} from "@/component/context/PageContext";
 import IosHlsPlayer from "@/component/player/IosHlsPlayer";
+import FlvContainer from "@/component/player/flv_container";
+import {CloseOutlined, CrownOutlined, MessageOutlined, QrcodeOutlined, SoundOutlined} from "@ant-design/icons";
+import {Messages, SendButton} from "@/app/(mobile)/mobile_room/[room_uuid]/messages";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -140,7 +142,35 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
         <div className={styles.room}>
             <div className={styles.stream_container}>
                 {isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :
-                    <M3u8Container url={streamUrl} param={streamParam}/>}
+                    <FlvContainer url={streamUrl} param={streamParam}/>}
+            </div>
+            <div className={styles.stream_infos}>
+                <div className={styles.buttons}>
+                    <span className={styles.close}>
+                        <CloseOutlined/>
+                    </span>
+                    <span className={styles.button}>
+                        <MessageOutlined/>
+                    </span>
+                    <span className={styles.button}>
+                        <CrownOutlined/>
+                    </span>
+                    <span className={styles.button}>
+                        <SoundOutlined/>
+                    </span>
+                    <span className={styles.button}>
+                        <QrcodeOutlined/>
+                    </span>
+                </div>
+                <div className={styles.anchor_info}>
+                    <img src={''} alt={''} className={styles.anchor_info_avatar}/>
+                    <span className={styles.anchor_info_name}>adasdad</span>
+                    <span className={styles.anchor_info_follow}>+</span>
+                </div>
+                <div className={styles.messages}>
+                    <Messages/>
+                    <SendButton/>
+                </div>
             </div>
         </div>
     );

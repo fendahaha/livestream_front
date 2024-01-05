@@ -1,9 +1,9 @@
 import {is_room_online, queryAnchorByRoomUuid} from "@/app/_func/server";
 import {streamServer} from "@/util/requestUtil";
 import {redirect} from "next/navigation";
-import Room from "@/app/(mobile)/mobile/room/[room_uuid]/Room";
 import {headers} from "next/headers";
 import {RoomPageContextManager} from "@/component/context/PageContext";
+import Room from "@/app/(mobile)/mobile_room/[room_uuid]/Room";
 
 export default async function Component({params}) {
     const isIos = /iPad|iPhone|iPod/.test(headers().get("user-agent"))

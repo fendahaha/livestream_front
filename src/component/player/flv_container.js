@@ -65,7 +65,7 @@ export default function FlvContainer({url, param}) {
             />
             <div className={styles.video_container}>
                 <MyLoading isLoading={scriptLoading}/>
-                <video ref={videoRef} controls autoPlay muted className={styles.video}/>
+                <video ref={videoRef} controls autoPlay muted playsInline className={styles.video}/>
             </div>
         </>
     )

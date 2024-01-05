@@ -1,9 +1,6 @@
 import {Inter} from 'next/font/google'
 import './global.css';
 import StyledComponentsRegistry from "@/lib/AntdRegistry";
-import styles from './layout.module.css';
-import Footer from "@/app/(mobile)/component/common/Footer";
-import Header from "@/app/(mobile)/component/common/Header";
 import {getLocaleInfo, getLoginUser} from "@/app/_func/server";
 import LocaleContextManager from "@/component/context/localeContext";
 import {GlobalContextManager} from "@/component/context/globalContext";
@@ -31,17 +28,7 @@ export default async function RootLayout({children}) {
         <StyledComponentsRegistry>
             <LocaleContextManager locale={locale} dictionary={dictionary}>
                 <GlobalContextManager userInfo={await getLoginUser()}>
-                    <div className={styles.main}>
-                        <div className={styles.header}>
-                            {/*<Header/>*/}
-                        </div>
-                        <div className={styles.body}>
-                            {children}
-                        </div>
-                        <div className={styles.footer}>
-                            <Footer/>
-                        </div>
-                    </div>
+                    {children}
                 </GlobalContextManager>
             </LocaleContextManager>
         </StyledComponentsRegistry>
