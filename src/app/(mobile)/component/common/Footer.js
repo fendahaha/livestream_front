@@ -15,7 +15,7 @@ export default function Footer() {
                     </span>
                 </div>
             </a>
-            <a href={''}>
+            <a href={'/mobile/follow'}>
                 <div className={`${styles.item}`}>
                     <span className={styles.icon}>
                         <HeartOutlined/>

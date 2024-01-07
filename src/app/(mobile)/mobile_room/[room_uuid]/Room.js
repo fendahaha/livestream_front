@@ -12,6 +12,8 @@ import IosHlsPlayer from "@/component/player/IosHlsPlayer";
 import FlvContainer from "@/component/player/flv_container";
 import {CloseOutlined, CrownOutlined, MessageOutlined, QrcodeOutlined, SoundOutlined} from "@ant-design/icons";
 import {Messages, SendButton} from "@/app/(mobile)/mobile_room/[room_uuid]/messages";
+import Link from "next/link";
+import {SmallScribeButton} from "@/component/subscribeButton";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -138,6 +140,7 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
     const {getDict} = useMyLocale('Room');
     const {user, updateUser} = useContext(GlobalContext);
     const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);
+    const [showMessage, setShowMessage] = useState(true);
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
@@ -147,32 +150,42 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
             {/*<div className={styles.stream_infos}>*/}
             {/*    */}
             {/*</div>*/}
-            <div className={styles.buttons}>
+            <div className={styles.buttons} style={{zIndex: 2}}>
                 <span className={styles.close}>
-                    <CloseOutlined/>
+                    <Link href={'/'}>
+                        <CloseOutlined/>
+                    </Link>
+                </span>
+                <span className={styles.button} onClick={() => setShowMessage(!showMessage)}>
+                    <MessageOutlined/>
                 </span>
                 <span className={styles.button}>
-                        <MessageOutlined/>
+                    <CrownOutlined/>
                 </span>
                 <span className={styles.button}>
-                        <CrownOutlined/>
+                    <SoundOutlined/>
                 </span>
                 <span className={styles.button}>
-                        <SoundOutlined/>
-                </span>
-                <span className={styles.button}>
-                        <QrcodeOutlined/>
-                </span>
+                            <QrcodeOutlined/>
+                        </span>
             </div>
-            <div className={styles.anchor_info}>
-                <img src={`${imagePrefix}/${anchorUser.userAvatar}`} alt={''} className={styles.anchor_info_avatar}/>
-                <span className={styles.anchor_info_name}>{anchorUser.userName}</span>
-                <span className={styles.anchor_info_follow}>+</span>
-            </div>
-            <div className={styles.messages}>
-                <Messages data={chatMessages}/>
-                <SendButton send={sendChatMessage}/>
-            </div>
+            {showMessage ?
+                <>
+                    <div className={styles.anchor_info} style={{zIndex: 1}}>
+                        <img src={`${imagePrefix}/${anchorUser.userAvatar}`} alt={''}
+                             className={styles.anchor_info_avatar}/>
+                        <span className={styles.anchor_info_name}>{anchorUser.userName}</span>
+                        <SmallScribeButton clientUserType={user?.userType}
+                                           clientUserUuid={user?.userUuid}
+                                           anchorUserUuid={anchorUser?.userUuid}/>
+                    </div>
+                    <div className={styles.messages}>
+                        <Messages data={chatMessages}/>
+                        <SendButton send={sendChatMessage}/>
+                    </div>
+                </>
+                : ''
+            }
         </div>
     );
 }

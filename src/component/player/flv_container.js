@@ -18,6 +18,7 @@ export const VideoLoading = () => {
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '40px',
+        overflow: 'hidden',
     }
     const styles1 = {
         position: 'absolute',
@@ -62,17 +63,18 @@ export default function FlvContainer({url, param}) {
                     enableStashBuffer: false,
                     // withCredentials: true,
                     cors: true,
+                    hasAudio: true,
+                    hasVideo: true,
                 });
                 flvPlayer.attachMediaElement(videoRef.current);
                 flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo) => {
                     console.log(errorType, errorInfo);
-                    message.warning(getDict('anchor_offline'), 5);
-                    setShouldReplay(true);
+                    if (errorType === flv.ErrorTypes.NETWORK_ERROR) {
+                        message.warning(getDict('anchor_offline'), 5);
+                        setShouldReplay(true);
+                    }
                 });
-                flvPlayer.on(flv.Events.MEDIA_INFO, (e) => {
-                    console.log(e);
-                    setCanplay(true)
-                })
+                flvPlayer.on(flv.Events.MEDIA_INFO, (e) => console.log(e))
                 flvPlayerRef.current = flvPlayer;
                 flvPlayer.load();
 
@@ -87,8 +89,9 @@ export default function FlvContainer({url, param}) {
     useEffect(() => {
         if (shouldReplay) {
             setShouldReplay(false);
-            flvPlayerRef.current.unload();
-            flvPlayerRef.current.load();
+            const flvPlayer = flvPlayerRef.current;
+            flvPlayer.unload();
+            flvPlayer.load();
         }
     }, [shouldReplay]);
     return (
