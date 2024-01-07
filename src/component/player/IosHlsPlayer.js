@@ -1,17 +1,47 @@
-import {useRef} from "react";
+import {useRef, useState} from "react";
+import {message} from "antd";
+import styles from "@/component/player/flv_container.module.css";
+import {VideoLoading} from "@/component/player/flv_container";
 
 export default function IosHlsPlayer({url, param}) {
     const streamUrl = `${url}.m3u8?${param}`;
     const videoRef = useRef(null);
+    const [canplay, setCanplay] = useState(false);
+    const [showMuted, setShowMuted] = useState(false);
+    const cancelMute = () => {
+        videoRef.current.muted = false;
+        videoRef.current.play().then(() => {
+            setShowMuted(false);
+        }).catch((error) => {
+            message.error("用户未交互，无法播放：", error);
+            setShowMuted(true);
+        })
+    }
     return (
         <div style={{width: '100%', height: '100%', position: 'relative'}}>
-            <video controls autoPlay muted playsInline style={{width: '100%', height: '100%',}}
+            <video controls autoPlay muted={false} playsInline style={{width: '100%', height: '100%',}}
                    ref={videoRef}
                    src={streamUrl}
                    onError={(e) => {
-                        console.log(e);
+                       message.error(e.toString())
+                       videoRef.current.load();
+                       videoRef.current.play();
+                   }}
+                   onCanPlay={() => {
+                       setCanplay(true);
+                       message.info('onCanPlay');
+                       videoRef.current.play().catch((error) => {
+                           message.error("用户未交互，无法播放：", error);
+                           setShowMuted(true);
+                       })
                    }}
             />
+            {canplay ? '' : <VideoLoading/>}
+            {showMuted ?
+                <div className={styles.muted} onClick={cancelMute}>
+                    click to Unmute
+                </div> : ''
+            }
         </div>
     );
 }

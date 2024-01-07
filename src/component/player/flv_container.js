@@ -43,11 +43,11 @@ export const VideoLoading = () => {
 export default function FlvContainer({url, param}) {
     const {getDict} = useMyLocale('Room');
     const streamUrl = `${url}.flv`;
-    const [canplay, setCanplay] = useState(false);
     const [flv, setFlv] = useState(null);
     const videoRef = useRef(null);
     const flvPlayerRef = useRef(null);
     const [shouldReplay, setShouldReplay] = useState(false);
+    const [canplay, setCanplay] = useState(false);
     const [showMuted, setShowMuted] = useState(false);
     const cancelMute = () => {
         videoRef.current.muted = false
