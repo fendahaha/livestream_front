@@ -12,14 +12,11 @@ export default function IosHlsPlayer({url, param}) {
         videoRef.current.muted = false;
         videoRef.current.play().then(() => {
             setShowMuted(false);
-        }).catch((error) => {
-            message.error("用户未交互，无法播放：", error);
-            setShowMuted(true);
         })
     }
     return (
         <div style={{width: '100%', height: '100%', position: 'relative'}}>
-            <video controls autoPlay muted={false} playsInline style={{width: '100%', height: '100%',}}
+            <video autoPlay muted={false} playsInline style={{width: '100%', height: '100%',}}
                    ref={videoRef}
                    src={streamUrl}
                    onError={(e) => {
@@ -32,6 +29,8 @@ export default function IosHlsPlayer({url, param}) {
                        message.info('onCanPlay');
                        videoRef.current.play().catch((error) => {
                            message.error("用户未交互，无法播放：", error);
+                           videoRef.current.muted = true;
+                           videoRef.current.play();
                            setShowMuted(true);
                        })
                    }}
