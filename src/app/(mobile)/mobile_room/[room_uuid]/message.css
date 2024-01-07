@@ -1,3 +1,7 @@
-.ant-input.ant-input-borderless.css-dev-only-do-not-override-2q8sxy {
+.send_button .ant-input.ant-input-borderless.css-dev-only-do-not-override-2q8sxy {
+    color: white;
+}
+
+.send_button .ant-input-affix-wrapper .ant-input-suffix .ant-input-show-count-suffix {
     color: white;
 }

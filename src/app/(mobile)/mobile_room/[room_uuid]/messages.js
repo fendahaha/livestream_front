@@ -2,7 +2,6 @@ import styles from './messages.module.css';
 import {Input} from "antd";
 import {SendOutlined} from "@ant-design/icons";
 import './message.css';
-import {useState} from "react";
 
 export function Message({msg}) {
     return (
@@ -45,7 +44,7 @@ export function SendButton() {
         }
     }
     return (
-        <div className={styles.sendButton}>
+        <div className={`${styles.sendButton} send_button`}>
             <div className={styles.sendButtonInput}>
                 <Input placeholder="Borderless" bordered={false} {...props}/>
             </div>

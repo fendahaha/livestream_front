@@ -144,33 +144,34 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
                 {isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :
                     <FlvContainer url={streamUrl} param={streamParam}/>}
             </div>
-            <div className={styles.stream_infos}>
-                <div className={styles.buttons}>
+            {/*<div className={styles.stream_infos}>*/}
+            {/*    */}
+            {/*</div>*/}
+            <div className={styles.buttons}>
                     <span className={styles.close}>
                         <CloseOutlined/>
                     </span>
-                    <span className={styles.button}>
+                <span className={styles.button}>
                         <MessageOutlined/>
                     </span>
-                    <span className={styles.button}>
+                <span className={styles.button}>
                         <CrownOutlined/>
                     </span>
-                    <span className={styles.button}>
+                <span className={styles.button}>
                         <SoundOutlined/>
                     </span>
-                    <span className={styles.button}>
+                <span className={styles.button}>
                         <QrcodeOutlined/>
                     </span>
-                </div>
-                <div className={styles.anchor_info}>
-                    <img src={''} alt={''} className={styles.anchor_info_avatar}/>
-                    <span className={styles.anchor_info_name}>adasdad</span>
-                    <span className={styles.anchor_info_follow}>+</span>
-                </div>
-                <div className={styles.messages}>
-                    <Messages/>
-                    <SendButton/>
-                </div>
+            </div>
+            <div className={styles.anchor_info}>
+                <img src={''} alt={''} className={styles.anchor_info_avatar}/>
+                <span className={styles.anchor_info_name}>adasdad</span>
+                <span className={styles.anchor_info_follow}>+</span>
+            </div>
+            <div className={styles.messages}>
+                <Messages/>
+                <SendButton/>
             </div>
         </div>
     );
