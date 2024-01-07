@@ -28,7 +28,7 @@ export default function IosHlsPlayer({url, param}) {
                        setCanplay(true);
                        message.info('onCanPlay');
                        videoRef.current.play().catch((error) => {
-                           message.error("用户未交互，无法播放：", error);
+                           // message.error("用户未交互，无法播放：", error);
                            videoRef.current.muted = true;
                            videoRef.current.play();
                            setShowMuted(true);
