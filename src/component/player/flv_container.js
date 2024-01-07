@@ -1,20 +1,57 @@
 'use client'
 import {useEffect, useRef, useState} from "react";
-import {message, Spin} from "antd";
+import {message} from "antd";
 import {useMyLocale} from "@/component/context/localeContext";
 import Script from "next/script";
 import styles from './flv_container.module.css';
-import {MyLoading} from "@/component/player/common";
+import {SyncOutlined} from "@ant-design/icons";
+
+export const VideoLoading = () => {
+    const styles = {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        zIndex: 1001,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '40px',
+    }
+    const styles1 = {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        left: 0,
+        right: 0,
+        zIndex: 1,
+        objectFit: 'cover',
+        filter: 'blur(3px)',
+        transform: 'scale(1.1)',
+    }
+    const url = "http://10.120.11.15:8090/resource/avatar/bc8c30f04b7fe04748b4f3233eb194e52bb06619aacc39b1de7a98f2a4be78a2.png";
+    return (
+        <div style={styles}>
+            <img style={styles1} src={url} alt={''}/>
+            <SyncOutlined spin style={{color: "#3A8CFE", zIndex: 2}}/>
+        </div>
+    )
+}
 
 export default function FlvContainer({url, param}) {
     const {getDict} = useMyLocale('Room');
-    const streamUrl = `${url}.flv?${param}`;
+    const streamUrl = `${url}.flv`;
+    const [canplay, setCanplay] = useState(false);
     const [flv, setFlv] = useState(null);
-    const [scriptLoading, setScriptLoading] = useState(true);
     const videoRef = useRef(null);
     const flvPlayerRef = useRef(null);
     const [shouldReplay, setShouldReplay] = useState(false);
     const [showMuted, setShowMuted] = useState(false);
+    const cancelMute = () => {
+        videoRef.current.muted = false
+        setShowMuted(false);
+    }
     useEffect(() => {
         if (flv) {
             if (flv.isSupported()) {
@@ -34,13 +71,10 @@ export default function FlvContainer({url, param}) {
                 });
                 flvPlayer.on(flv.Events.MEDIA_INFO, (e) => {
                     console.log(e);
+                    setCanplay(true)
                 })
                 flvPlayerRef.current = flvPlayer;
                 flvPlayer.load();
-                flvPlayer.play().catch((error) => {
-                    console.error("用户未交互，无法播放：", error);
-                    setShowMuted(true)
-                });
 
                 return () => {
                     flvPlayer.destroy();
@@ -55,35 +89,32 @@ export default function FlvContainer({url, param}) {
             setShouldReplay(false);
             flvPlayerRef.current.unload();
             flvPlayerRef.current.load();
-            flvPlayerRef.current.play().catch((error) => {
-                console.error("用户未交互，无法播放：", error);
-                setShowMuted(true)
-            });
         }
     }, [shouldReplay]);
-
     return (
         <>
             <Script src={'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.6.2/flv.min.js'}
                     strategy={'afterInteractive'}
-                    onReady={() => {
-                        setFlv(flvjs);
-                        setScriptLoading(false);
-                    }}
+                    onReady={() => setFlv(flvjs)}
             />
             <div className={styles.video_container}>
-                <MyLoading isLoading={scriptLoading}/>
+                <video ref={videoRef} controls={false} autoPlay muted={false} playsInline className={styles.video}
+                       onCanPlay={() => {
+                           setCanplay(true);
+                           flvPlayerRef.current.play().catch((error) => {
+                               console.error("用户未交互，无法播放：", error);
+                               videoRef.current.muted = true
+                               flvPlayerRef.current.play();
+                               setShowMuted(true)
+                           });
+                       }}
+                />
+                {flv && canplay ? '' : <VideoLoading/>}
                 {showMuted ?
-                    <div className={styles.muted} onClick={() => {
-                        flvPlayerRef.current.play().then(() => {
-                            setShowMuted(false);
-                            setMuted(false);
-                        })
-                    }}>
-                        click to cancel mute
-                    </div> :
-                    ''}
-                <video ref={videoRef} controls autoPlay muted={false} playsInline className={styles.video}/>
+                    <div className={styles.muted} onClick={cancelMute}>
+                        click to Unmute
+                    </div> : ''
+                }
             </div>
         </>
     )
