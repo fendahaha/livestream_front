@@ -2,6 +2,7 @@ import styles from './messages.module.css';
 import {Input} from "antd";
 import {SendOutlined} from "@ant-design/icons";
 import './message.css';
+import {useState} from "react";
 
 export function Message({msg}) {
     return (
@@ -10,23 +11,32 @@ export function Message({msg}) {
             <span className={styles.message_name}>I am Nat</span>
             <span className={styles.message_time}>16:47</span>
             :
-            <span className={styles.message_msg}>{msg}</span>
+            <span className={styles.message_msg}>{msg.data}</span>
         </div>
     )
 }
 
-export function Messages() {
+export function Messages({data}) {
     return (
         <div className={styles.messages}>
-            <Message msg={4}/>
-            <Message msg={3}/>
-            <Message msg={2}/>
-            <Message msg={1}/>
+            {data.map(e => <Message msg={e} key={e.id}/>)}
+            {/*<Message msg={4}/>*/}
+            {/*<Message msg={3}/>*/}
+            {/*<Message msg={2}/>*/}
+            {/*<Message msg={1}/>*/}
         </div>
     );
 }
 
-export function SendButton() {
+export function SendButton({send}) {
+    const [value, setValue] = useState('');
+    const handSend = () => {
+        if (value.trim()) {
+            if (send(value.trim())) {
+                setValue('');
+            }
+        }
+    }
     const props = {
         showCount: true,
         count: {
@@ -36,11 +46,11 @@ export function SendButton() {
             }
         },
         onPressEnter: (e) => {
-            console.log(e.target.value);
+            handSend()
         },
-        // value: value,
+        value: value,
         onChange: (e) => {
-
+            setValue(e.target.value);
         }
     }
     return (
@@ -48,7 +58,7 @@ export function SendButton() {
             <div className={styles.sendButtonInput}>
                 <Input placeholder="Borderless" bordered={false} {...props}/>
             </div>
-            <SendOutlined className={styles.sendButtonIcon}/>
+            <SendOutlined className={styles.sendButtonIcon} onClick={handSend}/>
         </div>
     )
 }

@@ -148,21 +148,21 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
             {/*    */}
             {/*</div>*/}
             <div className={styles.buttons}>
-                    <span className={styles.close}>
-                        <CloseOutlined/>
-                    </span>
+                <span className={styles.close}>
+                    <CloseOutlined/>
+                </span>
                 <span className={styles.button}>
                         <MessageOutlined/>
-                    </span>
+                </span>
                 <span className={styles.button}>
                         <CrownOutlined/>
-                    </span>
+                </span>
                 <span className={styles.button}>
                         <SoundOutlined/>
-                    </span>
+                </span>
                 <span className={styles.button}>
                         <QrcodeOutlined/>
-                    </span>
+                </span>
             </div>
             <div className={styles.anchor_info}>
                 <img src={`${imagePrefix}/${anchorUser.userAvatar}`} alt={''} className={styles.anchor_info_avatar}/>
@@ -170,8 +170,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
                 <span className={styles.anchor_info_follow}>+</span>
             </div>
             <div className={styles.messages}>
-                <Messages/>
-                <SendButton/>
+                <Messages data={chatMessages}/>
+                <SendButton send={sendChatMessage}/>
             </div>
         </div>
     );

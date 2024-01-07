@@ -14,6 +14,7 @@ export default function FlvContainer({url, param}) {
     const videoRef = useRef(null);
     const flvPlayerRef = useRef(null);
     const [shouldReplay, setShouldReplay] = useState(false);
+    const [showMuted, setShowMuted] = useState(false);
     useEffect(() => {
         if (flv) {
             if (flv.isSupported()) {
@@ -36,7 +37,10 @@ export default function FlvContainer({url, param}) {
                 })
                 flvPlayerRef.current = flvPlayer;
                 flvPlayer.load();
-                flvPlayer.play();
+                flvPlayer.play().catch((error) => {
+                    console.error("用户未交互，无法播放：", error);
+                    setShowMuted(true)
+                });
 
                 return () => {
                     flvPlayer.destroy();
@@ -51,9 +55,13 @@ export default function FlvContainer({url, param}) {
             setShouldReplay(false);
             flvPlayerRef.current.unload();
             flvPlayerRef.current.load();
-            flvPlayerRef.current.play();
+            flvPlayerRef.current.play().catch((error) => {
+                console.error("用户未交互，无法播放：", error);
+                setShowMuted(true)
+            });
         }
     }, [shouldReplay]);
+
     return (
         <>
             <Script src={'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.6.2/flv.min.js'}
@@ -65,7 +73,17 @@ export default function FlvContainer({url, param}) {
             />
             <div className={styles.video_container}>
                 <MyLoading isLoading={scriptLoading}/>
-                <video ref={videoRef} controls autoPlay muted playsInline className={styles.video}/>
+                {showMuted ?
+                    <div className={styles.muted} onClick={() => {
+                        flvPlayerRef.current.play().then(() => {
+                            setShowMuted(false);
+                            setMuted(false);
+                        })
+                    }}>
+                        click to cancel mute
+                    </div> :
+                    ''}
+                <video ref={videoRef} controls autoPlay muted={false} playsInline className={styles.video}/>
             </div>
         </>
     )

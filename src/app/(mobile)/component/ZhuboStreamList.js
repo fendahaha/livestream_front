@@ -19,7 +19,7 @@ export default function ZhuboStreamList({list}) {
                         </div>
                     </div>
                     {e.online ?
-                        <Link className={styles.live_link} href={`/room/${e.room_uuid}`}>
+                        <Link className={styles.live_link} href={`/mobile_room/${e.room_uuid}`}>
                             <div className={styles.live_link_button}>go to live</div>
                         </Link>
                         :
