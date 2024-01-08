@@ -57,6 +57,12 @@ export default function FlvContainer({url, param}) {
     useEffect(() => {
         if (flv) {
             if (flv.isSupported()) {
+                const config = {
+                    lazyLoad: false,
+                    autoCleanupSourceBuffer: true,
+                    autoCleanupMaxBackwardDuration: 10,
+                    autoCleanupMinBackwardDuration: 5,
+                };
                 const flvPlayer = flv.createPlayer({
                     type: 'flv',
                     url: streamUrl,
@@ -95,6 +101,12 @@ export default function FlvContainer({url, param}) {
             flvPlayer.load();
         }
     }, [shouldReplay]);
+
+    const get_time = () => {
+        const date = new Date();
+        return `${date.getHours()}:${date.getSeconds()}`
+    }
+    const log = (event) => console.log(get_time(), event.type, event)
     return (
         <>
             <Script src={'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.6.2/flv.min.js'}
@@ -112,12 +124,12 @@ export default function FlvContainer({url, param}) {
                                setShowMuted(true)
                            });
                        }}
-                       onError={(event) => {
-                           message.error((typeof event) + ' ' + event?.type, 1000 * 2000)
-                       }}
-                       onWaiting={(event) => {
-                           message.info((typeof event) + ' ' + event?.type, 1000 * 2000)
-                       }}
+                       onError={log}
+                       onWaiting={log}
+                       onPlay={log}
+                       onPause={log}
+                       // onProgress={log}
+                       onPlaying={log}
                 />
                 {flv && canplay ? '' : <VideoLoading/>}
                 {showMuted ?
