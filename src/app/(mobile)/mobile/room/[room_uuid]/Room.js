@@ -14,6 +14,7 @@ import FlvContainer from "@/component/player/FlvContainer";
 import {SmallScribeButton} from "@/component/subscribeButton";
 import {Messages, SendButton} from "./messages";
 import styles from './_css/Room.module.css';
+import IosHlsPlayer2 from "@/component/player/IosHlsPlayer2";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -144,7 +145,7 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                {isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :
+                {isIos ? <IosHlsPlayer2 url={streamUrl} param={streamParam}/> :
                     <FlvContainer url={streamUrl} param={streamParam}/>}
             </div>
             {/*<div className={styles.stream_infos}>*/}

@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {message} from "antd";
 import {useMyLocale} from "@/component/context/localeContext";
 import Script from "next/script";
-import styles from './flv_container.module.css';
+import styles from './FlvContainer.module.css';
 import {SyncOutlined} from "@ant-design/icons";
 import {imagePrefix} from "@/util/requestUtil";
 

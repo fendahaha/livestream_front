@@ -1,6 +1,6 @@
 'use client'
 import styles from './room.module.css';
-import FlvContainer from "@/component/player/flv_container";
+import FlvContainer from "@/component/player/FlvContainer";
 import ChatSendButton from "@/component/chat/ChatSendButton";
 import {ChatMsgs} from "@/component/chat/chatMsgs";
 import React, {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";

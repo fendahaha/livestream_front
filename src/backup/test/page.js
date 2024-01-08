@@ -6,7 +6,7 @@ const M3u8Container = dynamic(
     { ssr: false }
 );
 const FlvContainer = dynamic(
-    () => import('@/component/player/flv_container'),
+    () => import('@/component/player/FlvContainer'),
     { ssr: false }
 );
 export default function Home() {

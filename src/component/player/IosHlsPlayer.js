@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import {message} from "antd";
-import styles from "@/component/player/flv_container.module.css";
-import {VideoLoading} from "@/component/player/flv_container";
+import styles from "@/component/player/FlvContainer.module.css";
+import {VideoLoading} from "@/component/player/FlvContainer";
 
 export default function IosHlsPlayer({url, param}) {
     const streamUrl = `${url}.m3u8?${param}`;
