@@ -112,6 +112,12 @@ export default function FlvContainer({url, param}) {
                                setShowMuted(true)
                            });
                        }}
+                       onError={(event) => {
+                           message.error((typeof event) + ' ' + event?.type, 1000 * 2000)
+                       }}
+                       onWaiting={(event) => {
+                           message.info((typeof event) + ' ' + event?.type, 1000 * 2000)
+                       }}
                 />
                 {flv && canplay ? '' : <VideoLoading/>}
                 {showMuted ?

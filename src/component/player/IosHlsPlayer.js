@@ -19,8 +19,8 @@ export default function IosHlsPlayer({url, param}) {
             <video autoPlay muted={false} playsInline style={{width: '100%', height: '100%',}}
                    ref={videoRef}
                    src={streamUrl}
-                   onError={(e) => {
-                       message.error(e.toString())
+                   onError={(event) => {
+                       message.error((typeof event) + ' ' + event?.type, 1000 * 2000)
                        videoRef.current.load();
                        videoRef.current.play();
                    }}
@@ -33,6 +33,9 @@ export default function IosHlsPlayer({url, param}) {
                            videoRef.current.play();
                            setShowMuted(true);
                        })
+                   }}
+                   onWaiting={(event) => {
+                       message.info((typeof event) + ' ' + event?.type, 1000 * 2000)
                    }}
             />
             {canplay ? '' : <VideoLoading/>}
