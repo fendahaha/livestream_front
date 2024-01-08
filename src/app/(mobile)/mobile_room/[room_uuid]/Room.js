@@ -1,19 +1,19 @@
 'use client'
-import {useMyLocale} from "@/component/context/localeContext";
 import {useCallback, useContext, useEffect, useReducer, useRef, useState} from "react";
-import {GlobalContext} from "@/component/context/globalContext";
+import Link from "next/link";
 import {message} from "antd";
-import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
+import {CloseOutlined, CrownOutlined, MessageOutlined, QrcodeOutlined, SoundOutlined} from "@ant-design/icons";
 import {Client} from "@stomp/stompjs";
+import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {imagePrefix, wsPrefix} from "@/util/requestUtil";
-import styles from './Room.module.css';
-import {useRoomPageContext} from "@/component/context/PageContext";
+import {useMyLocale} from "@/component/context/localeContext";
+import {GlobalContext} from "@/component/context/globalContext";
+import {useMobilePageContext} from "@/component/context/PageContext";
 import IosHlsPlayer from "@/component/player/IosHlsPlayer";
 import FlvContainer from "@/component/player/flv_container";
-import {CloseOutlined, CrownOutlined, MessageOutlined, QrcodeOutlined, SoundOutlined} from "@ant-design/icons";
-import {Messages, SendButton} from "@/app/(mobile)/mobile_room/[room_uuid]/messages";
-import Link from "next/link";
 import {SmallScribeButton} from "@/component/subscribeButton";
+import {Messages, SendButton} from "./messages";
+import styles from './_css/Room.module.css';
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -136,7 +136,7 @@ const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, us
     return [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign]
 }
 export default function Room({anchor, anchorUser, room, streamUrl, streamParam, topic}) {
-    const {isIos} = useRoomPageContext();
+    const {isIos} = useMobilePageContext();
     const {getDict} = useMyLocale('Room');
     const {user, updateUser} = useContext(GlobalContext);
     const [danmuRef, giftRef, chatMessages, giftMessages, sendChatMessage, sendGiftMessage, onlineUserUpdateSign, setOnlineUserUpdateSign] = useStomp(room.roomUuid, topic, anchorUser.userUuid, anchorUser.userName, user?.userUuid, user?.userName, user?.userType);

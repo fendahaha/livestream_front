@@ -4,6 +4,8 @@ import StyledComponentsRegistry from "@/lib/AntdRegistry";
 import {getLocaleInfo, getLoginUser} from "@/app/_func/server";
 import LocaleContextManager from "@/component/context/localeContext";
 import {GlobalContextManager} from "@/component/context/globalContext";
+import {headers} from "next/headers";
+import {MobilePageContextManager} from "@/component/context/PageContext";
 
 
 const inter = Inter({subsets: ['latin']})
@@ -21,14 +23,17 @@ export const viewport = {
 }
 
 export default async function RootLayout({children}) {
-    const {locale, dictionary} = await getLocaleInfo()
+    const {locale, dictionary} = await getLocaleInfo();
+    const isIos = /iPad|iPhone|iPod/.test(headers().get("user-agent"))
     return (
         <html lang="en">
         <body className={inter.className}>
         <StyledComponentsRegistry>
             <LocaleContextManager locale={locale} dictionary={dictionary}>
                 <GlobalContextManager userInfo={await getLoginUser()}>
-                    {children}
+                    <MobilePageContextManager isIos={isIos}>
+                        {children}
+                    </MobilePageContextManager>
                 </GlobalContextManager>
             </LocaleContextManager>
         </StyledComponentsRegistry>

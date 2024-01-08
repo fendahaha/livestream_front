@@ -1,10 +1,10 @@
-import styles from './messages.module.css';
+import styles from './_css/messages.module.css';
 import {Input} from "antd";
 import {SendOutlined} from "@ant-design/icons";
-import './message.css';
+import './_css/message.css';
 import {useState} from "react";
 
-export function Message({msg}) {
+function Message({msg}) {
     return (
         <div className={styles.message_layout}>
             <span className={styles.message_level}>V1</span>
@@ -20,10 +20,6 @@ export function Messages({data}) {
     return (
         <div className={styles.messages}>
             {data.map(e => <Message msg={e} key={e.id}/>)}
-            {/*<Message msg={4}/>*/}
-            {/*<Message msg={3}/>*/}
-            {/*<Message msg={2}/>*/}
-            {/*<Message msg={1}/>*/}
         </div>
     );
 }

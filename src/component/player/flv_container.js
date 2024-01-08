@@ -5,6 +5,7 @@ import {useMyLocale} from "@/component/context/localeContext";
 import Script from "next/script";
 import styles from './flv_container.module.css';
 import {SyncOutlined} from "@ant-design/icons";
+import {imagePrefix} from "@/util/requestUtil";
 
 export const VideoLoading = () => {
     const styles = {
@@ -31,7 +32,7 @@ export const VideoLoading = () => {
         filter: 'blur(3px)',
         transform: 'scale(1.1)',
     }
-    const url = "http://10.120.11.15:8090/resource/avatar/bc8c30f04b7fe04748b4f3233eb194e52bb06619aacc39b1de7a98f2a4be78a2.png";
+    const url = `${imagePrefix}/avatar/bc8c30f04b7fe04748b4f3233eb194e52bb06619aacc39b1de7a98f2a4be78a2.png`;
     return (
         <div style={styles}>
             <img style={styles1} src={url} alt={''}/>

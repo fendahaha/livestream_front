@@ -1,16 +1,16 @@
 'use client'
 import {createContext, useContext} from "react";
 
-export const RoomPageContext = createContext({isIos: false});
-export const RoomPageContextManager = ({children, isIos}) => {
+export const MobilePageContext = createContext({isIos: false});
+export const MobilePageContextManager = ({children, isIos}) => {
     return (
-        <RoomPageContext.Provider value={{isIos: isIos}}>
+        <MobilePageContext.Provider value={{isIos: isIos}}>
             {children}
-        </RoomPageContext.Provider>
+        </MobilePageContext.Provider>
     )
 }
-export const useRoomPageContext = () => {
-    const {isIos} = useContext(RoomPageContext);
+export const useMobilePageContext = () => {
+    const {isIos} = useContext(MobilePageContext);
     return {isIos}
 }
 
