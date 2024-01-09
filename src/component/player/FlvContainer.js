@@ -99,6 +99,7 @@ export default function FlvContainer({url, param}) {
             const flvPlayer = flvPlayerRef.current;
             flvPlayer.unload();
             flvPlayer.load();
+            videoRef.current.currentTime = 0;
         }
     }, [shouldReplay]);
 
@@ -128,7 +129,7 @@ export default function FlvContainer({url, param}) {
                        onWaiting={log}
                        onPlay={log}
                        onPause={log}
-                       // onProgress={log}
+                    // onProgress={log}
                        onPlaying={log}
                 />
                 {flv && canplay ? '' : <VideoLoading/>}
