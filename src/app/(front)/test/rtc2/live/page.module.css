@@ -1,0 +1,13 @@
+.video {
+    height: 500px;
+    display: block;
+    margin: 0 auto;
+}
+
+.buttons {
+    padding:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
