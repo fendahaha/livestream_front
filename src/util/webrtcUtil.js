@@ -1,4 +1,13 @@
 import {useCallback, useRef, useState} from "react";
+import {webRtcServer} from "@/util/requestUtil";
+
+export function whip_url(app, stream, token) {
+    return `${webRtcServer}/rtc/v1/whip/?app=${app}&stream=${stream}&token=${token}`
+}
+
+export function whep_url(app, stream, token) {
+    return `${webRtcServer}/rtc/v1/whep/?app=${app}&stream=${stream}&token=${token}`
+}
 
 export function stopStreamTracks(...streams) {
     streams.forEach(stream => {
@@ -120,7 +129,7 @@ export function useRtcPublish(url, videoRef) {
                         setIsPublished(true);
                     }
                 }).catch((reason) => {
-                    console.log(reason);
+                    console.log('negotiate error: ',reason);
                     pcRef.current = null;
                     streamRef.current = null;
                     stopStreamTracks(_userMediaStream);

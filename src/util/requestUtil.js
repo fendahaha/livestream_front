@@ -124,6 +124,7 @@ export const nodeBackendFetch = {
 
 export const backendUrlBase = process.env.BACKEND_URL_BASE;
 export const rtmpServer = process.env.NEXT_PUBLIC_RTMP_SERVER;
+export const webRtcServer = process.env.NEXT_PUBLIC_WEBRTC_SERVER;
 export const streamServer = process.env.NEXT_PUBLIC_STREAM_SERVER;
 export const imagePrefix = process.env.NEXT_PUBLIC_IMAGE_PREFIX;
 export const wsPrefix = process.env.NEXT_PUBLIC_WEBSOCKET_PREFIX;
