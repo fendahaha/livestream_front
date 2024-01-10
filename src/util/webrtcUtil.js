@@ -114,6 +114,9 @@ export function useRtcPublish(url, videoRef) {
             };
             let _userMediaStream = null;
             console.log('window', window);
+            console.log(navigator);
+            console.log(navigator.mediaDevices);
+            console.log(navigator.mediaDevices.getUserMedia);
             return navigator.mediaDevices.getUserMedia(constraints)
                 .then((userMediaStream) => {
                     _userMediaStream = userMediaStream;
