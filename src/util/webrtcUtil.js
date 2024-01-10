@@ -90,7 +90,8 @@ export function useRtcPublish(url, videoRef) {
     const streamRef = useRef(null);
     const navigatorRef = useRef(null);
     useEffect(() => {
-        navigatorRef.current=navigator
+        navigatorRef.current = navigator;
+        console.log('useEffect', navigatorRef.current);
     }, []);
     const publish = useCallback(() => {
         if (!isPublishing && !isPublished) {
@@ -118,10 +119,11 @@ export function useRtcPublish(url, videoRef) {
             };
             let _userMediaStream = null;
             console.log('window', window);
+            let navigator = navigatorRef.current;
             console.log(navigator);
             console.log(navigator.mediaDevices);
             console.log(navigator.mediaDevices.getUserMedia);
-            return navigatorRef.current.mediaDevices.getUserMedia(constraints)
+            return navigator.mediaDevices.getUserMedia(constraints)
                 .then((userMediaStream) => {
                     _userMediaStream = userMediaStream;
                     userMediaStream.getTracks().forEach(function (track) {
