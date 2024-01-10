@@ -1,4 +1,4 @@
-import {useCallback, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {webRtcServer} from "@/util/requestUtil";
 
 export function whip_url(app, stream, token) {
@@ -88,6 +88,10 @@ export function useRtcPublish(url, videoRef) {
     const [isPublished, setIsPublished] = useState(false);
     const pcRef = useRef(null);
     const streamRef = useRef(null);
+    const navigatorRef = useRef(null);
+    useEffect(() => {
+        navigatorRef.current=navigator
+    }, []);
     const publish = useCallback(() => {
         if (!isPublishing && !isPublished) {
             setIsPublishing(true);
@@ -117,7 +121,7 @@ export function useRtcPublish(url, videoRef) {
             console.log(navigator);
             console.log(navigator.mediaDevices);
             console.log(navigator.mediaDevices.getUserMedia);
-            return navigator.mediaDevices.getUserMedia(constraints)
+            return navigatorRef.current.mediaDevices.getUserMedia(constraints)
                 .then((userMediaStream) => {
                     _userMediaStream = userMediaStream;
                     userMediaStream.getTracks().forEach(function (track) {
