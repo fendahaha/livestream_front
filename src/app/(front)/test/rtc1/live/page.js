@@ -4,12 +4,13 @@ import styles from './page.module.css';
 import {useEffect, useRef, useState} from "react";
 import {Button, Spin} from "antd";
 import Script from "next/script";
+import {whip_url} from "@/util/webrtcUtil";
 
 export default function Component() {
     const videoRef = useRef(null);
     const [scriptReady, setScriptReady] = useState(false);
     const sdkRef = useRef(null);
-    const url = "https://172.21.74.92:1990/rtc/v1/whip/?app=live&stream=7ad3ab11857348ac9a0e9e1481a40085&token=52360f8449a149fab46739a890d65a6b";
+    const url = whip_url('live', '7ad3ab11857348ac9a0e9e1481a40085', '52360f8449a149fab46739a890d65a6b');
     useEffect(() => {
         if (scriptReady) {
             const sdk = new SrsRtcWhipWhepAsync();
