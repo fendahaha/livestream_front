@@ -113,6 +113,7 @@ export function useRtcPublish(url, videoRef) {
                 }
             };
             let _userMediaStream = null;
+            console.log('window', window);
             return navigator.mediaDevices.getUserMedia(constraints)
                 .then((userMediaStream) => {
                     _userMediaStream = userMediaStream;
@@ -129,7 +130,7 @@ export function useRtcPublish(url, videoRef) {
                         setIsPublished(true);
                     }
                 }).catch((reason) => {
-                    console.log('negotiate error: ',reason);
+                    console.log('negotiate error: ', reason);
                     pcRef.current = null;
                     streamRef.current = null;
                     stopStreamTracks(_userMediaStream);
