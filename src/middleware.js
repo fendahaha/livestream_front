@@ -21,19 +21,34 @@ async function get_login_user(request) {
     return null
 }
 
+function get_headers(headers) {
+    const result = {};
+    const keys = headers.keys();
+    let s = keys.next();
+    while (!s.done) {
+        result[s.value] = headers.get(s.value)
+        s = keys.next();
+    }
+    return result;
+}
+
 export async function middleware(request) {
     const {headers, method, body, url, cookies} = request;
     const {pathname, origin, searchParams} = request.nextUrl;
 
     if (pathname.startsWith("/backend")) {
         const backendUrl = url.replace(/^https?:\/\/\S+(:\d+)?\/backend/ig, backendUrlBase);
-        // console.log('access', backendUrl);
+        // console.log('access', backendUrl, method);
         try {
             // 使用fetch API转发请求
+            headers.delete('host');
             const response = await fetch(backendUrl, {
                 method: method,
                 headers: headers,
                 body: ['GET', 'HEAD'].includes(method) ? null : body,
+                redirect: "follow",
+                mode: "cors",
+                cache: 'no-store',
             });
             return new Response(await response.text(), {
                 status: response.status,
