@@ -32,3 +32,10 @@
     font-size: 12px;
     font-weight: bolder;
 }
+
+.popoverContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
+}

@@ -1,5 +1,5 @@
 'use client'
-import {createContext, useMemo, useReducer} from "react";
+import {createContext, useContext, useMemo, useReducer} from "react";
 
 const globalContextDefaultValue = {user: null, updateUser: null};
 export const GlobalContext = createContext(globalContextDefaultValue);
@@ -27,4 +27,9 @@ export function GlobalContextManager({children, userInfo}) {
             {children}
         </GlobalContext.Provider>
     )
+}
+
+export function useLoginUser() {
+    const userContext = useContext(GlobalContext);
+    return {user: userContext?.user, updateUser: userContext?.updateUser}
 }

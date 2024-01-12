@@ -1,8 +1,8 @@
 import {MyCarousel} from "@/app/(front)/component/Slider";
 import styles from './page.module.css';
 import {get_anchors} from "@/app/_func/server";
-import ZhuboStreamList from "@/app/(mobile)/component/ZhuboStreamList";
-import PagePadding from "@/app/(mobile)/component/common/pagePadding";
+import ZhuboStreamList from "@/app/(mobile)/_component/ZhuboStreamList";
+import PagePadding from "@/app/(mobile)/_component/common/pagePadding";
 
 const test_data = [
     {img: '/nav/nav1.jpg', link: ''},

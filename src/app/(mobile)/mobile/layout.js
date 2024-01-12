@@ -1,4 +1,4 @@
-import MobileLayout from "@/app/(mobile)/component/layout/MobileLayout";
+import MobileLayout from "@/app/(mobile)/_component/layout/MobileLayout";
 
 export default function Component({children}) {
     return (

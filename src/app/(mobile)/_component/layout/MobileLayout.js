@@ -1,5 +1,5 @@
 import styles from "./MobileLayout.module.css";
-import Footer from "@/app/(mobile)/component/common/Footer";
+import Footer from "@/app/(mobile)/_component/common/Footer";
 
 export default function MobileLayout({children}) {
     return (
