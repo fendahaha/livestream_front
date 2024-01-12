@@ -74,11 +74,11 @@ export default function FlvContainer({url, param}) {
                     hasVideo: true,
                 });
                 flvPlayer.attachMediaElement(videoRef.current);
-                flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo) => {
-                    console.log(errorType, errorInfo);
+                flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo, errorMsg) => {
+                    console.log(errorType, errorInfo, errorMsg);
                     if (errorType === flv.ErrorTypes.NETWORK_ERROR) {
                         message.warning(getDict('anchor_offline'), 5);
-                        setShouldReplay(true);
+                        // setShouldReplay(true);
                     }
                 });
                 flvPlayer.on(flv.Events.MEDIA_INFO, (e) => console.log(e))
