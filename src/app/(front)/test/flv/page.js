@@ -25,7 +25,7 @@ export default function Component() {
     return (
         <FixWidthDiv>
             <div>
-                <div>http://localhost/live/7ad3ab11857348ac9a0e9e1481a40085.flv?token=52360f8449a149fab46739a890d65a6b</div>
+                <div>http://localhost:8080/live/7ad3ab11857348ac9a0e9e1481a40085.flv</div>
                 <div style={{margin: '0 auto'}}>
                     <Input {...props}/>
                 </div>
