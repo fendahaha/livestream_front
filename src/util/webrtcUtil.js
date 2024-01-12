@@ -25,6 +25,26 @@ export function removeStreamTracks(...streams) {
     })
 }
 
+async function get_answer2(offer, url) {
+    const requestInit = {
+        method: 'POST',
+        headers: {'Content-type': 'application/sdp'},
+        mode: "no-cors",
+        body: offer.sdp,
+        cache: 'no-store',
+    }
+    const answer = await fetch(url, requestInit)
+        .then((res) => {
+            console.log('answer status: ', res.status, typeof res.status);
+            console.log([0, 200, 201].includes(res.status));
+            if ([0, 200, 201].includes(res.status)) {
+                return res.text()
+            }
+        })
+    console.log('answer', answer);
+    return answer
+}
+
 async function get_answer(offer, url) {
     return await new Promise(function (resolve, reject) {
         console.log("Generated offer: ", offer);
@@ -46,28 +66,11 @@ async function get_answer(offer, url) {
 export async function negotiate(pc, url) {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    const requestInit = {
-        method: 'POST',
-        headers: {'Content-type': 'application/sdp'},
-        mode: "no-cors",
-        body: offer.sdp,
-        cache: 'no-store',
-    }
-    // const answer = await fetch(url, requestInit)
-    //     .then((res) => {
-    //         console.log('answer status: ', res.status, typeof res.status);
-    //         console.log([0, 200, 201].includes(res.status));
-    //         if ([0, 200, 201].includes(res.status)) {
-    //             return res.text()
-    //         }
-    //     })
-    // console.log('answer', answer);
     const answer = await get_answer(offer, url)
     if (answer) {
         await pc.setRemoteDescription(
             new RTCSessionDescription({type: 'answer', sdp: answer})
         );
-        console.log('setRemoteDescription');
         return true
     }
 }
@@ -139,14 +142,19 @@ export function useRtcPublish(url, videoRef) {
             return navigator.mediaDevices.getUserMedia(constraints)
                 .then((userMediaStream) => {
                     _userMediaStream = userMediaStream;
-                    userMediaStream.getTracks().forEach(function (track) {
-                        pc.addTrack(track);
-                        stream.addTrack(track);
-                    });
-                    if (videoRef && videoRef.current) {
-                        videoRef.current.srcObject = stream;
+                    if (userMediaStream?.getTracks) {
+                        userMediaStream.getTracks().forEach(function (track) {
+                            pc.addTrack(track);
+                            stream.addTrack(track);
+                        });
+                        if (videoRef && videoRef.current) {
+                            videoRef.current.srcObject = stream;
+                        }
+                        return negotiate(pc, url);
+                    } else {
+                        alert("The camera may be occupied");
+                        throw new Error("The camera may be occupied");
                     }
-                    return negotiate(pc, url);
                 }).then(r => {
                     if (r) {
                         setIsPublished(true);
@@ -155,7 +163,9 @@ export function useRtcPublish(url, videoRef) {
                     console.log('negotiate error: ', reason);
                     pcRef.current = null;
                     streamRef.current = null;
-                    stopStreamTracks(_userMediaStream);
+                    if (_userMediaStream) {
+                        stopStreamTracks(_userMediaStream);
+                    }
                 }).finally(() => {
                     setIsPublishing(false);
                 })
