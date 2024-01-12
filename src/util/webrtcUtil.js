@@ -41,6 +41,7 @@ export async function negotiate(pc, url) {
                 return res.text()
             }
         })
+    console.log('answer', answer);
     if (answer) {
         await pc.setRemoteDescription(
             new RTCSessionDescription({type: 'answer', sdp: answer})
