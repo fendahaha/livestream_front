@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import {webRtcServer} from "@/util/requestUtil";
 
 export function whip_url(app, stream, token) {
@@ -25,6 +25,24 @@ export function removeStreamTracks(...streams) {
     })
 }
 
+async function get_answer(offer, url) {
+    return await new Promise(function (resolve, reject) {
+        console.log("Generated offer: ", offer);
+
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.readyState !== xhr.DONE) return;
+            if (xhr.status !== 200 && xhr.status !== 201) return reject(xhr);
+            const data = xhr.responseText;
+            console.log("Got answer: ", data);
+            return data.code ? reject(xhr) : resolve(data);
+        }
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/sdp');
+        xhr.send(offer.sdp);
+    });
+}
+
 export async function negotiate(pc, url) {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
@@ -35,15 +53,16 @@ export async function negotiate(pc, url) {
         body: offer.sdp,
         cache: 'no-store',
     }
-    const answer = await fetch(url, requestInit)
-        .then((res) => {
-            console.log('answer status: ', res.status, typeof res.status);
-            console.log([0, 200, 201].includes(res.status));
-            if ([0, 200, 201].includes(res.status)) {
-                return res.text()
-            }
-        })
-    console.log('answer', answer);
+    // const answer = await fetch(url, requestInit)
+    //     .then((res) => {
+    //         console.log('answer status: ', res.status, typeof res.status);
+    //         console.log([0, 200, 201].includes(res.status));
+    //         if ([0, 200, 201].includes(res.status)) {
+    //             return res.text()
+    //         }
+    //     })
+    // console.log('answer', answer);
+    const answer = await get_answer(offer, url)
     if (answer) {
         await pc.setRemoteDescription(
             new RTCSessionDescription({type: 'answer', sdp: answer})
