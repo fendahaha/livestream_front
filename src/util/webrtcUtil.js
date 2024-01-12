@@ -37,6 +37,7 @@ export async function negotiate(pc, url) {
     }
     const answer = await fetch(url, requestInit)
         .then((res) => {
+            console.log('answer status: ', res.status);
             if ([200, 201].includes(res.status)) {
                 return res.text()
             }
