@@ -31,7 +31,7 @@ export async function negotiate(pc, url) {
     const requestInit = {
         method: 'POST',
         headers: {'Content-type': 'application/sdp'},
-        mode: "cors",
+        mode: "no-cors",
         body: offer.sdp,
         cache: 'no-store',
     }
