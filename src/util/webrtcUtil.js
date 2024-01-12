@@ -41,6 +41,9 @@ export async function negotiate(pc, url) {
                 return res.text()
             }
         })
+        .catch((reason) => {
+            console.log("answer-error:", reason);
+        })
     console.log('answer', answer);
     if (answer) {
         await pc.setRemoteDescription(
