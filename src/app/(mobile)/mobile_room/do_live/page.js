@@ -1,7 +1,7 @@
 import {queryAnchorByUserUuid} from "@/app/_func/server";
 import {streamServer} from "@/util/requestUtil";
 import {redirect} from "next/navigation";
-import DoLive2 from "./DoLive2";
+import DoLive from "./DoLive";
 
 export default async function Component({searchParams}) {
     const user_uuid = searchParams['user_uuid'];
@@ -13,13 +13,13 @@ export default async function Component({searchParams}) {
         const streamParam = `${room.streamParam}`;
         const topic = `/topic/${room.roomUuid}`;
         return (
-            <DoLive2 anchor={anchor}
-                     anchorUser={anchorUser}
-                     room={room}
-                     streamUrl={streamUrl}
-                     streamParam={streamParam}
-                     topic={topic}>
-            </DoLive2>
+            <DoLive anchor={anchor}
+                    anchorUser={anchorUser}
+                    room={room}
+                    streamUrl={streamUrl}
+                    streamParam={streamParam}
+                    topic={topic}>
+            </DoLive>
         )
     } else {
         redirect("/mobile");
