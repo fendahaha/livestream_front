@@ -1,5 +1,5 @@
 'use client'
-import {useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import Link from "next/link";
 import {CloseOutlined, CrownOutlined, MessageOutlined, QrcodeOutlined, SoundOutlined} from "@ant-design/icons";
 import {imagePrefix} from "@/util/requestUtil";
@@ -12,6 +12,7 @@ import {SmallScribeButton} from "@/component/subscribeButton";
 import {Messages, SendButton} from "./messages";
 import styles from './css/Room.module.css';
 import {useRoomStomp} from "@/app/(mobile)/mobile_room/_component/roomStompUtil";
+import WebRtcPlayer from "@/component/player/WebRtcPlayer";
 
 export default function Room({anchor, anchorUser, room, streamUrl, streamParam, topic}) {
     const {isIos} = useMobilePageContext();
@@ -25,7 +26,9 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
         <div className={styles.room}>
             <div className={styles.stream_container}>
                 {isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :
-                    <FlvContainer url={streamUrl} param={streamParam}/>}
+                    // <FlvContainer url={streamUrl} param={streamParam}/>
+                    <WebRtcPlayer streamName={room?.streamName}/>
+                }
             </div>
             {/*<div className={styles.stream_infos}>*/}
             {/*    */}
