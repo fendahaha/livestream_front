@@ -17,6 +17,7 @@ import {MessageUtil, PageType, userTypeUtil} from "@/util/commonUtil";
 import {useMyLocale} from "@/component/context/localeContext";
 import {UserOutlined} from "@ant-design/icons";
 import {SubscribeButton} from "@/component/subscribeButton";
+import WebRtcPlayer from "@/component/player/WebRtcPlayer";
 
 const useStomp = (roomUuid, destinationTopic, anchorUserUuid, anchorUserName, userUuid, userName, userType) => {
     const {getDict} = useMyLocale('Room');
@@ -166,7 +167,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
                             </div>
                         </div>
                         <div className={styles.layout2_middle}>
-                            {streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}
+                            {/*{streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}*/}
+                            {streamUrl ? <WebRtcPlayer streamName={room?.streamName}/> : ''}
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
                             </div>

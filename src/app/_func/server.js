@@ -34,3 +34,7 @@ export const is_room_online = async (room_uuid) => {
 export const queryAnchorByRoomUuid = (room_uuid) => {
     return nodeBackendFetch.formPostJson("/anchor/query", {room_uuid}).then(r => r?.data)
 }
+
+export const queryAnchorByUserUuid = (user_uuid) => {
+    return nodeBackendFetch.formPostJson("/anchor/query_by_useruuid", {user_uuid}).then(r => r?.data)
+}

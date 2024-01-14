@@ -7,14 +7,12 @@ import {useRtcPlay, whep_url, whip_url} from "@/util/webrtcUtil";
 
 
 export default function Component() {
-    const [url, setUrl] = useState(whep_url('live', '7ad3ab11857348ac9a0e9e1481a40085', '52360f8449a149fab46739a890d65a6b'))
+    const [url, setUrl] = useState(whep_url('live', '7ad3ab11857348ac9a0e9e1481a40085'))
     const videoRef = useRef(null);
     const {isPlaying, isPlayed, play, stop} = useRtcPlay(url, videoRef);
     const props = {
         value: url,
-        onChange: (e) => {
-            setUrl(e.target.value)
-        },
+        onChange: (e) => setUrl(e.target.value),
     }
     return (
         <FixWidthDiv>

@@ -1,7 +1,7 @@
-import styles from './_css/messages.module.css';
+import './css/message.css';
+import styles from './css/messages.module.css';
 import {Input} from "antd";
 import {SendOutlined} from "@ant-design/icons";
-import './_css/message.css';
 import {useState} from "react";
 
 function Message({msg}) {

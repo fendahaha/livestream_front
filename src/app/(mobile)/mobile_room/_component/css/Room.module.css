@@ -71,18 +71,8 @@
     cursor: pointer;
 }
 
-.close {
-    display: inline-block;
-    color: white;
-    font-size: 30px;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    line-height: 40px;
-    text-align: center;
-}
-
 .button {
+    display: inline-block;
     color: #b3b3b4;
     font-size: 22px;
     width: 40px;
@@ -92,6 +82,12 @@
     text-align: center;
     /*background-color: #b3b3b4;*/
     background-color: rgba(0, 0, 0, 0.3);
+}
+
+.button.close {
+    color: white;
+    font-size: 30px;
+    background-color: transparent;
 }
 
 .messages {

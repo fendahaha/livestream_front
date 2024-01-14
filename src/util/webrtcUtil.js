@@ -6,7 +6,7 @@ export function whip_url(app, stream, token) {
 }
 
 export function whep_url(app, stream, token) {
-    return `${webRtcServer}/rtc/v1/whep/?app=${app}&stream=${stream}&token=${token}`
+    return `${webRtcServer}/rtc/v1/whep/?app=${app}&stream=${stream}`
 }
 
 export function stopStreamTracks(...streams) {
@@ -275,10 +275,13 @@ export function useRtcPlay(url, videoRef) {
         if (pcRef.current) {
             pcRef.current.close()
         }
+        if (videoRef && videoRef.current) {
+            videoRef.current.srcObject = null;
+        }
         pcRef.current = null;
         streamRef.current = null;
         setIsPlayed(false);
         setIsPlaying(false);
-    }, [])
+    }, [videoRef])
     return {isPlaying, isPlayed, play, stop}
 }

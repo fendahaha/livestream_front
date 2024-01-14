@@ -77,8 +77,12 @@ export default function FlvContainer({url, param}) {
                 flvPlayer.on(flv.Events.ERROR, (errorType, errorInfo, errorMsg) => {
                     console.log(errorType, errorInfo, errorMsg);
                     if (errorType === flv.ErrorTypes.NETWORK_ERROR) {
-                        message.warning(getDict('anchor_offline'), 5);
-                        // setShouldReplay(true);
+                        if(errorInfo===flv.ErrorDetails.NETWORK_UNRECOVERABLE_EARLY_EOF){
+                            message.warning(getDict('anchor_offline'), 5);
+                            setShouldReplay(true);
+                        }else{
+                            message.error(errorInfo)
+                        }
                     }
                 });
                 flvPlayer.on(flv.Events.MEDIA_INFO, (e) => console.log(e))

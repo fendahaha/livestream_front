@@ -65,7 +65,7 @@ export function User() {
                 {getDict('logoutButtonText')}
             </Button>
             {userTypeUtil.is_anchor(user?.userType) ?
-                <Button type={'primary'} block={true} href={'/mobile_do_live'}>开始直播</Button>
+                <Button type={'primary'} block={true} href={`/mobile_room/do_live?user_uuid=${user?.userUuid}`}>开始直播</Button>
                 : ''
             }
 
