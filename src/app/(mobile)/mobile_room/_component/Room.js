@@ -25,9 +25,9 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
     return (
         <div className={styles.room}>
             <div className={styles.stream_container}>
-                {/*{isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :*/}
-                {/*    <FlvContainer url={streamUrl} param={streamParam}/>}*/}
-                <WebRtcPlayer streamName={room?.streamName}/>
+                {isIos ? <IosHlsPlayer url={streamUrl} param={streamParam}/> :
+                    <FlvContainer url={streamUrl} param={streamParam}/>}
+                {/*<WebRtcPlayer streamName={room?.streamName}/>*/}
             </div>
             {/*<div className={styles.stream_infos}>*/}
             {/*    */}
