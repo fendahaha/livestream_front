@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-yarn install
-[ $? -eq 0 ] && yarn build --no-lint
-
-if [ $? -eq 0 ]; then
-  nohup yarn start > log.txt 2>&1 &
+mid=$(ps -ef |grep 'next-server'|grep -v 'grep'|awk '{ print $2 }')
+if [ -z "$mid" ];then
+  echo "id: $mid"
+else
+  echo "kill $mid"
+  kill -9 $mid
 fi
