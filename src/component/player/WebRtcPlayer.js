@@ -29,7 +29,6 @@ export default function WebRtcPlayer({streamName}) {
             playCounts.current += 1;
             play();
             return ()=>{
-                console.log("stop");
                 stop();
             }
         }
