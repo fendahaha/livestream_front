@@ -51,6 +51,11 @@ export default function DoLive({anchor, anchorUser, room, streamUrl, streamParam
     const [url, setUrl] = useState(whip_url('live', '7ad3ab11857348ac9a0e9e1481a40085', '52360f8449a149fab46739a890d65a6b'))
     const videoRef = useRef(null);
     const {isPublishing, isPublished, publish, stop} = useRtcPublish(url, videoRef);
+    useEffect(() => {
+        if (isPublishing || isPublished) {
+            return () => stop()
+        }
+    }, [isPublished, isPublishing, stop]);
     return (
         <div className={styles.main}>
             <div className={styles.video_container} style={{zIndex: 1}}>

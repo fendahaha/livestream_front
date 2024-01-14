@@ -147,7 +147,7 @@ export function useRtcPublish(url, videoRef) {
                             pc.addTrack(track);
                             stream.addTrack(track);
                         });
-                        if (videoRef && videoRef.current) {
+                        if (videoRef?.current) {
                             videoRef.current.srcObject = stream;
                         }
                         return negotiate(pc, url);
@@ -179,11 +179,14 @@ export function useRtcPublish(url, videoRef) {
         if (pcRef.current) {
             pcRef.current.close()
         }
+        if(videoRef?.current){
+            videoRef.current.srcObject = null;
+        }
         pcRef.current = null;
         streamRef.current = null;
         setIsPublishing(false);
         setIsPublished(false);
-    }, []);
+    }, [videoRef]);
     return {isPublishing, isPublished, publish, stop}
 }
 
@@ -203,7 +206,7 @@ export function useRtcPublish2(url, videoRef) {
             const userMediaStream = await navigator.mediaDevices.getUserMedia(constraints);
             const {pc, stream, stopPublish} = rtc_publish(userMediaStream);
             stopPublishRef.current = stopPublish
-            if (videoRef && videoRef.current) {
+            if (videoRef?.current) {
                 videoRef.current.srcObject = stream;
             }
             const r = await negotiate(pc, url);
@@ -218,7 +221,7 @@ export function useRtcPublish2(url, videoRef) {
             stopPublishRef.current();
             stopPublishRef.current = null;
         }
-        if (videoRef.current) {
+        if (videoRef?.current) {
             videoRef.current.srcObject = null;
         }
         setIsPublishing(false);
@@ -275,7 +278,7 @@ export function useRtcPlay(url, videoRef) {
         if (pcRef.current) {
             pcRef.current.close()
         }
-        if (videoRef && videoRef.current) {
+        if (videoRef?.current) {
             videoRef.current.srcObject = null;
         }
         pcRef.current = null;

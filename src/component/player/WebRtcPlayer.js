@@ -28,8 +28,12 @@ export default function WebRtcPlayer({streamName}) {
         if (playCounts.current === 0) {
             playCounts.current += 1;
             play();
+            return ()=>{
+                console.log("stop");
+                stop();
+            }
         }
-    }, []);
+    }, [stop]);
     return (
         <div style={{width: '100%', height: '100%', position: 'relative'}}>
             <video autoPlay={false} controls={false} playsInline muted={false} ref={videoRef} className={styles.video}
