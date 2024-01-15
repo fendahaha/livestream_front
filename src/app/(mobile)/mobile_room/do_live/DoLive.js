@@ -42,7 +42,7 @@ export default function DoLive({anchor, anchorUser, room, streamUrl, streamParam
     return (
         <div className={styles.main}>
             <div className={styles.video_container} style={{zIndex: 1}}>
-                <video autoPlay controls playsInline muted ref={videoRef}
+                <video autoPlay controls={false} playsInline muted ref={videoRef}
                        className={`${styles.video} ${isPublished ? styles.show : ''}`}/>
             </div>
             <div className={styles.anchor_info} style={{zIndex: 2}}>

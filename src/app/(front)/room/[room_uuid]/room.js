@@ -167,8 +167,8 @@ export default function Room({anchor, anchorUser, room, streamUrl, streamParam, 
                             </div>
                         </div>
                         <div className={styles.layout2_middle}>
-                            {/*{streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}*/}
-                            {streamUrl ? <WebRtcPlayer streamName={room?.streamName}/> : ''}
+                            {streamUrl ? <FlvContainer url={streamUrl} param={streamParam}/> : ''}
+                            {/*{streamUrl ? <WebRtcPlayer streamName={room?.streamName}/> : ''}*/}
                             <div className={styles.danmu_container}>
                                 <FendaDanmu ref={danmuRef}/>
                             </div>
